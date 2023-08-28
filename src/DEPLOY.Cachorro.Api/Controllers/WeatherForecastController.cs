@@ -1,3 +1,5 @@
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Channel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEPLOY.Cachorro.Api.Controllers
@@ -28,6 +30,8 @@ namespace DEPLOY.Cachorro.Api.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+
+            
         }
     }
 }
