@@ -32,7 +32,7 @@ namespace DEPLOY.Cachorro.Api
             })
                 .ConfigureTelemetryModule<QuickPulseTelemetryModule>(
                 (module, o) => 
-                module.AuthenticationApiKey = builder.Configuration.GetSection("e6ee751c-b8cd-431e-8d80-9ded60532ecc").Value);
+                module.AuthenticationApiKey = builder.Configuration.GetSection("ApplicationInsights:Api-Key").Value);
 
             var app = builder.Build();
 
