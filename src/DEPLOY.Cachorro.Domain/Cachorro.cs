@@ -6,16 +6,16 @@
 
         public bool Adotado { get; set; }
 
-        public List<Vacina> Vacinas { get; }
+        //public List<Vacina> Vacinas { get; }
 
         public string Pelagem { get; init; }
 
         public float Peso { get; init; }
 
-        public void Vacinar(Vacina vacinas)
-        {
-            Vacinas.Add(vacinas);
-        }
+        //public void Vacinar(Vacina vacinas)
+        //{
+        //    Vacinas.Add(vacinas);
+        //}
     }
 
     [Flags]

@@ -7,7 +7,7 @@
 		<UserSecretsId>CachorroAPI</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<ApplicationInsightsResourceId>/subscriptions/f4574f09-7fab-45bd-8eb5-508b8c6aa04a/resourceGroups/rg-canaldeploy-dev/providers/microsoft.insights/components/appi-cachorroapi-dev</ApplicationInsightsResourceId>
-		<AssemblyVersion>0.3.0</AssemblyVersion>
+		<AssemblyVersion>0.5.0</AssemblyVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,9 +15,15 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.11" />
 		<PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.21.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DEPLOY.Cachorro.Domain\DEPLOY.Cachorro.Domain.csproj" />
+		<ProjectReference Include="..\DEPLOY.Cachorro.Repository\DEPLOY.Cachorro.Repository.csproj" />
 	</ItemGroup>
 
 </Project>
