@@ -1,5 +1,6 @@
 ﻿using DEPLOY.Cachorro.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
 {
@@ -16,19 +17,67 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         }
 
         [HttpGet]
-        public IActionResult Get()
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<DEPLOY.Cachorro.Domain.Cachorro>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ListarAsync()
         {
-            var items = _context.Cachorros.ToList();
+            var items = await _context.Cachorros.ToListAsync();
+
+            return Ok(items);
+        }
+
+        [HttpGet("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(DEPLOY.Cachorro.Domain.Cachorro), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ObterPorIdAsync(int id)
+        {
+            var items = await _context.Cachorros.FindAsync(id);
+
+            if (items == null)
+            {
+                return NotFound();
+            }
+
             return Ok(items);
         }
 
         [HttpPost]
-        public IActionResult CadastrarCachorro(
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(DEPLOY.Cachorro.Domain.Cachorro), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CadastrarCachorroAsync(
             [FromBody] DEPLOY.Cachorro.Domain.Cachorro cachorro)
         {
             _context.Cachorros.Add(cachorro);
+            await _context.SaveChangesAsync();
 
-            return Ok();
+            return CreatedAtAction("ObterPorId",
+                new { id = cachorro.Id, version = new ApiVersion(1, 0).ToString() },
+                cachorro);
+        }
+
+        [HttpDelete("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ExcluirCachorroAsync(int id)
+        {
+            var item = await _context.Cachorros.FindAsync(id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            _context.Cachorros.Remove(item);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
