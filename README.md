@@ -1,6 +1,16 @@
 # DEPLOY.Cachorro.Api
 
-Rodar local
+> Para criar nossa imagem, a partir do diretório root da aplicação (pasta que contem o arquivo sln)
+
+```
+docker build -f ./DEPLOY.Cachorro.Api/Dockerfile  -t crcanaldeploydev.azurecr.io/cachorro-api:0.4 .
+```
+
+> Para executar o projeto local, utilizando docker
+
+```
+docker container run --rm -p 8088:80 -e ConnectionsString__ApplicationInsights="xxxx" -e ApplicationInsights__ApiKey="yyy" felipementel/cachorro-api:0.3
+```
 
 ![Imagem projeto api de cachorro](./docs/imgreadme1.png)
 

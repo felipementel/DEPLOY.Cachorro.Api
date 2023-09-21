@@ -39,6 +39,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
+                //options.RoutePrefix = string.Empty;
                 foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
                 {
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
