@@ -14,7 +14,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Telemetria
             })
                 .ConfigureTelemetryModule<QuickPulseTelemetryModule>(
                 (module, o) =>
-                module.AuthenticationApiKey = configuration.GetSection("ApplicationInsights:Api-Key").Value);
+                module.AuthenticationApiKey = configuration.GetSection("ApplicationInsights:ApiKey").Value);
         }
     }
 }
