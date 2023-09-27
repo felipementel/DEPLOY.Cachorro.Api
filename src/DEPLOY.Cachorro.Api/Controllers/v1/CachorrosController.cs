@@ -60,6 +60,23 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 cachorro);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCachorro(
+            long id,
+            Domain.Cachorro cachorro)
+        {
+            if (id != cachorro.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(cachorro).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

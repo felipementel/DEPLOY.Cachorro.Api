@@ -3,6 +3,7 @@ using DEPLOY.Cachorro.Api.Extensions.Telemetria;
 using DEPLOY.Cachorro.Repository;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace DEPLOY.Cachorro.Api
 {
@@ -12,7 +13,8 @@ namespace DEPLOY.Cachorro.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(opt => { opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 
             builder.Services.AddEndpointsApiExplorer();
 
