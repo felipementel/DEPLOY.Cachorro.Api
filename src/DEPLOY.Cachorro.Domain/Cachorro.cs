@@ -8,7 +8,7 @@
 
         //public List<Vacina> Vacinas { get; }
 
-        public string Pelagem { get; init; }
+        public Pelagem Pelagem { get; init; }
 
         public float Peso { get; init; }
 
@@ -21,16 +21,18 @@
     [Flags]
     public enum Vacina
     {
-        Vacina1,
-        Vacina2,
-        Vacina3
+        None = 0,
+        Vacina1 = 1,
+        Vacina2 = 2,
+        Vacina3 = 3
     }
 
     [Flags]
     public enum Pelagem
     {
-        Curto,
-        Medio,
-        Longo
+        None = 0,
+        Curto = 1,
+        Medio = 2,
+        Longo = 3
     }
 }

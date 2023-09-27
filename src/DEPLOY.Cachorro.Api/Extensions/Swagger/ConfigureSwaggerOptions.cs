@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace DEPLOY.Cachorro.Api.Extensions.Swagger
 {
@@ -38,7 +39,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
             {
                 Title = "Cachorro WebAPI .NET 7",
                 Version = desc.ApiVersion.ToString(),
-                Description = "WebApi criada no canal D.E.P.L.O.Y.",
+                Description = $"WebApi criada no canal D.E.P.L.O.Y. v{Assembly.GetExecutingAssembly().GetName().Version}",
                 Contact = new OpenApiContact()
                 {
                     Email = "admin@felipementel.dev.br",
