@@ -1,5 +1,7 @@
 # DEPLOY.Cachorro.Api
 
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=felipementel_DEPLOY.Cachorro.Api)](https://sonarcloud.io/summary/new_code?id=felipementel_DEPLOY.Cachorro.Api)
+
 > Para criar nossa imagem, a partir do diretório root da aplicação (pasta que contem o arquivo sln)
 
 ```
