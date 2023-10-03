@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEPLOY.Cachorro.Api", "DEPL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEPLOY.Cachorro.Domain", "DEPLOY.Cachorro.Domain\DEPLOY.Cachorro.Domain.csproj", "{59B5B97A-1A0F-4083-8D4C-6CD8601AAB27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEPLOY.Cachorro.Repository", "DEPLOY.Cachorro.Repository\DEPLOY.Cachorro.Repository.csproj", "{D98B92E2-BAAE-4BBA-8D8A-EAC26D9EE523}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEPLOY.Cachorro.Repository", "DEPLOY.Cachorro.Repository\DEPLOY.Cachorro.Repository.csproj", "{D98B92E2-BAAE-4BBA-8D8A-EAC26D9EE523}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D588EDE-D29B-45C3-AAE5-DE89407FFCCD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

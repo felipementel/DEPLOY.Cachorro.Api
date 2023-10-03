@@ -6,13 +6,13 @@
 
         public bool Adotado { get; set; }
 
-        public Pelagem Pelagem { get; init; }
+        public PELAGEM Pelagem { get; init; }
 
         public float Peso { get; init; }
     }
 
     [Flags]
-    public enum Vacina
+    public enum VACINA
     {
         None = 0,
         Vacina1 = 1,
@@ -21,7 +21,7 @@
     }
 
     [Flags]
-    public enum Pelagem
+    public enum PELAGEM
     {
         None = 0,
         Curto = 1,
