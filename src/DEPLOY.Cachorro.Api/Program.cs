@@ -1,7 +1,6 @@
 using DEPLOY.Cachorro.Api.Extensions.Swagger;
 using DEPLOY.Cachorro.Api.Extensions.Telemetria;
 using DEPLOY.Cachorro.Repository;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
