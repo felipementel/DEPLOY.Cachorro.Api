@@ -34,8 +34,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./src/
-          file: ./src/Dockerfile
+          context: ./src/DEPLOY.Cachorro.Api/
+          file: ./src/DEPLOY.Cachorro.Api/Dockerfile
           load: true
           tags: |
             ${{ env.TEST_TAG }}
