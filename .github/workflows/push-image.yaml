@@ -1,12 +1,6 @@
 name: DockerHub
 
 on:
-  
-  push:
-    paths:
-      - 'src/**'
-    branches:
-      - 'main'
   workflow_dispatch:
 
 env:
