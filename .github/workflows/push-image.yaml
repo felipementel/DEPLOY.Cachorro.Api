@@ -1,6 +1,7 @@
 name: Docker Hub
 
 on:
+  
   push:
     paths:
       - 'src/**'
@@ -35,7 +36,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./src
-	        platform: linux/amd64
           file: ./DEPLOY.Cachorro.Api/Dockerfile
           load: true
           tags: |
@@ -47,7 +47,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./src
-	        platform: linux/amd64
           file: ./DEPLOY.Cachorro.Api/Dockerfile
           push: true
           tags: |
