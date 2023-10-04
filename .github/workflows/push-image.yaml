@@ -1,0 +1,54 @@
+name: Docker Hub
+
+on:
+  push:
+    paths:
+      - 'src/**'
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+env:
+  TEST_TAG: felipementel/cachorro.api:test
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src
+	        platform: linux/amd64
+          file: ./DEPLOY.Cachorro.Api/Dockerfile
+          load: true
+          tags: |
+            ${{ env.TEST_TAG }}
+      - name: Test
+        run: |
+          docker run --rm -e ASPNETCORE_ENVIRONMENT=${{ env.ENV_DEV }} -e ConnectionsString__ApplicationInsights=${{ secrets.APPI_CONSTR }} -e ApplicationInsights__ApiKey=${{ secrets.APPI_APIKEY }} ${{ env.TEST_TAG }} 
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src
+	        platform: linux/amd64
+          file: ./DEPLOY.Cachorro.Api/Dockerfile
+          push: true
+          tags: |
+            felipementel/cachorro.api:latest
