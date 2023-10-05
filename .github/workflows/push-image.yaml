@@ -3,13 +3,10 @@ name: Docker Hub
 on:
   push:
     paths:
-      - 'src/**'
+      - "src/**"
     branches:
-      - 'main'
+      - "main"
   workflow_dispatch:
-
-env:
-  TEST_TAG: felipementel/cachorro.api:test
 
 jobs:
   docker:
@@ -30,21 +27,12 @@ jobs:
           registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./src/DEPLOY.Cachorro.Api/
+          context: ./src/
           file: ./src/DEPLOY.Cachorro.Api/Dockerfile
-          load: true
-          tags: |
-            ${{ env.TEST_TAG }}
-            
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
           push: true
           tags: |
             felipementel/cachorro.api:latest
