@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Api.Extensions.Swagger
 {
+    [ExcludeFromCodeCoverage]
     public static class SwaggerExtensions
     {
         public static void AddSwagger(this IServiceCollection services)

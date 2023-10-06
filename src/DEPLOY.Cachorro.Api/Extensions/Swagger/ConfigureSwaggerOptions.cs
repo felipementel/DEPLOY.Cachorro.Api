@@ -2,10 +2,12 @@
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace DEPLOY.Cachorro.Api.Extensions.Swagger
 {
+    [ExcludeFromCodeCoverage]
     public class ConfigureSwaggerOptions
     : IConfigureNamedOptions<SwaggerGenOptions>
     {

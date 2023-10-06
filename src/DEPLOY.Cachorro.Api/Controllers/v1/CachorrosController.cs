@@ -1,6 +1,7 @@
 ﻿using DEPLOY.Cachorro.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
 {
@@ -9,9 +10,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     public class CachorrosController : ControllerBase
     {
-        public readonly CachorroContext _context;
+        public readonly CachorroDbContext _context;
 
-        public CachorrosController(CachorroContext context)
+        public CachorrosController(CachorroDbContext context)
         {
             _context = context;
         }
@@ -61,7 +62,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCachorro(
+        public async Task<IActionResult> PutCachorroAsync(
             long id,
             Domain.Cachorro cachorro)
         {

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coverage version="1">
+  <file path="C:\Proj\DEPLOY\DEPLOY.Cachorro\src\DEPLOY.Cachorro.Api\Controllers\v1\CachorrosController.cs">
+    <lineToCover lineNumber="15" covered="true" />
+    <lineToCover lineNumber="16" covered="true" />
+    <lineToCover lineNumber="17" covered="true" />
+    <lineToCover lineNumber="18" covered="true" />
+    <lineToCover lineNumber="25" covered="true" />
+    <lineToCover lineNumber="26" covered="true" />
+    <lineToCover lineNumber="28" covered="true" />
+    <lineToCover lineNumber="29" covered="true" />
+    <lineToCover lineNumber="37" covered="false" />
+    <lineToCover lineNumber="38" covered="false" />
+    <lineToCover lineNumber="40" covered="false" branchesToCover="2" coveredBranches="0" />
+    <lineToCover lineNumber="41" covered="false" />
+    <lineToCover lineNumber="42" covered="false" />
+    <lineToCover lineNumber="45" covered="false" />
+    <lineToCover lineNumber="46" covered="false" />
+    <lineToCover lineNumber="55" covered="false" />
+    <lineToCover lineNumber="56" covered="false" />
+    <lineToCover lineNumber="57" covered="false" />
+    <lineToCover lineNumber="59" covered="false" />
+    <lineToCover lineNumber="60" covered="false" />
+    <lineToCover lineNumber="61" covered="false" />
+    <lineToCover lineNumber="62" covered="false" />
+    <lineToCover lineNumber="68" covered="false" />
+    <lineToCover lineNumber="69" covered="false" branchesToCover="2" coveredBranches="0" />
+    <lineToCover lineNumber="70" covered="false" />
+    <lineToCover lineNumber="71" covered="false" />
+    <lineToCover lineNumber="74" covered="false" />
+    <lineToCover lineNumber="76" covered="false" />
+    <lineToCover lineNumber="78" covered="false" />
+    <lineToCover lineNumber="79" covered="false" />
+    <lineToCover lineNumber="87" covered="false" />
+    <lineToCover lineNumber="88" covered="false" />
+    <lineToCover lineNumber="90" covered="false" branchesToCover="2" coveredBranches="0" />
+    <lineToCover lineNumber="91" covered="false" />
+    <lineToCover lineNumber="92" covered="false" />
+    <lineToCover lineNumber="95" covered="false" />
+    <lineToCover lineNumber="96" covered="false" />
+    <lineToCover lineNumber="98" covered="false" />
+    <lineToCover lineNumber="99" covered="false" />
+  </file>
+</coverage>
