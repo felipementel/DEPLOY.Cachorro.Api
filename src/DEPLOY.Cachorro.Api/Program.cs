@@ -2,10 +2,12 @@ using DEPLOY.Cachorro.Api.Extensions.Swagger;
 using DEPLOY.Cachorro.Api.Extensions.Telemetria;
 using DEPLOY.Cachorro.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace DEPLOY.Cachorro.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static void Main(string[] args)
@@ -17,7 +19,7 @@ namespace DEPLOY.Cachorro.Api
 
             builder.Services.AddEndpointsApiExplorer();
 
-            builder.Services.AddDbContext<CachorroContext>(options =>
+            builder.Services.AddDbContext<CachorroDbContext>(options =>
             {
                 options.UseInMemoryDatabase("Cachorros");
             });

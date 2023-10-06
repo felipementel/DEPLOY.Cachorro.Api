@@ -1,5 +1,8 @@
-﻿namespace DEPLOY.Cachorro.Domain
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DEPLOY.Cachorro.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class Cachorro : BaseEntidade<int>
     {
         public DateTime Nascimento { get; init; }

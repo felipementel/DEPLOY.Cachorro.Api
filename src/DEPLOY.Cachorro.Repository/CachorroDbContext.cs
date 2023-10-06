@@ -1,11 +1,13 @@
 ﻿using DEPLOY.Cachorro.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Repository
 {
-    public class CachorroContext : DbContext
+    [ExcludeFromCodeCoverage]
+    public class CachorroDbContext : DbContext
     {
-        public CachorroContext(DbContextOptions<CachorroContext> options) :
+        public CachorroDbContext(DbContextOptions<CachorroDbContext> options) :
             base(options)
         { 
         }

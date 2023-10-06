@@ -1,5 +1,8 @@
-﻿namespace DEPLOY.Cachorro.Api.Extensions.Telemetria
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DEPLOY.Cachorro.Api.Extensions.Telemetria
 {
+    [ExcludeFromCodeCoverage]
     public static class LoggingExtensions
     {
         public static void AddLogExtensions(

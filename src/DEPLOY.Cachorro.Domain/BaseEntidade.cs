@@ -1,5 +1,8 @@
-﻿namespace DEPLOY.Cachorro.Domain
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DEPLOY.Cachorro.Domain
 {
+    [ExcludeFromCodeCoverage]
     public  class BaseEntidade<T>
     {
         public T Id { get; set; }
