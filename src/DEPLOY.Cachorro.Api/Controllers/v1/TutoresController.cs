@@ -9,11 +9,11 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    public class TutorController : ControllerBase
+    public class TutoresController : ControllerBase
     {
         private readonly CachorroDbContext _cachorroDbContext;
 
-        public TutorController(CachorroDbContext cachorroDbContext)
+        public TutoresController(CachorroDbContext cachorroDbContext)
         {
             _cachorroDbContext = cachorroDbContext;
         }
@@ -22,9 +22,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [Produces("application/json")]
         [ProducesResponseType(typeof(IEnumerable<Domain.Tutor>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> ListarTutores()
+        public async Task<IActionResult> ListarAsync()
         {
-            var items = await _cachorroDbContext.Tutors.ToListAsync();
+            var items = await _cachorroDbContext.Tutores.ToListAsync();
 
             return Ok(items);
         }
@@ -36,7 +36,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ObterPorIdAsync(int id)
         {
-            var items = await _cachorroDbContext.Tutors.FindAsync(id);
+            var items = await _cachorroDbContext.Tutores.FindAsync(id);
 
             if (items == null)
             {
@@ -54,7 +54,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         public async Task<IActionResult> CadastrarTutorAsync(
             [FromBody] Domain.Tutor  tutor)
         {
-            _cachorroDbContext.Tutors.Add(tutor);
+            _cachorroDbContext.Tutores.Add(tutor);
             await _cachorroDbContext.SaveChangesAsync();
 
             return CreatedAtAction("ObterPorId",
@@ -86,14 +86,14 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ExcluirTutorAsync(int id)
         {
-            var item = await _cachorroDbContext.Tutors.FindAsync(id);
+            var item = await _cachorroDbContext.Tutores.FindAsync(id);
 
             if (item == null)
             {
                 return NotFound();
             }
 
-            _cachorroDbContext.Tutors.Remove(item);
+            _cachorroDbContext.Tutores.Remove(item);
             await _cachorroDbContext.SaveChangesAsync();
 
             return NoContent();

@@ -8,48 +8,14 @@ using System.Diagnostics.CodeAnalysis;
 namespace DEPLOY.Cachorro.Api.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class CachorrosControllerTest
+    public class TutoresControllerTest
     {
-        [Fact]
-        [Trait("Read", "API")]
-        public async Task ListarAsync_ReturnOk()
-        {
-            // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
-
-            var options = new DbContextOptionsBuilder<CachorroDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-                .Options;
-
-            using (var context = new CachorroDbContext(options))
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-
-                context.Cachorros.Add(cachorro);
-                context.SaveChanges();
-            }
-
-            using (var context = new CachorroDbContext(options))
-            {
-                var controller = new CachorrosController(context);
-
-                // Act
-                var result = await controller.ListarAsync();
-
-                // Assert
-                var okResult = Assert.IsType<OkObjectResult>(result);
-                Assert.IsType<List<Domain.Cachorro>>(okResult.Value);
-            }
-        }
-
         [Fact]
         [Trait("Read", "API")]
         public async Task ObterPorIdAsync_ReturnsOk_WhenCachorroIsFound()
         {
             // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -61,22 +27,22 @@ namespace DEPLOY.Cachorro.Api.Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                context.Cachorros.Add(cachorro);
+                context.Tutores.Add(tutor);
                 context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.ObterPorIdAsync(cachorro.Id);
+                var result = await controller.ObterPorIdAsync(tutor.Id);
 
                 // Assert
                 var okResult = Assert.IsType<OkObjectResult>(result);
-                var model = Assert.IsType<Domain.Cachorro>(okResult.Value);
-                Assert.Equal(cachorro.Id, model.Id);
-                Assert.Equal(cachorro.Nome, model.Nome);
+                var model = Assert.IsType<Domain.Tutor>(okResult.Value);
+                Assert.Equal(tutor.Id, model.Id);
+                Assert.Equal(tutor.Nome, model.Nome);
             }
         }
 
@@ -85,7 +51,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         public async Task ObterPorIdAsync_ReturnsNotFound_WhenCachorroNotFound()
         {
             // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -97,23 +63,23 @@ namespace DEPLOY.Cachorro.Api.Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                context.Cachorros.Add(cachorro);
+                context.Tutores.Add(tutor);
                 context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.ObterPorIdAsync(cachorro.Id + 1);
+                var result = await controller.ObterPorIdAsync(tutor.Id + 1);
 
                 // Assert
                 Assert.IsType<NotFoundResult>(result);
 
                 using (var contextAfterDelete = new CachorroDbContext(options))
                 {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorro.Id + 1);
+                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(tutor.Id + 1);
                     Assert.Null(deletedCachorro);
                 }
             }
@@ -121,10 +87,10 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Create", "API")]
-        public async Task CadastrarCachorroAsync_ReturnsCreated_WhenCachorroIsValid()
+        public async Task CadastrarTutotAsync_ReturnsCreated_WhenCachorroIsValid()
         {
             // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -139,24 +105,24 @@ namespace DEPLOY.Cachorro.Api.Tests
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.CadastrarCachorroAsync(cachorro);
+                var result = await controller.CadastrarTutorAsync(tutor);
 
                 // Assert
                 var okResult = Assert.IsType<CreatedAtActionResult>(result);
-                var model = Assert.IsType<Domain.Cachorro>(okResult.Value);
-                Assert.Equal(cachorro.Nome, model.Nome);
+                var model = Assert.IsType<Domain.Tutor>(okResult.Value);
+                Assert.Equal(tutor.Nome, model.Nome);
             }
         }
 
         [Fact]
         [Trait("Update", "API")]
-        public async Task PutCachorroAsync_ReturnsNoContent_WhenCachorroIsValid()
+        public async Task PutTutotAsync_ReturnsNoContent_WhenCachorroIsValid()
         {
             // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -168,16 +134,16 @@ namespace DEPLOY.Cachorro.Api.Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                context.Cachorros.Add(cachorro);
+                context.Tutores.Add(tutor);
                 context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.PutCachorroAsync(cachorro.Id, new Domain.Cachorro() { Id = cachorro.Id, Nome = "Sirius v2" });
+                var result = await controller.PutTutorAsync(tutor.Id, new Domain.Tutor() { Id = tutor.Id, Nome = "Sirius v2" });
 
                 // Assert
                 Assert.IsType<NoContentResult>(result);
@@ -186,10 +152,10 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Update", "API")]
-        public async Task PutCachorroAsync_ReturnsBadRequest_WhenCachorroIsInvalid()
+        public async Task PutTutorAsync_ReturnsBadRequest_WhenCachorroIsInvalid()
         {
             // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -201,16 +167,16 @@ namespace DEPLOY.Cachorro.Api.Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                context.Cachorros.Add(cachorro);
+                context.Tutores.Add(tutor);
                 context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.PutCachorroAsync(2, new Domain.Cachorro() { Nome = "Sirius v2" });
+                var result = await controller.PutTutorAsync(2, new Domain.Tutor() { Nome = "Nome Atualizado" });
 
                 // Assert
                 Assert.IsType<BadRequestResult>(result);
@@ -219,11 +185,11 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Delete", "API")]
-        public async Task ExcluirCachorroAsync_ReturnsNotFound_WhenCachorroIdDontExists()
+        public async Task ExcluirTutorAsync_ReturnsNotFound_WhenCachorroIdDontExists()
         {
             // Arrange
             var cachorroId = 2;
-            var cachorro = new Domain.Cachorro { Id = cachorroId, Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Id = cachorroId, Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -235,23 +201,23 @@ namespace DEPLOY.Cachorro.Api.Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                context.Cachorros.Add(cachorro);
+                context.Tutores.Add(tutor);
                 context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.ExcluirCachorroAsync(cachorroId + 1);
+                var result = await controller.ExcluirTutorAsync(cachorroId + 1);
 
                 // Assert
                 Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundResult>(result);
 
                 using (var contextAfterDelete = new CachorroDbContext(options))
                 {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorroId);
+                    var deletedCachorro = await contextAfterDelete.Tutores.FindAsync(cachorroId);
                     Assert.NotNull(deletedCachorro);
                 }
             }
@@ -259,10 +225,10 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Delete", "API")]
-        public async Task ExcluirCachorroAsync_ReturnsNoContent_WhenCachorroIdIsValid()
+        public async Task ExcluirTutorAsync_ReturnsNoContent_WhenCachorroIdIsValid()
         {
             // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -274,23 +240,23 @@ namespace DEPLOY.Cachorro.Api.Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                context.Cachorros.Add(cachorro);
+                context.Tutores.Add(tutor);
                 context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.ExcluirCachorroAsync(cachorro.Id);
+                var result = await controller.ExcluirTutorAsync(tutor.Id);
 
                 // Assert
                 Assert.IsType<Microsoft.AspNetCore.Mvc.NoContentResult>(result);
 
                 using (var contextAfterDelete = new CachorroDbContext(options))
                 {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorro.Id);
+                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(tutor.Id);
                     Assert.Null(deletedCachorro);
                 }
             }
@@ -298,11 +264,11 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Delete", "API")]
-        public async Task ExcluirCachorroAsync_ReturnsNoContent_WhenCachorroIsDeleted()
+        public async Task ExcluirTutorAsync_ReturnsNoContent_WhenCachorroIsDeleted()
         {
             // Arrange
             var cachorroId = 1;
-            var cachorro = new Domain.Cachorro { Id = cachorroId, Nome = "Sirius" };
+            var tutor = new Domain.Tutor { Id = cachorroId, Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -314,16 +280,16 @@ namespace DEPLOY.Cachorro.Api.Tests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                context.Cachorros.Add(cachorro);
+                context.Tutores.Add(tutor);
                 context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
             {
-                var controller = new CachorrosController(context);
+                var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.ExcluirCachorroAsync(cachorroId);
+                var result = await controller.ExcluirTutorAsync(cachorroId);
 
                 // Assert
                 Assert.IsType<Microsoft.AspNetCore.Mvc.NoContentResult>(result);
