@@ -5,9 +5,9 @@ namespace DEPLOY.Cachorro.Domain
     [ExcludeFromCodeCoverage]
     public  class BaseEntidade<T>
     {
-        public T Id { get; set; }
+        public T Id { get; set; } = default!;
 
-        public string Nome { get; set; }
+        public string Nome { get; set; } = default!;
 
         public DateTime Cadastro { get; set; }
 

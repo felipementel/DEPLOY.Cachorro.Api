@@ -8,6 +8,10 @@ on:
       - "main"
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: src
+
 jobs:
   build:
     name: Build and analyze
@@ -39,7 +43,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar-scanner
           
       - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        #if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
@@ -84,8 +88,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./src/
-          file: ./src/DEPLOY.Cachorro.Api/Dockerfile
+          context: ./
+          file: ./DEPLOY.Cachorro.Api/Dockerfile
           push: true
           tags: |
             felipementel/cachorro.api:latest

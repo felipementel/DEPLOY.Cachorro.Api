@@ -29,7 +29,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
             }
         }
 
-        public void Configure(string name, SwaggerGenOptions options)
+        public void Configure(string? name, SwaggerGenOptions options)
         {
             Configure(options);
         }
