@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Criado por Felipe Augusto
+src/DEPLOY.Cachorro.Api.Tests/coveragereport/
+src/DEPLOY.Cachorro.Api.Tests/coveragereport/*
+src/coverage.xml
+
 # User-specific files
 *.rsuser
 *.suo
