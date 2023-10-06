@@ -12,7 +12,7 @@ namespace DEPLOY.Cachorro.Api.Tests
     {
         [Fact]
         [Trait("Read", "API")]
-        public async Task ObterPorIdAsync_ReturnsOk_WhenCachorroIsFound()
+        public async Task ObterPorIdAsync_ReturnsOk_WhenTutorIsFound()
         {
             // Arrange
             var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
@@ -48,7 +48,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Read", "API")]
-        public async Task ObterPorIdAsync_ReturnsNotFound_WhenCachorroNotFound()
+        public async Task ObterPorIdAsync_ReturnsNotFound_WhenTutorNotFound()
         {
             // Arrange
             var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
@@ -87,7 +87,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Create", "API")]
-        public async Task CadastrarTutotAsync_ReturnsCreated_WhenCachorroIsValid()
+        public async Task CadastrarTutotAsync_ReturnsCreated_WhenTutorIsValid()
         {
             // Arrange
             var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
@@ -119,7 +119,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Update", "API")]
-        public async Task PutTutotAsync_ReturnsNoContent_WhenCachorroIsValid()
+        public async Task PutTutotAsync_ReturnsNoContent_WhenTutorIsValid()
         {
             // Arrange
             var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
@@ -152,7 +152,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Update", "API")]
-        public async Task PutTutorAsync_ReturnsBadRequest_WhenCachorroIsInvalid()
+        public async Task PutTutorAsync_ReturnsBadRequest_WhenTutorIsInvalid()
         {
             // Arrange
             var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
@@ -185,11 +185,11 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Delete", "API")]
-        public async Task ExcluirTutorAsync_ReturnsNotFound_WhenCachorroIdDontExists()
+        public async Task ExcluirTutorAsync_ReturnsNotFound_WhenTutorIdDontExists()
         {
             // Arrange
-            var cachorroId = 2;
-            var tutor = new Domain.Tutor { Id = cachorroId, Nome = "Eu cuido da silva" };
+            var TutorId = 2;
+            var tutor = new Domain.Tutor { Id = TutorId, Nome = "Eu cuido da silva" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -210,14 +210,14 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var controller = new TutoresController(context);
 
                 // Act
-                var result = await controller.ExcluirTutorAsync(cachorroId + 1);
+                var result = await controller.ExcluirTutorAsync(tutor.Id + 1);
 
                 // Assert
-                Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundResult>(result);
+                Assert.IsType<NotFoundResult>(result);
 
                 using (var contextAfterDelete = new CachorroDbContext(options))
                 {
-                    var deletedCachorro = await contextAfterDelete.Tutores.FindAsync(cachorroId);
+                    var deletedCachorro = await contextAfterDelete.Tutores.FindAsync(tutor.Id);
                     Assert.NotNull(deletedCachorro);
                 }
             }
@@ -225,7 +225,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Delete", "API")]
-        public async Task ExcluirTutorAsync_ReturnsNoContent_WhenCachorroIdIsValid()
+        public async Task ExcluirTutorAsync_ReturnsNoContent_WhenTutorIdIsValid()
         {
             // Arrange
             var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
@@ -264,7 +264,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
         [Fact]
         [Trait("Delete", "API")]
-        public async Task ExcluirTutorAsync_ReturnsNoContent_WhenCachorroIsDeleted()
+        public async Task ExcluirTutorAsync_ReturnsNoContent_WhenTutorIsDeleted()
         {
             // Arrange
             var cachorroId = 1;
