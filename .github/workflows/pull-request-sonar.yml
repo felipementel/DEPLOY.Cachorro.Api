@@ -10,7 +10,7 @@ defaults:
     
 jobs:
   build:
-    name: Build and analyze
+    name: Analyze by SonarCloud
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
