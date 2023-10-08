@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   build:
-    name: Build and analyze
+    name: Analyze by SonarCloud
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
@@ -66,6 +66,7 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           
   docker:
+    name: Push image to Registry
     needs: [build]
     runs-on: ubuntu-latest
     steps:
