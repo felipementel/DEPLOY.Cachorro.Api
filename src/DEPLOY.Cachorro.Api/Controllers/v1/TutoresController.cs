@@ -1,7 +1,5 @@
 ﻿using DEPLOY.Cachorro.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
@@ -52,7 +50,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(typeof(Domain.Tutor), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CadastrarTutorAsync(
-            [FromBody] Domain.Tutor  tutor)
+            [FromBody] Domain.Tutor tutor)
         {
             _cachorroDbContext.Tutores.Add(tutor);
             await _cachorroDbContext.SaveChangesAsync();

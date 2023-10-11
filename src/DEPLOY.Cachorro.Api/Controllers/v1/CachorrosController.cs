@@ -1,7 +1,6 @@
 ﻿using DEPLOY.Cachorro.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
 {

@@ -1,5 +1,4 @@
-﻿using DEPLOY.Cachorro.Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Repository
@@ -9,7 +8,7 @@ namespace DEPLOY.Cachorro.Repository
     {
         public CachorroDbContext(DbContextOptions<CachorroDbContext> options) :
             base(options)
-        { 
+        {
         }
 
         public DbSet<Domain.Cachorro> Cachorros { get; set; }
