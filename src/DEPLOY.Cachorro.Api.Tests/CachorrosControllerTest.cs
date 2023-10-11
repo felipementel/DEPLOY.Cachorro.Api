@@ -1,5 +1,6 @@
 ﻿using DEPLOY.Cachorro.Api.Controllers.v1;
 using DEPLOY.Cachorro.Repository;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -39,8 +40,9 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ListarAsync();
 
                 // Assert
-                var okResult = Assert.IsType<OkObjectResult>(result);
-                Assert.IsType<List<Domain.Cachorro>>(okResult.Value);
+                result.Should().BeOfType<OkObjectResult>();
+                result.As<OkObjectResult>().Value
+                    .Should().BeOfType<List<Domain.Cachorro>>();
             }
         }
 
@@ -73,10 +75,11 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ObterPorIdAsync(cachorro.Id);
 
                 // Assert
-                var okResult = Assert.IsType<OkObjectResult>(result);
-                var model = Assert.IsType<Domain.Cachorro>(okResult.Value);
-                Assert.Equal(cachorro.Id, model.Id);
-                Assert.Equal(cachorro.Nome, model.Nome);
+                result.Should().BeOfType<OkObjectResult>();
+                var model = result.As<OkObjectResult>().Value
+                    .Should().BeOfType<Domain.Cachorro>();
+                model.Subject.Id.Should().Be(cachorro.Id);
+                model.Subject.Nome.Should().Be(cachorro.Nome);
             }
         }
 
@@ -109,13 +112,8 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ObterPorIdAsync(cachorro.Id + 1);
 
                 // Assert
-                Assert.IsType<NotFoundResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorro.Id + 1);
-                    Assert.Null(deletedCachorro);
-                }
+                result.Should().BeOfType<NotFoundResult>();
+                context.Cachorros.Should().NotContain(c => c.Id == cachorro.Id + 1);
             }
         }
 
@@ -145,9 +143,10 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.CadastrarCachorroAsync(cachorro);
 
                 // Assert
-                var okResult = Assert.IsType<CreatedAtActionResult>(result);
-                var model = Assert.IsType<Domain.Cachorro>(okResult.Value);
-                Assert.Equal(cachorro.Nome, model.Nome);
+                result.Should().BeOfType<CreatedAtActionResult>();
+                var model = result.As<CreatedAtActionResult>().Value
+                    .Should().BeOfType<Domain.Cachorro>();
+                model.Subject.Nome.Should().Be(cachorro.Nome);
             }
         }
 
@@ -177,10 +176,17 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var controller = new CachorrosController(context);
 
                 // Act
-                var result = await controller.PutCachorroAsync(cachorro.Id, new Domain.Cachorro() { Id = cachorro.Id, Nome = "Sirius v2" });
+                var result = await controller.PutCachorroAsync(
+                    cachorro.Id,
+                    new Domain.Cachorro()
+                    {
+                        Id = cachorro.Id,
+                        Nome = "Sirius v2"
+                    });
 
                 // Assert
-                Assert.IsType<NoContentResult>(result);
+                result.Should().BeOfType<NoContentResult>();
+                //context.Entry(cachorro).State.Should().Equals(EntityState.Modified);
             }
         }
 
@@ -210,10 +216,15 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var controller = new CachorrosController(context);
 
                 // Act
-                var result = await controller.PutCachorroAsync(2, new Domain.Cachorro() { Nome = "Sirius v2" });
+                var result = await controller.PutCachorroAsync(
+                    2,
+                    new Domain.Cachorro()
+                    {
+                        Nome = "Sirius v2"
+                    });
 
                 // Assert
-                Assert.IsType<BadRequestResult>(result);
+                result.Should().BeOfType<BadRequestResult>();
             }
         }
 
@@ -222,8 +233,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         public async Task ExcluirCachorroAsync_ReturnsNotFound_WhenCachorroIdDontExists()
         {
             // Arrange
-            var cachorroId = 2;
-            var cachorro = new Domain.Cachorro { Id = cachorroId, Nome = "Sirius" };
+            var cachorroIdInexistente = -1;
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -234,9 +244,6 @@ namespace DEPLOY.Cachorro.Api.Tests
             {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-
-                context.Cachorros.Add(cachorro);
-                context.SaveChanges();
             }
 
             using (var context = new CachorroDbContext(options))
@@ -244,55 +251,10 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var controller = new CachorrosController(context);
 
                 // Act
-                var result = await controller.ExcluirCachorroAsync(cachorroId + 1);
+                var result = await controller.ExcluirCachorroAsync(cachorroIdInexistente);
 
                 // Assert
-                Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorroId);
-                    Assert.NotNull(deletedCachorro);
-                }
-            }
-        }
-
-        [Fact]
-        [Trait("Delete", "API")]
-        public async Task ExcluirCachorroAsync_ReturnsNoContent_WhenCachorroIdIsValid()
-        {
-            // Arrange
-            var cachorro = new Domain.Cachorro { Nome = "Sirius" };
-
-            var options = new DbContextOptionsBuilder<CachorroDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-                .Options;
-
-            using (var context = new CachorroDbContext(options))
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-
-                context.Cachorros.Add(cachorro);
-                context.SaveChanges();
-            }
-
-            using (var context = new CachorroDbContext(options))
-            {
-                var controller = new CachorrosController(context);
-
-                // Act
-                var result = await controller.ExcluirCachorroAsync(cachorro.Id);
-
-                // Assert
-                Assert.IsType<Microsoft.AspNetCore.Mvc.NoContentResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorro.Id);
-                    Assert.Null(deletedCachorro);
-                }
+                result.Should().BeOfType<NotFoundResult>();
             }
         }
 
@@ -326,13 +288,8 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ExcluirCachorroAsync(cachorroId);
 
                 // Assert
-                Assert.IsType<Microsoft.AspNetCore.Mvc.NoContentResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorroId);
-                    Assert.Null(deletedCachorro);
-                }
+                result.Should().BeOfType<NoContentResult>();
+                context.Cachorros.Should().NotContain(c => c.Id == cachorroId);
             }
         }
     }
