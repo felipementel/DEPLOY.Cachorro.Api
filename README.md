@@ -30,7 +30,7 @@ dotnet tool install --global dotnet-reportgenerator-globaltool
 ```
 
 ```
-dotnet tool install --global dotnet-reportgenerator-globaltool
+dotnet tool install --global dotnet-coverage
 ```
 
 1. Como Executar:
@@ -45,6 +45,12 @@ dotnet test
 
 ```
 dotnet test --collect:"XPlat Code Coverage" --logger "console;verbosity=detailed"
+```
+
+ou
+
+```
+dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 ```
 
 1.2 A partir da pasta src execute o comando:
