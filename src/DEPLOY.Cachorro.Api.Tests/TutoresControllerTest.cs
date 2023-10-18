@@ -1,5 +1,6 @@
 ﻿using DEPLOY.Cachorro.Api.Controllers.v1;
 using DEPLOY.Cachorro.Repository;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -10,6 +11,71 @@ namespace DEPLOY.Cachorro.Api.Tests
     [ExcludeFromCodeCoverage]
     public class TutoresControllerTest
     {
+        [Fact]
+        [Trait("List", "API")]
+        public async Task ListarAsync_ReturnsOk_WhenTutoresIsFound()
+        {
+            // Arrange
+            var tutor1 = new Domain.Tutor { Nome = "Eu cuido da silva" };
+            var tutor2 = new Domain.Tutor { Nome = "Eu cuido dos santos" };
+
+            var options = new DbContextOptionsBuilder<CachorroDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+                .Options;
+
+            using (var context = new CachorroDbContext(options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
+                context.Tutores.Add(tutor1);
+                context.Tutores.Add(tutor2);
+                context.SaveChanges();
+            }
+
+            using (var context = new CachorroDbContext(options))
+            {
+                var controller = new TutoresController(context);
+
+                // Act
+                var result = await controller.ListarAsync();
+
+                // Assert
+                result.Should().BeOfType<OkObjectResult>();
+                result.As<OkObjectResult>().Value.Should().BeOfType<List<Domain.Tutor>>();
+            }
+        }
+
+        [Fact]
+        [Trait("List", "API")]
+        public async Task ListarAsync_ReturnsOk_WhenTutoresNotFound()
+        {
+            var options = new DbContextOptionsBuilder<CachorroDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+                .Options;
+
+            using (var context = new CachorroDbContext(options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
+
+            using (var context = new CachorroDbContext(options))
+            {
+                var controller = new TutoresController(context);
+
+                // Act
+                var result = await controller.ListarAsync();
+
+                // Assert
+                result.Should().BeOfType<OkObjectResult>();
+                result.As<OkObjectResult>().Value.Should().BeOfType<List<Domain.Tutor>>();
+                result.As<List<Domain.Tutor>>().Should().BeNull();
+            }
+        }
+
         [Fact]
         [Trait("Read", "API")]
         public async Task ObterPorIdAsync_ReturnsOk_WhenTutorIsFound()
@@ -39,10 +105,10 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ObterPorIdAsync(tutor.Id);
 
                 // Assert
-                var okResult = Assert.IsType<OkObjectResult>(result);
-                var model = Assert.IsType<Domain.Tutor>(okResult.Value);
-                Assert.Equal(tutor.Id, model.Id);
-                Assert.Equal(tutor.Nome, model.Nome);
+                result.Should().BeOfType<OkObjectResult>();
+                var model = result.As<OkObjectResult>().Value.Should().BeOfType<Domain.Tutor>();
+                model.Subject.Id.Should().Be(tutor.Id);
+                model.Subject.Nome.Should().Be(tutor.Nome);
             }
         }
 
@@ -75,13 +141,8 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ObterPorIdAsync(tutor.Id + 1);
 
                 // Assert
-                Assert.IsType<NotFoundResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(tutor.Id + 1);
-                    Assert.Null(deletedCachorro);
-                }
+                result.Should().BeOfType<NotFoundResult>();
+                context.Tutores.Should().NotContain(t => t.Id == tutor.Id + 1);
             }
         }
 
@@ -111,9 +172,9 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.CadastrarTutorAsync(tutor);
 
                 // Assert
-                var okResult = Assert.IsType<CreatedAtActionResult>(result);
-                var model = Assert.IsType<Domain.Tutor>(okResult.Value);
-                Assert.Equal(tutor.Nome, model.Nome);
+                result.Should().BeOfType<CreatedAtActionResult>();
+                var model = result.As<CreatedAtActionResult>().Value.Should().BeOfType<Domain.Tutor>();
+                model.Subject.Nome.Should().Be(tutor.Nome);
             }
         }
 
@@ -146,7 +207,7 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.PutTutorAsync(tutor.Id, new Domain.Tutor() { Id = tutor.Id, Nome = "Sirius v2" });
 
                 // Assert
-                Assert.IsType<NoContentResult>(result);
+                result.Should().BeOfType<NoContentResult>();
             }
         }
 
@@ -179,7 +240,7 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.PutTutorAsync(2, new Domain.Tutor() { Nome = "Nome Atualizado" });
 
                 // Assert
-                Assert.IsType<BadRequestResult>(result);
+                result.Should().BeOfType<BadRequestResult>();
             }
         }
 
@@ -213,13 +274,8 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ExcluirTutorAsync(tutor.Id + 1);
 
                 // Assert
-                Assert.IsType<NotFoundResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Tutores.FindAsync(tutor.Id);
-                    Assert.NotNull(deletedCachorro);
-                }
+                result.Should().BeOfType<NotFoundResult>();
+                context.Tutores.Should().NotContain(t => t.Id == tutor.Id + 1);
             }
         }
 
@@ -252,13 +308,8 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ExcluirTutorAsync(tutor.Id);
 
                 // Assert
-                Assert.IsType<Microsoft.AspNetCore.Mvc.NoContentResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(tutor.Id);
-                    Assert.Null(deletedCachorro);
-                }
+                result.Should().BeOfType<NoContentResult>();
+                context.Tutores.Should().NotContain(t => t.Id == tutor.Id);
             }
         }
 
@@ -292,13 +343,8 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var result = await controller.ExcluirTutorAsync(cachorroId);
 
                 // Assert
-                Assert.IsType<Microsoft.AspNetCore.Mvc.NoContentResult>(result);
-
-                using (var contextAfterDelete = new CachorroDbContext(options))
-                {
-                    var deletedCachorro = await contextAfterDelete.Cachorros.FindAsync(cachorroId);
-                    Assert.Null(deletedCachorro);
-                }
+                result.Should().BeOfType<NoContentResult>();
+                context.Cachorros.Should().NotContain(c => c.Id == cachorroId);
             }
         }
     }
