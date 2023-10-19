@@ -5,6 +5,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 LABEL org.opencontainers.image.authors="felipementel@hotmail.com"
+LABEL org.opencontainers.image.source=https://github.com/felipementel/DEPLOY.Cachorro.Api
+LABEL org.opencontainers.image.description="API criada por Felipe Augusto, canal DEPLOY"
+LABEL org.opencontainers.image.licenses=MIT
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src

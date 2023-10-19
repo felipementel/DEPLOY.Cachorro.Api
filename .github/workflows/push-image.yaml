@@ -82,11 +82,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Get-Version from csproj
+        id: get-version
+        shell: bash
+        run: |
+          version=$(sed -n 's/.*<Version>\(.*\)<\/Version>.*/\1/p' ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj)
+          echo "tag=$version" >> "$GITHUB_OUTPUT"
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: ./src/
           file: ./src/DEPLOY.Cachorro.Api/Dockerfile
           push: true
+          platforms: ${{ matrix.platforms }}
           tags: |
             felipementel/cachorro.api:latest
+            felipementel/cachorro.api:${{ steps.get-version.outputs.tag }}
