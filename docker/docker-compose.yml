@@ -1,0 +1,48 @@
+# run from src folder
+# docker-compose -f ../docker/docker-compose.yml up -d --build
+# docker-compose -f ../docker/docker-compose.yml down --remove-orphans
+
+version: "3.8"
+services:
+  # cachorro.api:
+  #   hostname: cachorro-api
+  #   container_name: cachorro-api
+  #   networks:
+  #     - cachorro-net
+  #   restart: always
+  #   depends_on:
+  #     - azuresqledge
+  #   build:
+  #     context: ../src
+  #     dockerfile: ../src/DEPLOY.Cachorro.Api/Dockerfile
+  #   ports:
+  #     - 9042:80
+  #     - 9043:443
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: "0.25"
+  #         memory: 0.5GB
+  #       reservations:
+  #         cpus: "0.25"
+  #         memory: 500M
+
+  azuresqledge:
+    image: mcr.microsoft.com/azure-sql-edge:2.0.0
+    hostname: azuresqledge
+    container_name: azuresqledge
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - cachorro-net
+    environment:
+      ACCEPT_EULA: 1
+      MSSQL_SA_PASSWORD: Abcd1234%
+      MSSQL_PID: Developer
+    ports:
+      - 1433:1433
+
+networks:
+  cachorro-net:
+    driver: bridge

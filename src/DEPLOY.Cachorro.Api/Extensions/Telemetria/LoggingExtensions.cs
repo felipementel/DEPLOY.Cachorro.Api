@@ -5,7 +5,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Telemetria
     [ExcludeFromCodeCoverage]
     public static class LoggingExtensions
     {
-        public static void AddLogExtensions(
+        public static void AddLogExtension(
             this ILoggingBuilder logging,
             ConfigurationManager configuration)
         {
@@ -15,7 +15,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Telemetria
             logging.AddApplicationInsights(
                configureTelemetryConfiguration: (config) =>
                {
-                   config.ConnectionString = configuration.GetSection("ConnectionsString:ApplicationInsights").Value;
+                   config.ConnectionString = configuration.GetSection("ConnectionStrings:ApplicationInsights").Value;
                },
                configureApplicationInsightsLoggerOptions: (options) => { });
         }
