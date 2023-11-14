@@ -109,11 +109,11 @@ namespace DEPLOY.Cachorro.Api.Tests
                 var controller = new CachorrosController(context);
 
                 // Act
-                var result = await controller.ObterPorIdAsync(cachorro.Id + 1);
+                var result = await controller.ObterPorIdAsync(Guid.NewGuid());
 
                 // Assert
                 result.Should().BeOfType<NotFoundResult>();
-                context.Cachorros.Should().NotContain(c => c.Id == cachorro.Id + 1);
+                context.Cachorros.Should().NotContain(c => c.Id == Guid.NewGuid());
             }
         }
 
@@ -217,7 +217,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
                 // Act
                 var result = await controller.PutCachorroAsync(
-                    2,
+                    Guid.NewGuid(),
                     new Domain.Cachorro()
                     {
                         Nome = "Sirius v2"
@@ -233,7 +233,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         public async Task ExcluirCachorroAsync_ReturnsNotFound_WhenCachorroIdDontExists()
         {
             // Arrange
-            var cachorroIdInexistente = -1;
+            var cachorroIdInexistente = Guid.NewGuid();
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -263,7 +263,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         public async Task ExcluirCachorroAsync_ReturnsNoContent_WhenCachorroIsDeleted()
         {
             // Arrange
-            var cachorroId = 1;
+            var cachorroId = Guid.NewGuid();
             var cachorro = new Domain.Cachorro { Id = cachorroId, Nome = "Sirius" };
 
             var options = new DbContextOptionsBuilder<CachorroDbContext>()

@@ -7,7 +7,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Telemetria
     [ExcludeFromCodeCoverage]
     public static class AppInsightsExtensions
     {
-        public static void AddTelemetria(
+        public static void AddTelemetriaExtension(
             this IServiceCollection services,
             ConfigurationManager configuration)
         {

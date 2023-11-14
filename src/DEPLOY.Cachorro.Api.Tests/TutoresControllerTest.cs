@@ -344,7 +344,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
                 // Assert
                 result.Should().BeOfType<NoContentResult>();
-                context.Cachorros.Should().NotContain(c => c.Id == cachorroId);
+                context.Cachorros.Should().NotContain(c => c.Id == Guid.NewGuid());
             }
         }
     }

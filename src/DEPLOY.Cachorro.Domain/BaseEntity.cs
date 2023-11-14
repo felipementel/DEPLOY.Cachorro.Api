@@ -3,7 +3,7 @@
 namespace DEPLOY.Cachorro.Domain
 {
     [ExcludeFromCodeCoverage]
-    public class BaseEntidade<T>
+    public class BaseEntity<T>
     {
         public T Id { get; set; } = default!;
 
