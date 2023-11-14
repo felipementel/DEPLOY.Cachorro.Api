@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DEPLOY.Cachorro.Repository.Migrations.API
 {
-    [ExcludeFromCodeCoverage]
     [DbContext(typeof(CachorroDbContext))]
     partial class CachorroDbContextModelSnapshot : ModelSnapshot
     {
