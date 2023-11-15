@@ -1,7 +1,6 @@
+using DEPLOY.Cachorro.Api.Extensions.Database;
 using DEPLOY.Cachorro.Api.Extensions.Swagger;
 using DEPLOY.Cachorro.Api.Extensions.Telemetria;
-using DEPLOY.Cachorro.Repository;
-using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
@@ -15,24 +14,23 @@ namespace DEPLOY.Cachorro.Api
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers()
-                .AddJsonOptions(opt => { opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
+                .AddJsonOptions(opt =>
+                {
+                    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
             builder.Services.AddEndpointsApiExplorer();
 
-            builder.Services.AddDbContext<CachorroDbContext>(options =>
-            {
-                options.UseInMemoryDatabase("Cachorros");
-            });
-
             //Extensions
-            builder.Logging.AddLogExtensions(builder.Configuration);
-            builder.Services.AddTelemetria(builder.Configuration);
-            builder.Services.AddSwagger();
+            builder.Logging.AddLogExtension(builder.Configuration);
+            builder.Services.AddDatabaseExtension(builder.Configuration);
+            builder.Services.AddTelemetriaExtension(builder.Configuration);
+            builder.Services.AddSwaggerExtension();
 
             var app = builder.Build();
 
             //Extensions
-            app.UseSwaggerDEPLOY();
+            app.UseSwaggerExtension();
 
             app.UseHttpsRedirection();
 

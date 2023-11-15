@@ -3,7 +3,7 @@
 namespace DEPLOY.Cachorro.Domain
 {
     [ExcludeFromCodeCoverage]
-    public class Cachorro : BaseEntidade<int>
+    public class Cachorro : BaseEntity<Guid>
     {
         public DateTime Nascimento { get; init; }
 

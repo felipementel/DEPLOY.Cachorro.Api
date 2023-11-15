@@ -61,6 +61,26 @@ reportgenerator -reports:C:/Proj/DEPLOY/DEPLOY.Cachorro/src/DEPLOY.Cachorro.Api.
 
 ---
 
+# EntityFramework Commands
+
+```
+dotnet tool install --global dotnet-ef
+```
+
+```
+dotnet ef migrations add InitDatabaseAPI -s DEPLOY.Cachorro.Api -p DEPLOY.Cachorro.Repository -c DEPLOY.Cachorro.Repository.CachorroDbContext --output-dir Migrations/API -v
+```
+
+```
+dotnet ef database update InitDatabaseAPI --startup-project DEPLOY.Cachorro.Api --project DEPLOY.Cachorro.Api -context DEPLOY.Cachorro.Repository.CachorroDbContext --verbose
+```
+
+Connection String
+
+```
+Data Source=127.0.0.1,1433;Initial Catalog=Cachorro;User Id=sa;Password=Abcd1234%;Integrated Security=False;MultipleActiveResultSets=True;TrustServerCertificate=true;
+```
+
 <br/>
 <br/>
 <br/>

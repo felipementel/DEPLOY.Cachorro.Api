@@ -3,7 +3,7 @@
 namespace DEPLOY.Cachorro.Domain
 {
     [ExcludeFromCodeCoverage]
-    public class Tutor : BaseEntidade<int>
+    public class Tutor : BaseEntity<long>
     {
         public long CPF { get; set; }
     }
