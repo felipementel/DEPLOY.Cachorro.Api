@@ -1,4 +1,4 @@
-﻿using DEPLOY.Cachorro.Domain;
+using DEPLOY.Cachorro.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
