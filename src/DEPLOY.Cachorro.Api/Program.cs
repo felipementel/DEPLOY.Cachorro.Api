@@ -19,6 +19,7 @@ namespace DEPLOY.Cachorro.Api
                     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
+
             builder.Services.AddEndpointsApiExplorer();
 
             //Extensions

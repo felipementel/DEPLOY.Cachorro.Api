@@ -24,8 +24,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Listar Tutor",
-            Description = "Operação para listar do tutor",
-            Tags = new[] { "Tutor", "Get" })]
+            Description = "Operação para listar do tutor")]
         public async Task<IActionResult> ListarAsync()
         {
             var items = await _cachorroDbContext.Tutores.ToListAsync();
@@ -40,8 +39,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Obter Tutor",
-            Description = "Operação para obter  tutor por id",
-            Tags = new[] { "Tutor", "Get" })]
+            Description = "Operação para obter  tutor por id")]
         public async Task<IActionResult> ObterPorIdAsync(long id)
         {
             var items = await _cachorroDbContext.Tutores.FindAsync(id);
@@ -61,8 +59,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Cadastrar Tutor",
-            Description = "Operação para cadastrar do tutor",
-            Tags = new[] { "Tutor", "Post" })]
+            Description = "Operação para cadastrar do tutor")]
         public async Task<IActionResult> CadastrarTutorAsync(
             [FromBody] Domain.Tutor tutor)
         {
@@ -77,8 +74,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [HttpPut("{id}")]
         [SwaggerOperation(
             Summary = "Atualizar Tutor",
-            Description = "Operação para atualizar do tutor",
-            Tags = new[] { "Tutor", "Put" })]
+            Description = "Operação para atualizar do tutor")]
         public async Task<IActionResult> PutTutorAsync(
             long id,
             Domain.Tutor tutor)
@@ -102,8 +98,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Excluir Tutor",
-            Description = "Operação para excluir do tutor por id",
-            Tags = new[] { "Tutor", "Delete" })]
+            Description = "Operação para excluir do tutor por id")]
         public async Task<IActionResult> ExcluirTutorAsync(long id)
         {
             var item = await _cachorroDbContext.Tutores.FindAsync(id);

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Asp.Versioning;
+using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
 
@@ -12,10 +13,13 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
             services.AddApiVersioning(
                     options =>
                     {
+                        options.DefaultApiVersion = new ApiVersion(1, 0);
                         options.ReportApiVersions = true;
-
+                        options.AssumeDefaultVersionWhenUnspecified = true;
+                        options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
+                                                               new HeaderApiVersionReader("x-api-version"),
+                                                               new MediaTypeApiVersionReader("x-api-version"));
                     })
-                .AddMvc()
                 .AddApiExplorer(
                     options =>
                     {
@@ -29,6 +33,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
                 options =>
                 {
                     options.EnableAnnotations();
+                    options.TagActionsBy(tag => tag.ActionDescriptor.RouteValues["controller"]);
                     options.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}-{e.ActionDescriptor.RouteValues["controller"]}-{e.HttpMethod}".ToLower());
                     options.OperationFilter<SwaggerDefaultValues>();
 

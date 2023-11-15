@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using DEPLOY.Cachorro.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +24,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "List Cachorro",
-            Description = "Operação para listar de cachorro",
-            Tags = new[] { "Cachorro", "Get" })]
+            Description = "Operação para listar de cachorro")]
         public async Task<IActionResult> ListarAsync()
         {
             var items = await _context.Cachorros.ToListAsync();
@@ -40,8 +39,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Obter Cachorro",
-            Description = "Operação para obter de cachorro por id",
-            Tags = new[] { "Cachorro", "Get" })]
+            Description = "Operação para obter de cachorro por id")]
         public async Task<IActionResult> ObterPorIdAsync(Guid id)
         {
             var items = await _context.Cachorros.FindAsync(id);
@@ -61,8 +59,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Cadastar Cachorro",
-            Description = "Operação para cadastrar de cachorro",
-            Tags = new[] { "Cachorro", "Post" })]
+            Description = "Operação para cadastrar de cachorro")]
         public async Task<IActionResult> CadastrarCachorroAsync(
             [FromBody] DEPLOY.Cachorro.Domain.Cachorro cachorro)
         {
@@ -77,8 +74,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [HttpPut("{id}")]
         [SwaggerOperation(
             Summary = "Atualizar Cachorro",
-            Description = "Operação para atualizar de cachorro",
-            Tags = new[] { "Cachorro", "Put" })]
+            Description = "Operação para atualizar de cachorro")]
         public async Task<IActionResult> PutCachorroAsync(
             Guid id,
             Domain.Cachorro cachorro)
@@ -102,8 +98,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Excluir Cachorro",
-            Description = "Operação para excluir de cachorro",
-            Tags = new[] { "Cachorro", "Delete" })]
+            Description = "Operação para excluir de cachorro")]
         public async Task<IActionResult> ExcluirCachorroAsync(Guid id)
         {
             var item = await _context.Cachorros.FindAsync(id);
