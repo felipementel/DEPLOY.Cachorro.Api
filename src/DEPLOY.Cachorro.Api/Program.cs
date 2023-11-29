@@ -1,8 +1,11 @@
+using Azure.Identity;
 using DEPLOY.Cachorro.Api.Extensions.Database;
 using DEPLOY.Cachorro.Api.Extensions.Swagger;
 using DEPLOY.Cachorro.Api.Extensions.Telemetria;
+using Microsoft.Extensions.Azure;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using Azure.Identity;
 
 namespace DEPLOY.Cachorro.Api
 {
@@ -19,6 +22,19 @@ namespace DEPLOY.Cachorro.Api
                     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
+            builder.Services.AddRouting(opt =>
+            {
+                opt.LowercaseUrls = true;
+                opt.LowercaseQueryStrings = true;
+            });
+
+            builder.Services.AddAzureClients(clientBuilder =>
+            {
+                clientBuilder.AddSecretClient(
+                    builder.Configuration.GetSection("KeyVault"));
+
+                clientBuilder.UseCredential(new DefaultAzureCredential());
+            });
 
             builder.Services.AddEndpointsApiExplorer();
 

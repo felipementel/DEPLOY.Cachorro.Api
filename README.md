@@ -4,6 +4,20 @@
 
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=felipementel_DEPLOY.Cachorro.Api)](https://sonarcloud.io/summary/new_code?id=felipementel_DEPLOY.Cachorro.Api)
 
+# Configuração local do Git
+
+```
+git config --local --list
+```
+
+```
+git config --local user.name "Felipe Augusto"
+```
+
+```
+git config --local user.email felipementel@hotmail.com
+```
+
 Projeto educacional, criado e mantido através do canal DEPLOY no YouTube.
 
 > Para criar a imagem, a partir do diretório root da aplicação (pasta que contem o arquivo sln)
