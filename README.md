@@ -27,9 +27,7 @@ Projeto educacional, criado e mantido através do canal DEPLOY no YouTube.
 1. Docker
 2. Um conta no Azure para criar recursos
 
-```
-mnt ❯ c ❯ proj ❯ DEPLOY ❯ DEPLOY.Cachorro $ docker build -f ./DEPLOY.Cachorro.Api/Dockerfile  -t crcanaldeploydev.azurecr.io/cachorro.api:latest .
-```
+> Para executar o projeto local:
 
 dotnet run --project ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj ASPNETCORE_ENVIRONMENT=aaa ConnectionStrings:ApplicationInsights="bbb" ConnectionStrings:DefaultConnection="ccc" ConnectionStrings:AppConfiguration="ddd"
 ApplicationInsights:ApiKey="eee" KeyVault:VaultUri="fff"
@@ -47,12 +45,29 @@ docker container run --rm -p 8088:80 \
 felipementel/cachorro.api:latest
 ```
 
+```
 aaa = Development|Production
+```
+
+```
 bbb = ConnectionString do Application Insights
+```
+
+```
 ccc = Connection String (Azure SQL Database ou https://hub.docker.com/_/microsoft-azure-sql-edge)
+```
+
+```
 ddd = Connection string do App Configuration
+```
+
+```
 eee = ApiKey gerada dentro do Application Insights
+```
+
+```
 fff = URI do Azure KeyVault
+```
 
 Comando para subir o banco de dados local:
 
@@ -107,6 +122,8 @@ ou
 ```
 $var = (Get-Date).ToString("yyyyMMdd-HHmmss"); dotnet-coverage collect "dotnet test" -f xml -o ".\DEPLOY.Cachorro.Api.Tests\TestResults\DotnetCoverageCollect\$var\coverage.cobertura.xml"
 ```
+
+e depois execute:
 
 ```
 reportgenerator -reports:.\DEPLOY.Cachorro.Api.Tests\TestResults\DotnetCoverageCollect\**\coverage.cobertura.xml  -targetdir:./DEPLOY.Cachorro.Api.Tests/TestResults/DotnetCoverageCollect/CoverageReport -reporttypes:"Html;SonarQube;JsonSummary;Badges" -verbosity:Verbose -title:Cachorro.API -tag:canal-deploy
@@ -204,11 +221,35 @@ https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream?tabs=dotne
 
 ```
 
-Configurations
+Key Vault
+
+```
+
+https://learn.microsoft.com/pt-br/azure/key-vault/general/basic-concepts
+
+```
+
+```
+https://learn.microsoft.com/en-us/dotnet/azure/sdk/dependency-injection?tabs=web-app-builder
+```
+
+```
+https://learn.microsoft.com/pt-br/aspnet/core/security/key-vault-configuration?view=aspnetcore-3.1
+```
+
+Configuration
 
 ```
 
 https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-7.0
+
+```
+
+Azure App Configuration
+
+```
+
+https://learn.microsoft.com/en-us/azure/azure-app-configuration/quickstart-aspnet-core-app?tabs=core6x
 
 ```
 
