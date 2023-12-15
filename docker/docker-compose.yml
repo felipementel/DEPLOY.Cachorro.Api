@@ -43,6 +43,16 @@ services:
     ports:
       - 1433:1433
 
+  sonarqube:
+    image: sonarqube:10.3.0-community
+    hostname: sonar-canal-deploy
+    container_name: sonar-canal-deploy
+    restart: always
+    networks:
+      - cachorro-net
+    ports:
+      - 9044:9000
+
 networks:
   cachorro-net:
     driver: bridge

@@ -5,7 +5,6 @@ using DEPLOY.Cachorro.Api.Extensions.Telemetria;
 using Microsoft.Extensions.Azure;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using Azure.Identity;
 
 namespace DEPLOY.Cachorro.Api
 {

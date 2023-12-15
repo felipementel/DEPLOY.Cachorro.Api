@@ -14,17 +14,17 @@ namespace DEPLOY.Cachorro.Api.Extensions.Telemetria
             services
                 .AddApplicationInsightsTelemetry(options =>
                 {
-                    options.ConnectionString = configuration.GetSection("ConnectionsString:ApplicationInsights").Value;
+                    options.ConnectionString = configuration.GetSection("ConnectionStrings:ApplicationInsights").Value;
                 })
                 .ConfigureTelemetryModule<QuickPulseTelemetryModule>((module, o) =>
                 {
                     module.AuthenticationApiKey = configuration.GetSection("ApplicationInsights:ApiKey").Value;
                 });
-            
+
             services
                 .ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) =>
                 {
-                    module.EnableSqlCommandTextInstrumentation = true; 
+                    module.EnableSqlCommandTextInstrumentation = true;
                 });
         }
     }
