@@ -349,12 +349,6 @@ az container exec -g g-canaldeploy-dev --name cachorro.api --exec-command "/bin/
 
 ```
 
-/d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-
-```
-
-```
-
 #git
 #github
 #github-actions
