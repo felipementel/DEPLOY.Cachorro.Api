@@ -1,13 +1,17 @@
-﻿using DEPLOY.Cachorro.Api.Configs;
+﻿using Asp.Versioning;
+using DEPLOY.Cachorro.Api.Configs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [ExcludeFromCodeCoverage]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/[controller]")]
     public class AppConfigurationController : ControllerBase
     {
 
