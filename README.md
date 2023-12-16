@@ -257,13 +257,13 @@ Docker Commands
 
 ```
 
-docker container rm -f $(docker ps -a -q)
+docker container rm -f $(docker container ls -a -q)
 
 ```
 
 ```
 
-docker volume rm $(docker volume ls -q)\
+docker volume rm $(docker volume ls -q)
 
 ```
 
@@ -282,6 +282,12 @@ docker system prune
 ```
 
 docker image ls
+
+```
+
+```
+
+docker build -f ./src/DEPLOY.Cachorro.Api/Dockerfile -t felipementel/cachorro.api:local ./src
 
 ```
 
