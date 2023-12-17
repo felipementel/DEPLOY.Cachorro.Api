@@ -4,6 +4,7 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<NoWarn>$(NoWarn);1591</NoWarn>
+		<NoWarn>$(NoWarn);8604</NoWarn>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>CachorroAPI2</UserSecretsId>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>

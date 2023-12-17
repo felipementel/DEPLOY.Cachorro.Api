@@ -5,14 +5,7 @@ using Microsoft.FeatureManagement;
 namespace DEPLOY.Cachorro.Api.Extensions.AppConfiguration
 {
     public static class AppConfigurationExtension
-    {
-        public static void AddAppConfigurationExtension(
-            this IServiceCollection services,
-            IConfiguration configuration)
-        {
-            
-        }
-
+    { 
         public static void AddAppConfigurationExtension(
             this ConfigurationManager configurationManager,
             IServiceCollection services)
