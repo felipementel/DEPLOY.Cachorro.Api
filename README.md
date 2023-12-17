@@ -27,6 +27,12 @@ Projeto educacional, criado e mantido através do canal DEPLOY no YouTube.
 1. Docker
 2. Um conta no Azure para criar recursos
 
+Dica para criar os recursos no Azure
+
+```
+https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations
+```
+
 > Para executar o projeto local:
 
 dotnet run --project ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj ASPNETCORE_ENVIRONMENT=aaa ConnectionStrings:ApplicationInsights="bbb" ConnectionStrings:DefaultConnection="ccc" ConnectionStrings:AppConfiguration="ddd"
