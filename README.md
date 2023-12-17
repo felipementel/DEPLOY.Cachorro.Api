@@ -250,6 +250,14 @@ Azure App Configuration
 ```
 
 https://learn.microsoft.com/en-us/azure/azure-app-configuration/quickstart-aspnet-core-app?tabs=core6x
+```
+
+```
+https://learn.microsoft.com/en-us/azure/azure-app-configuration/howto-feature-filters-aspnet-core
+```
+
+```
+https://learn.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-aspnet-core?tabs=core6x
 
 ```
 

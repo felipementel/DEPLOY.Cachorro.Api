@@ -7,7 +7,9 @@ namespace DEPLOY.Cachorro.Api.Extensions.KeyVault
     [ExcludeFromCodeCoverage]
     public static class KeyVaultExtension
     {
-        public static IServiceCollection AddKeyVaultExtension(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddKeyVaultExtension(
+            this IServiceCollection services, 
+            IConfiguration configuration)
         {
             services.AddAzureClients(clientBuilder =>
             {
