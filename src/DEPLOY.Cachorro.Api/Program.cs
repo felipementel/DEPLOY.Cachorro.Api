@@ -1,8 +1,8 @@
-using Azure.Identity;
+using DEPLOY.Cachorro.Api.Extensions.AppConfiguration;
 using DEPLOY.Cachorro.Api.Extensions.Database;
+using DEPLOY.Cachorro.Api.Extensions.KeyVault;
 using DEPLOY.Cachorro.Api.Extensions.Swagger;
 using DEPLOY.Cachorro.Api.Extensions.Telemetria;
-using Microsoft.Extensions.Azure;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
@@ -27,21 +27,15 @@ namespace DEPLOY.Cachorro.Api
                 opt.LowercaseQueryStrings = true;
             });
 
-            builder.Services.AddAzureClients(clientBuilder =>
-            {
-                clientBuilder.AddSecretClient(
-                    builder.Configuration.GetSection("KeyVault"));
-
-                clientBuilder.UseCredential(new DefaultAzureCredential());
-            });
-
             builder.Services.AddEndpointsApiExplorer();
 
             //Extensions
+            builder.Services.AddKeyVaultExtension(builder.Configuration);
             builder.Logging.AddLogExtension(builder.Configuration);
             builder.Services.AddDatabaseExtension(builder.Configuration);
             builder.Services.AddTelemetriaExtension(builder.Configuration);
             builder.Services.AddSwaggerExtension();
+            builder.Configuration.AddAppConfigurationExtension(builder.Services);
 
             var app = builder.Build();
 
@@ -53,6 +47,8 @@ namespace DEPLOY.Cachorro.Api
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.UseAzureAppConfiguration();
 
             app.Run();
         }

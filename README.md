@@ -250,6 +250,14 @@ Azure App Configuration
 ```
 
 https://learn.microsoft.com/en-us/azure/azure-app-configuration/quickstart-aspnet-core-app?tabs=core6x
+```
+
+```
+https://learn.microsoft.com/en-us/azure/azure-app-configuration/howto-feature-filters-aspnet-core
+```
+
+```
+https://learn.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-aspnet-core?tabs=core6x
 
 ```
 
@@ -257,13 +265,13 @@ Docker Commands
 
 ```
 
-docker container rm -f $(docker ps -a -q)
+docker container rm -f $(docker container ls -a -q)
 
 ```
 
 ```
 
-docker volume rm $(docker volume ls -q)\
+docker volume rm $(docker volume ls -q)
 
 ```
 
@@ -282,6 +290,12 @@ docker system prune
 ```
 
 docker image ls
+
+```
+
+```
+
+docker build -f ./src/DEPLOY.Cachorro.Api/Dockerfile -t felipementel/cachorro.api:local ./src
 
 ```
 

@@ -10,14 +10,19 @@ namespace DEPLOY.Cachorro.Api.Controllers
     [ExcludeFromCodeCoverage]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/[controller]")]
     public class TestsKeyVaultController : ControllerBase
     {
         private readonly SecretClient _secretClient;
 
-        public TestsKeyVaultController(SecretClient secretClient)
+        private readonly IConfiguration _configuration;
+
+        public TestsKeyVaultController(
+            SecretClient secretClient,
+            IConfiguration configuration)
         {
             _secretClient = secretClient;
+            _configuration = configuration;
         }
 
         [HttpGet("{key}")]
@@ -35,7 +40,7 @@ namespace DEPLOY.Cachorro.Api.Controllers
             };
 
             var client = new SecretClient(
-                new Uri("https://kv-canaldeploy-dev.vault.azure.net/"),
+                new Uri(_configuration.GetSection("KeyVault:VaultUri").Value),
                 new DefaultAzureCredential(),
                 options);
 
