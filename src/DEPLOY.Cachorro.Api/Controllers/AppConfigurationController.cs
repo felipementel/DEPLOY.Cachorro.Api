@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using DEPLOY.Cachorro.Api.Configs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
@@ -14,7 +13,6 @@ namespace DEPLOY.Cachorro.Api.Controllers
     [Route("api/[controller]")]
     public class AppConfigurationController : ControllerBase
     {
-
         public readonly Settings _settings;
 
         private readonly IFeatureManager _featureManager;
@@ -28,7 +26,7 @@ namespace DEPLOY.Cachorro.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public IActionResult GetAsync()
         {
             return Ok(_settings.ValorDaMensagem);
         }

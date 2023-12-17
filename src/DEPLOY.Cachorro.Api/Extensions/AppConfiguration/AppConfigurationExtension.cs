@@ -1,9 +1,11 @@
 ﻿using DEPLOY.Cachorro.Api.Configs;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.FeatureManagement;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Api.Extensions.AppConfiguration
 {
+    [ExcludeFromCodeCoverage]
     public static class AppConfigurationExtension
     { 
         public static void AddAppConfigurationExtension(
