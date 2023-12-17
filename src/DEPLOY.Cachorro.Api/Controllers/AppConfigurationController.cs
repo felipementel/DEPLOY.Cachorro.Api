@@ -17,18 +17,24 @@ namespace DEPLOY.Cachorro.Api.Controllers
 
         private readonly IFeatureManager _featureManager;
 
+        private readonly IConfiguration _configuration;
+
         public AppConfigurationController(
             IOptions<Settings> settings,
-            IFeatureManager featureManager)
+            IFeatureManager featureManager,
+            IConfiguration configuration)
         {
             _settings = settings.Value;
             _featureManager = featureManager;
+            _configuration = configuration;
         }
 
         [HttpGet]
         public IActionResult GetAsync()
         {
-            return Ok(_settings.ValorDaMensagem);
+            var msg1 = _settings.ValorDaMensagem;
+            var msg2 = _configuration["CachorroApi:Settings:ValorDaMensagem"];
+            return Ok(msg1 + " " +msg2);
         }
 
         [HttpGet("/featureflag/{featureflag}")]
