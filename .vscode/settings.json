@@ -1,3 +1,7 @@
 {
-  "dotnet.defaultSolution": "src/DEPLOY.Cachorro.Api.sln"
+  "dotnet.defaultSolution": "src/DEPLOY.Cachorro.Api.sln",
+  "sonarlint.connectedMode.project": {
+    "connectionId": "",
+    "projectKey": "felipementel_DEPLOY.Cachorro.Api"
+  }
 }

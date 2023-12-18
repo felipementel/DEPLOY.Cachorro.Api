@@ -369,6 +369,33 @@ az container exec -g g-canaldeploy-dev --name cachorro.api --exec-command "/bin/
 
 ```
 
+Github Actions
+
+```
+
+https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
+
+```
+
+```
+
+https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
+```
+
+```
+https://github.com/marketplace/actions/official-sonarqube-scan
+```
+
+```
+
+https://docs.sonarsource.com/sonarcloud/advanced-setup/analysis-parameters/
+```
+
+```
+
+https://github.com/SonarSource/sonarcloud-github-action
+```
+
 #git
 #github
 #github-actions
