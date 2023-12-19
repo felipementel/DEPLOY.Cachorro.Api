@@ -26,13 +26,12 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
 
         private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
         {
-            var text = new StringBuilder("API de Cachorro do Canal DEPLOY com OpenAPI, Swashbuckle, e API versioning.");
+            var text = new StringBuilder($"WebApi criada no canal D.E.P.L.O.Y. v{Assembly.GetExecutingAssembly().GetName().Version} - {Environment.Version.ToString()}");
 
             var info = new OpenApiInfo()
             {
                 Title = "Cachorro WebAPI .NET 7",
-                Version = description.ApiVersion.ToString(), //
-                Description = $"WebApi criada no canal D.E.P.L.O.Y. v{Assembly.GetExecutingAssembly().GetName().Version} - { Environment.Version.ToString() }",
+                Version = description.ApiVersion.ToString(),
                 Contact = new OpenApiContact()
                 {
                     Email = "admin@felipementel.dev.br",

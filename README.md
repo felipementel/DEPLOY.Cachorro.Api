@@ -18,6 +18,12 @@ git config --local user.name "Felipe Augusto"
 git config --local user.email felipementel@hotmail.com
 ```
 
+```
+
+git fetch origin --prune
+
+```
+
 Projeto educacional, criado e mantido através do canal DEPLOY no YouTube.
 
 > Para criar a imagem, a partir do diretório root da aplicação (pasta que contem o arquivo sln)
@@ -27,16 +33,12 @@ Projeto educacional, criado e mantido através do canal DEPLOY no YouTube.
 1. Docker
 2. Um conta no Azure para criar recursos
 
-Dica para criar os recursos no Azure
-
-```
-https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations
-```
-
 > Para executar o projeto local:
 
+```
 dotnet run --project ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj ASPNETCORE_ENVIRONMENT=aaa ConnectionStrings:ApplicationInsights="bbb" ConnectionStrings:DefaultConnection="ccc" ConnectionStrings:AppConfiguration="ddd"
 ApplicationInsights:ApiKey="eee" KeyVault:VaultUri="fff"
+```
 
 > Para executar o projeto local, utilizando docker
 
@@ -53,25 +55,10 @@ felipementel/cachorro.api:latest
 
 ```
 aaa = Development|Production
-```
-
-```
 bbb = ConnectionString do Application Insights
-```
-
-```
 ccc = Connection String (Azure SQL Database ou https://hub.docker.com/_/microsoft-azure-sql-edge)
-```
-
-```
 ddd = Connection string do App Configuration
-```
-
-```
 eee = ApiKey gerada dentro do Application Insights
-```
-
-```
 fff = URI do Azure KeyVault
 ```
 
@@ -189,6 +176,15 @@ https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetc
 
 https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows
 
+```
+
+```
+https://docs.github.com/en/actions
+
+```
+
+```
+https://github.com/marketplace/actions/reportgenerator
 ```
 
 ILogger
@@ -367,33 +363,6 @@ az container logs --resource-group rg-canaldeploy-dev --name api-cachorro
 
 az container exec -g g-canaldeploy-dev --name cachorro.api --exec-command "/bin/bash"
 
-```
-
-Github Actions
-
-```
-
-https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
-
-```
-
-```
-
-https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
-```
-
-```
-https://github.com/marketplace/actions/official-sonarqube-scan
-```
-
-```
-
-https://docs.sonarsource.com/sonarcloud/advanced-setup/analysis-parameters/
-```
-
-```
-
-https://github.com/SonarSource/sonarcloud-github-action
 ```
 
 #git

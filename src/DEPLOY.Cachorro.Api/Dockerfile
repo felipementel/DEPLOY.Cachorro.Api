@@ -29,4 +29,6 @@ RUN dotnet publish "./DEPLOY.Cachorro.Api.csproj" -c $BUILD_CONFIGURATION -o /ap
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+ENV DOTNET_EnableDiagnostics=0
 ENTRYPOINT ["dotnet", "DEPLOY.Cachorro.Api.dll"]
