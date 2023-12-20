@@ -18,6 +18,12 @@ git config --local user.name "Felipe Augusto"
 git config --local user.email felipementel@hotmail.com
 ```
 
+```
+
+git fetch origin --prune
+
+```
+
 Projeto educacional, criado e mantido através do canal DEPLOY no YouTube.
 
 > Para criar a imagem, a partir do diretório root da aplicação (pasta que contem o arquivo sln)
@@ -29,8 +35,10 @@ Projeto educacional, criado e mantido através do canal DEPLOY no YouTube.
 
 > Para executar o projeto local:
 
+```
 dotnet run --project ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj ASPNETCORE_ENVIRONMENT=aaa ConnectionStrings:ApplicationInsights="bbb" ConnectionStrings:DefaultConnection="ccc" ConnectionStrings:AppConfiguration="ddd"
 ApplicationInsights:ApiKey="eee" KeyVault:VaultUri="fff"
+```
 
 > Para executar o projeto local, utilizando docker
 
@@ -47,25 +55,10 @@ felipementel/cachorro.api:latest
 
 ```
 aaa = Development|Production
-```
-
-```
 bbb = ConnectionString do Application Insights
-```
-
-```
 ccc = Connection String (Azure SQL Database ou https://hub.docker.com/_/microsoft-azure-sql-edge)
-```
-
-```
 ddd = Connection string do App Configuration
-```
-
-```
 eee = ApiKey gerada dentro do Application Insights
-```
-
-```
 fff = URI do Azure KeyVault
 ```
 
@@ -167,7 +160,7 @@ Data Source=127.0.0.1,1433;Initial Catalog=Cachorro;User Id=sa;Password=Abcd1234
 <br/>
 <br/>
 
-# Link de documentações citadas durante a criaçao do projeto
+## Link de documentações citadas durante a criaçao do projeto
 
 ```
 https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet
@@ -180,12 +173,26 @@ https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetc
 ```
 
 ```
+https://learn.microsoft.com/en-us/dotnet/core/compatibility/containers/8.0/app-user
+
+```
+
+```
 
 https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows
 
 ```
+### Github
+```
+https://docs.github.com/en/actions
 
-ILogger
+```
+
+```
+https://github.com/marketplace/actions/reportgenerator
+```
+
+### ILogger
 
 ```
 
@@ -205,7 +212,7 @@ https://learn.microsoft.com/en-us/azure/azure-monitor/app/ilogger?tabs=dotnet6
 
 ```
 
-Application Insights
+### Application Insights
 
 ```
 
@@ -221,7 +228,7 @@ https://learn.microsoft.com/en-us/azure/azure-monitor/app/live-stream?tabs=dotne
 
 ```
 
-Key Vault
+### Key Vault
 
 ```
 
@@ -237,7 +244,7 @@ https://learn.microsoft.com/en-us/dotnet/azure/sdk/dependency-injection?tabs=web
 https://learn.microsoft.com/pt-br/aspnet/core/security/key-vault-configuration?view=aspnetcore-3.1
 ```
 
-Configuration
+### Configuration
 
 ```
 
@@ -245,7 +252,15 @@ https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=a
 
 ```
 
-Azure App Configuration
+### SonarQube
+
+```
+
+https://docs.sonarsource.com/sonarcloud/advanced-setup/analysis-parameters/
+
+```
+
+### Azure App Configuration
 
 ```
 
@@ -261,7 +276,7 @@ https://learn.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-c
 
 ```
 
-Docker Commands
+### Docker Commands
 
 ```
 
@@ -329,7 +344,7 @@ docker container run --rm --name sonar-canal-deploy -p 9044:9000 sonarqube:10.3.
 
 ```
 
-Comandos Azure Key Vault
+### Comandos Azure Key Vault
 
 ```
 
@@ -349,7 +364,7 @@ az keyvault secret show --name CachorroConnectionString --vault-name kv-canaldep
 
 ```
 
-Comandos Azure Container Instance
+### Comandos Azure Container Instance
 
 ```
 
