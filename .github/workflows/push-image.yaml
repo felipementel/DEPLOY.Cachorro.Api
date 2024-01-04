@@ -8,28 +8,37 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  imageName: cachorro.api
+  dotnetVersion: 7.x
+  csprojFolder: ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj
+
 jobs:
-  build:
-    name: Analyze by SonarCloud
-    runs-on: windows-latest
+  build-and-sonar:
+    runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
-          
-      - uses: actions/checkout@v3
+          distribution: "zulu"
+
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-          
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.dotnetVersion }}
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-          
+
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v3
@@ -37,43 +46,52 @@ jobs:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
-          
-      - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: powershell
-        run: |
-          New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
-      - name: Install dotnet-coverage
-        shell: powershell
+      - name: Install SonarCloud scanner
+        if: ${{ steps.cache-sonar-scanner.outputs.cache-hit != 'true' }}
         run: |
+          mkdir -p .sonar/scanner
+          dotnet tool update dotnet-sonarscanner --tool-path .sonar/scanner
+
+      - name: Install SonarCloud scanner
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
           dotnet tool install --global dotnet-coverage
-          
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"felipementel_DEPLOY.Cachorro.Api" /o:"felipementel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml  /d:sonar.exclusions="**/Migrations/**"
-          dotnet run --project src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj --no-incremental
-          dotnet-coverage collect "dotnet test src" -f xml -o "coverage.xml"
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-          
+          dotnet-sonarscanner begin /k:"felipementel_DEPLOY.Cachorro.Api" /o:"felipementel" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.exclusions="**/Migrations/**"
+          dotnet restore ${{ env.csprojFolder }}
+          dotnet build ${{ env.csprojFolder }} --no-incremental
+          dotnet-coverage collect 'dotnet test ./src/' -f xml  -o 'coverage.xml'
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
   docker:
     name: Push image to Registry
-    needs: [build]
+    needs: build-and-sonar
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: latest
+          buildkitd-flags: --debug
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -89,13 +107,12 @@ jobs:
           version=$(sed -n 's/.*<Version>\(.*\)<\/Version>.*/\1/p' ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj)
           echo "tag=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Build and push
+      - name: Build and push docker
         uses: docker/build-push-action@v5
         with:
           context: ./src/
           file: ./src/DEPLOY.Cachorro.Api/Dockerfile
           push: true
-          platforms: ${{ matrix.platforms }}
           tags: |
-            felipementel/cachorro.api:latest
-            felipementel/cachorro.api:${{ steps.get-version.outputs.tag }}
+            felipementel/${{ env.imageName }}:latest
+            felipementel/${{ env.imageName }}:${{ steps.get-version.outputs.tag }}
