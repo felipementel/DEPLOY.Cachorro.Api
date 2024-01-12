@@ -3,7 +3,7 @@ name: Docker Hub
 on:
   push:
     paths:
-      - "src/**"
+      - 'src/**'
     branches:
       - main
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 17
-          distribution: "zulu"
+          distribution: 'zulu'
 
       - uses: actions/checkout@v4
         with:
@@ -70,6 +70,26 @@ jobs:
           dotnet-coverage collect 'dotnet test ./src/' -f xml  -o 'coverage.xml'
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
+      - name: ReportGenerator
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
+        with:
+          reports: 'coverage.xml'
+          targetdir: 'coveragereport'
+          reporttypes: 'HtmlInline;Cobertura'
+          assemblyfilters: '+*'
+          classfilters: '+*'
+          filefilters: '+*'
+          verbosity: 'Verbose'
+          title: 'Canal DEPLOY API Cachorro'
+          tag: '${{ github.run_number }}_${{ github.run_id }}'
+          toolpath: 'reportgeneratortool'
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v2.2.3
+        with:
+          name: CoverageReport
+          path: coveragereport
+
   docker:
     name: Push image to Registry
     needs: build-and-sonar
@@ -100,12 +120,27 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+
       - name: Get-Version from csproj
         id: get-version
         shell: bash
         run: |
           version=$(sed -n 's/.*<Version>\(.*\)<\/Version>.*/\1/p' ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj)
           echo "tag=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: |
+            felipementel/$imageName
+            ghcr.io/felipementel/deploy.$imageName
 
       - name: Build and push docker
         uses: docker/build-push-action@v5
@@ -116,3 +151,15 @@ jobs:
           tags: |
             felipementel/${{ env.imageName }}:latest
             felipementel/${{ env.imageName }}:${{ steps.get-version.outputs.tag }}
+
+      - name: Build and push ghci
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/
+          file: ./src/DEPLOY.Cachorro.Api/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/felipementel/deploy.${{ env.imageName }}:latest
+            ghcr.io/felipementel/deploy.${{ env.imageName }}:${{ steps.get-version.outputs.tag }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}

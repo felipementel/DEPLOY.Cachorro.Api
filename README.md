@@ -101,25 +101,25 @@ dotnet test
    1.1 A partir da pasta src execute o comando:
 
 ```
-dotnet test --collect:"XPlat Code Coverage" --logger "console;verbosity=detailed" --results-directory .\DEPLOY.Cachorro.Api.Tests\TestResults\XPlatCodeCoverage\
+dotnet test --collect:"XPlat Code Coverage" --logger "console;verbosity=detailed" --results-directory ..\TestResults\XPlatCodeCoverage\
 ```
 
 e depois execute:
 
 ```
-reportgenerator -reports:.\DEPLOY.Cachorro.Api.Tests\TestResults\XPlatCodeCoverage\**\coverage.cobertura.xml  -targetdir:./DEPLOY.Cachorro.Api.Tests/TestResults/XPlatCodeCoverage/CoverageReport -reporttypes:"Html;SonarQube;JsonSummary;Badges" -verbosity:Verbose -title:Cachorro.API -tag:canal-deploy
+reportgenerator -reports:..\TestResults\XPlatCodeCoverage\**\coverage.cobertura.xml  -targetdir:..\TestResults\XPlatCodeCoverage\CoverageReport -reporttypes:"Html;SonarQube;JsonSummary;Badges" -classfilters:"-*.Migrations.*" -verbosity:Verbose -title:Cachorro.API -tag:canal-deploy
 ```
 
 ou
 
 ```
-$var = (Get-Date).ToString("yyyyMMdd-HHmmss"); dotnet-coverage collect "dotnet test" -f xml -o ".\DEPLOY.Cachorro.Api.Tests\TestResults\DotnetCoverageCollect\$var\coverage.cobertura.xml"
+$var = (Get-Date).ToString("yyyyMMdd-HHmmss"); dotnet-coverage collect "dotnet test" -f xml -o "..\TestResults\DotnetCoverageCollect\$var\coverage.cobertura.xml"
 ```
 
 e depois execute:
 
 ```
-reportgenerator -reports:.\DEPLOY.Cachorro.Api.Tests\TestResults\DotnetCoverageCollect\**\coverage.cobertura.xml  -targetdir:./DEPLOY.Cachorro.Api.Tests/TestResults/DotnetCoverageCollect/CoverageReport -reporttypes:"Html;SonarQube;JsonSummary;Badges" -verbosity:Verbose -title:Cachorro.API -tag:canal-deploy
+reportgenerator -reports:..\TestResults\DotnetCoverageCollect\**\coverage.cobertura.xml  -targetdir:..\TestResults\DotnetCoverageCollect\CoverageReport -reporttypes:"Html;SonarQube;JsonSummary;Badges" -verbosity:Verbose -title:Cachorro.API -tag:canal-deploy
 ```
 
 1.2 A partir da pasta src execute o comando:
@@ -182,10 +182,20 @@ https://learn.microsoft.com/en-us/dotnet/core/compatibility/containers/8.0/app-u
 https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-7.0&tabs=windows
 
 ```
+
 ### Github
+
 ```
 https://docs.github.com/en/actions
 
+```
+
+```
+https://github.com/danielpalme/ReportGenerator
+```
+
+```
+https://github.com/marketplace/actions/reportgenerator
 ```
 
 ```
