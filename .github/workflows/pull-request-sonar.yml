@@ -77,7 +77,7 @@ jobs:
           targetdir: 'coveragereport'
           reporttypes: 'HtmlInline;Cobertura'
           assemblyfilters: '+*'
-          classfilters: '+*'
+          classfilters: '-*.Migrations.*'
           filefilters: '+*'
           verbosity: 'Verbose'
           title: 'Canal DEPLOY API Cachorro'
