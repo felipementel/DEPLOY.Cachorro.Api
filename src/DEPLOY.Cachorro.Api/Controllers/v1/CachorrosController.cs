@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using DEPLOY.Cachorro.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
@@ -9,6 +10,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize]
     public class CachorrosController : ControllerBase
     {
         public readonly CachorroDbContext _context;
