@@ -154,6 +154,33 @@ Data Source=127.0.0.1,1433;Initial Catalog=Cachorro;User Id=sa;Password=Abcd1234
 
 ```
 
+# Azure Entra ID
+
+```
+
+https://learn.microsoft.com/en-us/entra/identity-platform/v2-overview
+```
+
+```
+https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app
+```
+
+```
+https://learn.microsoft.com/en-us/entra/identity-platform/scopes-oidc
+```
+
+```
+
+https://learn.microsoft.com/en-us/entra/identity-platform/scenario-protected-web-api-app-configuration?tabs=aspnetcore#bearer-token
+
+```
+
+```
+
+https://learn.microsoft.com/en-us/entra/identity-platform/scenario-web-app-sign-user-app-configuration?tabs=aspnet
+
+```
+
 <br/>
 <br/>
 <br/>

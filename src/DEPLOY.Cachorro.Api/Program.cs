@@ -3,8 +3,7 @@ using DEPLOY.Cachorro.Api.Extensions.Database;
 using DEPLOY.Cachorro.Api.Extensions.KeyVault;
 using DEPLOY.Cachorro.Api.Extensions.Swagger;
 using DEPLOY.Cachorro.Api.Extensions.Telemetria;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
+using DEPLOY.Cachorro.Api.Extensions.Auth;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
@@ -17,13 +16,15 @@ namespace DEPLOY.Cachorro.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+            builder.Services.AddAuthExtension(builder.Configuration);
 
             builder.Services.AddControllers()
                 .AddJsonOptions(opt =>
                 {
                     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    opt.JsonSerializerOptions.WriteIndented = true;
+                    opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+
                 });
 
             builder.Services.AddRouting(opt =>
