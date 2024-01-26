@@ -7,8 +7,8 @@ namespace DEPLOY.Cachorro.Api.Extensions.KeyVault
     [ExcludeFromCodeCoverage]
     public static class KeyVaultExtension
     {
-        public static IServiceCollection AddKeyVaultExtension(
-            this IServiceCollection services, 
+        public static void AddKeyVaultExtension(
+            this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddAzureClients(clientBuilder =>
@@ -18,8 +18,6 @@ namespace DEPLOY.Cachorro.Api.Extensions.KeyVault
 
                 clientBuilder.UseCredential(new DefaultAzureCredential());
             });
-
-            return services;
         }
     }
 }

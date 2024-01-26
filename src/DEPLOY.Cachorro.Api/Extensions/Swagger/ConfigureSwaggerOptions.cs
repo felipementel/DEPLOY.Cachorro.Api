@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -12,6 +13,8 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
     [ExcludeFromCodeCoverage]
     public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
+        public const string AuthenticationScheme = "JWT";
+        public const string HeaderName = "Authorization";
         private readonly IApiVersionDescriptionProvider provider;
 
         public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
@@ -22,6 +25,31 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
             {
                 options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
             }
+
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+            {
+                Name = ConfigureSwaggerOptions.HeaderName,
+                In = ParameterLocation.Header,
+                Description = "Informe o token JWT com Bearer no formato: Bearer {token}",
+                Type = SecuritySchemeType.ApiKey,
+                BearerFormat = ConfigureSwaggerOptions.AuthenticationScheme,
+                Scheme = JwtBearerDefaults.AuthenticationScheme
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = JwtBearerDefaults.AuthenticationScheme
+                        }
+                    },
+                    new string[]{}
+                }
+            });
         }
 
         private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
