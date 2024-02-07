@@ -15,6 +15,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
     {
         public const string AuthenticationScheme = "JWT";
         public const string HeaderName = "Authorization";
+
         private readonly IApiVersionDescriptionProvider provider;
 
         public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
@@ -66,15 +67,19 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
                     Email = "admin@felipementel.dev.br",
                     Name = "Felipe Augusto"
                 },
-                License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+
             };
 
-            if (description.IsDeprecated)
-            {
-                text.Append(" Essa versão de API esta marcada como depreciada.");
-            }
+            IsDeprecated(description, text);
+            IsActive(description, text);
 
+            info.Description = text.ToString();
 
+            return info;
+        }
+
+        private static void IsActive(ApiVersionDescription description, StringBuilder text)
+        {
             if (description.SunsetPolicy is SunsetPolicy policy)
             {
                 if (policy.Date is DateTimeOffset when)
@@ -106,10 +111,16 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
                     }
                 }
             }
-
-            info.Description = text.ToString();
-
-            return info;
         }
+
+
+        private static void IsDeprecated(ApiVersionDescription description, StringBuilder text)
+        {
+            if (description.IsDeprecated)
+            {
+                text.Append(" Essa versão de API esta marcada como depreciada.");
+            }
+        }
+
     }
 }

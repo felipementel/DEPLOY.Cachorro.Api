@@ -1,5 +1,4 @@
-﻿using DEPLOY.Cachorro.Repository.EntityConfigurations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -19,8 +18,6 @@ namespace DEPLOY.Cachorro.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.ApplyConfiguration<Cachorro.Domain.Cachorro>(new CachorroEntityConfiguration());
-            //modelBuilder.ApplyConfiguration<Tutor>(new TutorEntityConfiguration());
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
