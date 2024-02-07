@@ -121,7 +121,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Log in to the Container registry
-        uses: docker/login-action@main
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -136,7 +136,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@main
+        uses: docker/metadata-action@v5
         with:
           images: |
             felipementel/$imageName
