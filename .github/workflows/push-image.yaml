@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu'
@@ -28,22 +28,22 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnetVersion }}
 
       - name: Cache SonarCloud packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: ~\sonar\cache
+          path: ~/sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: .\.sonar\scanner
+          path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
@@ -71,7 +71,7 @@ jobs:
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: ReportGenerator
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.1
         with:
           reports: 'coverage.xml'
           targetdir: 'coveragereport'
@@ -85,7 +85,7 @@ jobs:
           toolpath: 'reportgeneratortool'
 
       - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v4
         with:
           name: CoverageReport
           path: coveragereport
@@ -100,7 +100,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -108,7 +108,7 @@ jobs:
         uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
         with:
           version: latest
           buildkitd-flags: --debug
@@ -121,7 +121,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        uses: docker/login-action@main
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -136,7 +136,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@main
         with:
           images: |
             felipementel/$imageName
