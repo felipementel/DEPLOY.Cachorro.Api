@@ -33,7 +33,6 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
                 options =>
                 {
                     options.EnableAnnotations();
-                    options.TagActionsBy(tag => tag.ActionDescriptor.RouteValues["controller"]);
                     options.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}-{e.ActionDescriptor.RouteValues["controller"]}-{e.HttpMethod}".ToLower());
                     options.OperationFilter<SwaggerDefaultValues>();
 
@@ -53,10 +52,10 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
                     var descriptions = app.DescribeApiVersions();
                     options.RoutePrefix = string.Empty;
 
-                    foreach (var description in descriptions)
+                    foreach (var groupName in descriptions.Select(description => description.GroupName))
                     {
-                        var url = $"/swagger/{description.GroupName}/swagger.json";
-                        var name = description.GroupName.ToUpperInvariant();
+                        var url = $"/swagger/{groupName}/swagger.json";
+                        var name = groupName.ToUpperInvariant();
                         options.SwaggerEndpoint(url, name);
                     }
                 });

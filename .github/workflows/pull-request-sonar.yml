@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu'
@@ -28,22 +28,22 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.dotnetVersion }}
 
       - name: Cache SonarCloud packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: ~\sonar\cache
+          path: ~/sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: .\.sonar\scanner
+          path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
@@ -71,7 +71,7 @@ jobs:
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: ReportGenerator
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.1
         with:
           reports: 'coverage.xml'
           targetdir: 'coveragereport'
@@ -85,7 +85,7 @@ jobs:
           toolpath: 'reportgeneratortool'
 
       - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v2.2.3
+        uses: actions/upload-artifact@v4
         with:
           name: CoverageReport
           path: coveragereport

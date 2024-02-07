@@ -26,6 +26,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "List Cachorro",
+            Tags = new[] { "Cachorros" },
             Description = "Operação para listar de cachorro")]
         public async Task<IActionResult> ListarAsync()
         {
@@ -41,6 +42,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Obter Cachorro",
+            Tags = new[] { "Cachorros" },
             Description = "Operação para obter de cachorro por id")]
         public async Task<IActionResult> ObterPorIdAsync(Guid id)
         {
@@ -61,6 +63,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Cadastar Cachorro",
+            Tags = new[] { "Cachorros" },
             Description = "Operação para cadastrar de cachorro")]
         public async Task<IActionResult> CadastrarCachorroAsync(
             [FromBody] DEPLOY.Cachorro.Domain.Cachorro cachorro)
@@ -76,6 +79,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [HttpPut("{id}")]
         [SwaggerOperation(
             Summary = "Atualizar Cachorro",
+            Tags = new[] { "Cachorros" },
             Description = "Operação para atualizar de cachorro")]
         public async Task<IActionResult> PutCachorroAsync(
             Guid id,
@@ -100,6 +104,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Excluir Cachorro",
+            Tags = new[] { "Cachorros" },
             Description = "Operação para excluir de cachorro")]
         public async Task<IActionResult> ExcluirCachorroAsync(Guid id)
         {
