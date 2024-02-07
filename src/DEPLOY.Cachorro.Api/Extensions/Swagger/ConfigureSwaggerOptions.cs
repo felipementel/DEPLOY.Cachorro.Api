@@ -99,20 +99,24 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
 
                         if (link.Type == "text/html")
                         {
-                            text.AppendLine();
-
-                            if (link.Title.HasValue)
-                            {
-                                text.Append(link.Title.Value).Append(": ");
-                            }
-
-                            text.Append(link.LinkTarget.OriginalString);
+                            AppendLink(text, link);
                         }
                     }
                 }
             }
         }
 
+        private static void AppendLink(StringBuilder text, LinkHeaderValue link)
+        {
+            text.AppendLine();
+
+            if (link.Title.HasValue)
+            {
+                text.Append(link.Title.Value).Append(": ");
+            }
+
+            text.Append(link.LinkTarget.OriginalString);
+        }
 
         private static void IsDeprecated(ApiVersionDescription description, StringBuilder text)
         {
