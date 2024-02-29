@@ -48,7 +48,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
                             Id = JwtBearerDefaults.AuthenticationScheme
                         }
                     },
-                    new string[]{}
+                    Array.Empty<string>()
                 }
             });
         }
