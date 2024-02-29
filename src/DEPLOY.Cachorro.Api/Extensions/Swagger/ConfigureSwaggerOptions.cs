@@ -59,7 +59,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
 
             var info = new OpenApiInfo()
             {
-                Title = "Cachorro WebAPI .NET 7",
+                Title = "Cachorro WebAPI .NET 8",
                 Version = description.ApiVersion.ToString(),
                 Description = $"WebApi criada no canal D.E.P.L.O.Y. v{Assembly.GetExecutingAssembly().GetName().Version}",
                 Contact = new OpenApiContact()
