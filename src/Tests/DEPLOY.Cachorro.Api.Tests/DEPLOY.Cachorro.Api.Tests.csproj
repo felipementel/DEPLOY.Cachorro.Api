@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<NoWarn>$(NoWarn);1144</NoWarn>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Bogus" Version="35.5.0" />
+		<PackageReference Include="coverlet.msbuild" Version="6.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+		<PackageReference Include="Moq" Version="4.20.70" />
+		<PackageReference Include="FluentAssertions" Version="6.12.0" />
+		<PackageReference Include="xunit" Version="2.7.0" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
+
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="6.0.2">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\DEPLOY.Cachorro.Api\DEPLOY.Cachorro.Api.csproj" />
+		<ProjectReference Include="..\..\DEPLOY.Cachorro.Application\DEPLOY.Cachorro.Application.csproj" />
+		<ProjectReference Include="..\..\DEPLOY.Cachorro.Domain\DEPLOY.Cachorro.Domain.csproj" />
+		<ProjectReference Include="..\DEPLOY.Cachorro.Base.Tests\DEPLOY.Cachorro.Base.Tests.csproj" />
+	</ItemGroup>
+
+</Project>

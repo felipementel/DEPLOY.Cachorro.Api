@@ -41,6 +41,5 @@ namespace DEPLOY.Cachorro.Api.Controllers
             else
                 return BadRequest("Sistema fora do ar");
         }
-
     }
 }

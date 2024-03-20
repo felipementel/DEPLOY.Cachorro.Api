@@ -6,6 +6,7 @@ using DEPLOY.Cachorro.Api.Extensions.Telemetria;
 using DEPLOY.Cachorro.Api.Extensions.Auth;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using DEPLOY.Cachorro.Infra.CrossCutting;
 
 namespace DEPLOY.Cachorro.Api
 {
@@ -17,7 +18,7 @@ namespace DEPLOY.Cachorro.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddAuthExtension(builder.Configuration);
+            builder.Services.RegisterServices();            
 
             builder.Services.AddControllers()
                 .AddJsonOptions(opt =>
@@ -37,8 +38,9 @@ namespace DEPLOY.Cachorro.Api
             builder.Services.AddEndpointsApiExplorer();
 
             //Extensions
-            builder.Services.AddKeyVaultExtension(builder.Configuration);
             builder.Logging.AddLogExtension(builder.Configuration);
+            builder.Services.AddAuthExtension(builder.Configuration);
+            builder.Services.AddKeyVaultExtension(builder.Configuration);            
             builder.Services.AddDatabaseExtension(builder.Configuration);
             builder.Services.AddTelemetriaExtension(builder.Configuration);
             builder.Services.AddSwaggerExtension();

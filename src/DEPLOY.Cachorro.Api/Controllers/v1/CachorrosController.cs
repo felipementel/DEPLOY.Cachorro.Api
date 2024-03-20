@@ -1,8 +1,8 @@
 using Asp.Versioning;
-using DEPLOY.Cachorro.Repository;
+using DEPLOY.Cachorro.Application.Dtos;
+using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
@@ -13,41 +13,40 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
     [Authorize]
     public class CachorrosController : ControllerBase
     {
-        public readonly CachorroDbContext _context;
+        public readonly ICachorroAppServices _cachorroAppService;
 
-        public CachorrosController(CachorroDbContext context)
+        public CachorrosController(ICachorroAppServices cachorroAppService)
         {
-            _context = context;
+            _cachorroAppService = cachorroAppService;
         }
 
         [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<DEPLOY.Cachorro.Domain.Cachorro>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "List Cachorro",
             Tags = new[] { "Cachorros" },
-            Description = "Operação para listar de cachorro")]
-        public async Task<IActionResult> ListarAsync()
+            Description = "Operação para listar de cachorros")]
+        public async Task<IActionResult> ListAllAsync()
         {
-            var items = await _context.Cachorros.ToListAsync();
+            var items = await _cachorroAppService.GetAllAsync();
 
-            return Ok(items);
+            return items.Any() ? Ok(items) : NoContent();
         }
 
         [HttpGet("{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DEPLOY.Cachorro.Domain.Cachorro), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CachorroDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Obter Cachorro",
             Tags = new[] { "Cachorros" },
             Description = "Operação para obter de cachorro por id")]
-        public async Task<IActionResult> ObterPorIdAsync(Guid id)
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var items = await _context.Cachorros.FindAsync(id);
-
+            var items = await _cachorroAppService.GetByIdAsync(id);
             if (items == null)
             {
                 return NotFound();
@@ -59,21 +58,20 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DEPLOY.Cachorro.Domain.Cachorro), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CachorroDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Cadastar Cachorro",
             Tags = new[] { "Cachorros" },
-            Description = "Operação para cadastrar de cachorro")]
-        public async Task<IActionResult> CadastrarCachorroAsync(
-            [FromBody] DEPLOY.Cachorro.Domain.Cachorro cachorro)
+            Description = "Operação para cadastrar cachorro")]
+        public async Task<IActionResult> CreateAsync(
+            [FromBody] CachorroCreateDto  cachorroCreateDto)
         {
-            _context.Cachorros.Add(cachorro);
-            await _context.SaveChangesAsync();
+            var item = await _cachorroAppService.InsertAsync(cachorroCreateDto);
 
-            return CreatedAtAction("ObterPorId",
-                new { id = cachorro.Id, version = new ApiVersion(1, 0).ToString() },
-                cachorro);
+            return CreatedAtAction("GetById",
+                new { id = item.Id, version = new ApiVersion(1, 0).ToString() },
+                item);
         }
 
         [HttpPut("{id}")]
@@ -81,20 +79,18 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "Atualizar Cachorro",
             Tags = new[] { "Cachorros" },
             Description = "Operação para atualizar de cachorro")]
-        public async Task<IActionResult> PutCachorroAsync(
+        public async Task<IActionResult> UpdateAsync(
             Guid id,
-            Domain.Cachorro cachorro)
+            CachorroDto cachorroDto)
         {
-            if (id != cachorro.Id)
+            if (id != cachorroDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(cachorro).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return await _cachorroAppService.UpdateAsync(id, cachorroDto)
+           ? NoContent()
+           : NotFound();
         }
 
         [HttpDelete("{id}")]
@@ -106,17 +102,14 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "Excluir Cachorro",
             Tags = new[] { "Cachorros" },
             Description = "Operação para excluir de cachorro")]
-        public async Task<IActionResult> ExcluirCachorroAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var item = await _context.Cachorros.FindAsync(id);
+            var item = await _cachorroAppService.DeleteAsync(id);
 
-            if (item == null)
+            if (!item)
             {
                 return NotFound();
             }
-
-            _context.Cachorros.Remove(item);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

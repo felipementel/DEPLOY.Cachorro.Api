@@ -136,13 +136,15 @@ dotnet tool install --global dotnet-ef
 
 ```
 
-dotnet ef migrations add InitDatabaseAPI -s DEPLOY.Cachorro.Api -p DEPLOY.Cachorro.Repository -c DEPLOY.Cachorro.Repository.CachorroDbContext --output-dir Migrations/API -v
+dotnet ef migrations add InitDatabaseAPI -s DEPLOY.Cachorro.Api -p DEPLOY.Cachorro.Infra.Repository -c DEPLOY.Cachorro.Infra.Repository.CachorroDbContext --output-dir Migrations/API -v
 
 ```
 
 ```
 
-dotnet ef database update InitDatabaseAPI --startup-project DEPLOY.Cachorro.Api --project DEPLOY.Cachorro.Repository --context DEPLOY.Cachorro.Repository.CachorroDbContext --verbose
+dotnet ef database update InitDatabaseAPI --startup-project DEPLOY.Cachorro.Api --project DEPLOY.Cachorro.Infra.Repository --context DEPLOY.Cachorro.Infra.Repository.CachorroDbContext --verbose
+
+
 
 ```
 
