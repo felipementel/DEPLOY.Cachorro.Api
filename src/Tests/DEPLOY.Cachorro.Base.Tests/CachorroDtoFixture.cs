@@ -24,8 +24,10 @@ namespace DEPLOY.Cachorro.Base.Tests
                         t.Person.FirstName,
                         f.Date.Past(),
                         f.Date.Past(),
-                        long.Parse(f.Person.Cpf().Replace(".", "").Replace("-", ""))))
-                    .Generate()))
+                        long.Parse(f.Person.Cpf().Replace(".", "").Replace("-", "")),
+                        Enumerable.Empty<string>()))
+                    .Generate(),
+                    Enumerable.Empty<string>()))
                 .Generate(quantity);
         }
 

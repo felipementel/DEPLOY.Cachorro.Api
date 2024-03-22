@@ -69,6 +69,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         {
             var item = await _cachorroAppService.InsertAsync(cachorroCreateDto);
 
+            if (item.Erros.Any())
+                return BadRequest(item.Erros);
+
             return CreatedAtAction("GetById",
                 new { id = item.Id, version = new ApiVersion(1, 0).ToString() },
                 item);

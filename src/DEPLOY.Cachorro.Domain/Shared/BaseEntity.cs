@@ -30,6 +30,6 @@ namespace DEPLOY.Cachorro.Domain.Shared
 
         public DateTime? Atualizacao { get; set; }
 
-        public List<string> Errors { get; set; } = new List<string>();
+        public List<string> Erros { get; set; } = new List<string>();
     }
 }

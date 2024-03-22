@@ -10,7 +10,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<ApplicationInsightsResourceId>/subscriptions/f4574f09-7fab-45bd-8eb5-508b8c6aa04a/resourceGroups/rg-canaldeploy-dev/providers/microsoft.insights/components/appi-cachorroapi-dev</ApplicationInsightsResourceId>
-		<Version>2.1.0</Version>
+		<Version>2.1.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -32,7 +32,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
 
             if (!validated.IsValid)
             {
-                entity.Errors = validated.Errors.Select(x => x.ErrorMessage).ToList();
+                entity.Erros = validated.Errors.Select(x => x.ErrorMessage).ToList();
                 return entity;
             }
 
@@ -60,7 +60,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
 
             if (!validated.IsValid)
             {
-                entity.Errors = validated.Errors.Select(x => x.ErrorMessage).ToList();
+                entity.Erros = validated.Errors.Select(x => x.ErrorMessage).ToList();
                 return false;
             }
 

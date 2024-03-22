@@ -14,7 +14,8 @@ namespace DEPLOY.Cachorro.Application.Dtos
         bool Adotado,
         PELAGEM Pelagem,
         float Peso,
-        TutorDto? Tutor)
+        TutorDto? Tutor,
+        IEnumerable<string> Erros)
     {
         public static implicit operator Domain.Aggregates.Cachorro.Entities.Cachorro(CachorroDto dto) =>
             new Domain.Aggregates.Cachorro.Entities.Cachorro(
@@ -39,6 +40,7 @@ namespace DEPLOY.Cachorro.Application.Dtos
                 entity.Adotado,
                 entity.Pelagem,
                 entity.Peso,
-                entity.Tutor);
+                entity.Tutor,
+                entity.Erros);
     }
 }

@@ -76,7 +76,7 @@ namespace DEPLOY.Cachorro.Infra.Repository.EntityConfigurations
             builder.HasIndex(x => x.Adotado);
             builder.HasIndex(x => new { x.Id, x.Atualizacao });
 
-            builder.Ignore(builder => builder.Errors);
+            builder.Ignore(builder => builder.Erros);
 
             builder.HasData(new Domain.Aggregates.Cachorro.Entities.Cachorro(
                 id: Guid.NewGuid(),

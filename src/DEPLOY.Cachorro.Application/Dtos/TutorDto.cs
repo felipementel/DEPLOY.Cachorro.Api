@@ -7,7 +7,8 @@ namespace DEPLOY.Cachorro.Application.Dtos
         string Nome,
         DateTime Cadastro,
         DateTime? Atualizacao,
-        long CPF)
+        long CPF,
+        IEnumerable<String> Erros)
     {
         public static implicit operator Tutor(TutorDto dto) =>
             new Domain.Aggregates.Tutor.Entities.Tutor (
@@ -24,6 +25,7 @@ namespace DEPLOY.Cachorro.Application.Dtos
                 entity.Nome,
                 entity.Cadastro,
                 entity.Atualizacao,
-                entity.CPF);
+                entity.CPF,
+                entity.Erros);
     }
 }

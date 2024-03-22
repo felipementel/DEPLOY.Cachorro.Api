@@ -50,7 +50,7 @@ namespace DEPLOY.Cachorro.Infra.Repository.EntityConfigurations
                 .ValueGeneratedOnAddOrUpdate()
                 .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Save);
 
-            builder.Ignore(builder => builder.Errors);
+            builder.Ignore(builder => builder.Erros);
 
             builder.HasIndex(x => new { x.Id, x.Atualizacao });
         }

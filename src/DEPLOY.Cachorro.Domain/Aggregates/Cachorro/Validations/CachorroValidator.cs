@@ -8,10 +8,6 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Validations
         {
             RuleSet("CreateNew", () =>
             {
-                RuleFor(x => x.Id)
-                .NotEmpty()
-                .WithMessage("Id é obrigatório");
-
                 RuleFor(x => x.Nome)
                 .NotEmpty()
                 .WithMessage("Nome é obrigatório");
@@ -35,6 +31,10 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Validations
                 RuleFor(x => x.Peso)
                 .GreaterThan(0)
                 .WithMessage("Peso deve ser maior que 0");
+
+                RuleFor(x => x.Nascimento)
+                .GreaterThan(System.DateTime.Now)
+                .WithMessage("Data de nascimento deve ser menor que a data atual");
             });
 
             RuleSet("Update", () =>
