@@ -28,7 +28,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "Listar Tutor",
             Tags = new[] { "Tutores" },
             Description = "Operação para listar tutores")]
-        public async Task<IActionResult> ListAllAsync()
+        public async Task<IActionResult> ListAllAsync(
+            CancellationToken cancellationToken = default)
         {
             var items = await _tutorAppServices.GetAllAsync();
 
@@ -44,7 +45,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "Obter Tutor",
             Tags = new[] { "Tutores" },
             Description = "Operação para obter tutor por id")]
-        public async Task<IActionResult> GetByIdAsync(long id)
+        public async Task<IActionResult> GetByIdAsync(
+            long id,
+            CancellationToken cancellationToken = default)
         {
             var items = await _tutorAppServices.GetByIdAsync(id);
 
@@ -66,7 +69,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Tags = new[] { "Tutores" },
             Description = "Operação para cadastrar tutor")]
         public async Task<IActionResult> CreateAsync(
-            [FromBody] TutorDto tutorDto)
+            [FromBody] TutorDto tutorDto,
+            CancellationToken cancellationToken = default)
         {
             var item = await _tutorAppServices.InsertAsync(tutorDto);
 
@@ -85,7 +89,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Description = "Operação para atualizar tutor")]
         public async Task<IActionResult> UpdateAsync(
             long id,
-            TutorDto tutorDto)
+            TutorDto tutorDto,
+            CancellationToken cancellationToken = default)
         {
             if (id != tutorDto.Id)
             {
@@ -105,7 +110,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "Excluir Tutor",
             Tags = new[] { "Tutores" },
             Description = "Operação para excluir tutor por id")]
-        public async Task<IActionResult> DeleteAsync(long id)
+        public async Task<IActionResult> DeleteAsync(
+            long id,
+            CancellationToken cancellationToken = default)
         {
             var item = await _tutorAppServices.DeleteAsync(id);
 

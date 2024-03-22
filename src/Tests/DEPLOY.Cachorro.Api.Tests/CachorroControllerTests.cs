@@ -28,12 +28,12 @@ namespace DEPLOY.Cachorro.Api.Tests
         public async Task CadastrarCachorroAsync_DeveRetornarCreatedResult_ComIdEVersionQuandoSucesso()
         {
             // Arrange
-
             var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(1)[0];
 
             // Configurar o Setup para o método InsertAsync
             _cachorroAppServiceMock
-                .Setup(x => x.InsertAsync(It.IsAny<CachorroCreateDto>()))
+                .Setup(x => x.InsertAsync(It.IsAny<CachorroCreateDto>(),
+                CancellationToken.None))
                 .ReturnsAsync(cachorro);
 
             var cachorroCreateDto = new CachorroCreateDto
@@ -65,7 +65,8 @@ namespace DEPLOY.Cachorro.Api.Tests
 
             Assert.Equal(cachorro, result.Value);
 
-            _cachorroAppServiceMock.Verify(x => x.InsertAsync(It.IsAny<CachorroCreateDto>()), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.InsertAsync(It.IsAny<CachorroCreateDto>(),
+                CancellationToken.None), Times.Once);
 
             var model = result.As<CreatedAtActionResult>().Value
                 .Should().BeOfType<CachorroDto>();
@@ -81,7 +82,7 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorros = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(2);
 
             _cachorroAppServiceMock
-                .Setup(x => x.GetAllAsync())
+                .Setup(x => x.GetAllAsync(CancellationToken.None))
                 .ReturnsAsync(() => cachorros);
 
             // Act
@@ -100,7 +101,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
             model.Subject.Count.Should().Be(2);
 
-            _cachorroAppServiceMock.Verify(x => x.GetAllAsync(), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -113,7 +114,7 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorros = Enumerable.Empty<CachorroDto>();
 
             CachorroAppServiceMock
-                .Setup(x => x.GetAllAsync())
+                .Setup(x => x.GetAllAsync(CancellationToken.None))
                 .ReturnsAsync(() => cachorros);
 
             // Act
@@ -123,7 +124,7 @@ namespace DEPLOY.Cachorro.Api.Tests
             Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
             var model = result.Should().BeOfType<NoContentResult>();
 
-            CachorroAppServiceMock.Verify(x => x.GetAllAsync(), Times.Once);
+            CachorroAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -134,7 +135,8 @@ namespace DEPLOY.Cachorro.Api.Tests
                 .CreateManyCachorroDtoWithTutorDto(1)[0];
 
             _cachorroAppServiceMock
-                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>(),
+                CancellationToken.None))
                 .ReturnsAsync(() => cachorro);
 
             // Act
@@ -156,7 +158,10 @@ namespace DEPLOY.Cachorro.Api.Tests
                 .Should()
                 .Be(cachorro.Nome);
 
-            _cachorroAppServiceMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.GetByIdAsync(
+                    It.IsAny<Guid>(),
+                    CancellationToken.None),
+                Times.Once);
         }
 
         [Fact]
@@ -166,7 +171,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(1)[0];
 
             _cachorroAppServiceMock
-                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>(),
+                CancellationToken.None))
                 .ReturnsAsync(() => null);
 
             // Act
@@ -177,7 +183,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
             result.Should().BeOfType<NotFoundResult>();
 
-            _cachorroAppServiceMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>(),
+                CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -187,7 +194,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(1)[0];
 
             _cachorroAppServiceMock
-                .Setup(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<CachorroDto>()))
+                .Setup(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<CachorroDto>(),
+                CancellationToken.None))
                 .ReturnsAsync(() => true);
 
             // Act
@@ -198,7 +206,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
             result.Should().BeOfType<NoContentResult>();
 
-            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<CachorroDto>()), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<CachorroDto>(),
+                CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -208,7 +217,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(1)[0];
 
             _cachorroAppServiceMock
-                .Setup(x => x.DeleteAsync(It.IsAny<Guid>()))
+                .Setup(x => x.DeleteAsync(It.IsAny<Guid>(),
+                CancellationToken.None))
                 .ReturnsAsync(() => true);
 
             // Act
@@ -219,7 +229,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
             result.Should().BeOfType<NoContentResult>();
 
-            _cachorroAppServiceMock.Verify(x => x.DeleteAsync(It.IsAny<Guid>()), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.DeleteAsync(It.IsAny<Guid>(),
+                CancellationToken.None), Times.Once);
         }
 
         [Fact]
@@ -229,7 +240,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(1)[0];
 
             _cachorroAppServiceMock
-                .Setup(x => x.DeleteAsync(It.IsAny<Guid>()))
+                .Setup(x => x.DeleteAsync(It.IsAny<Guid>(),
+                CancellationToken.None))
                 .ReturnsAsync(() => false);
 
             // Act
@@ -240,7 +252,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
             result.Should().BeOfType<NotFoundResult>();
 
-            _cachorroAppServiceMock.Verify(x => x.DeleteAsync(It.IsAny<Guid>()), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.DeleteAsync(It.IsAny<Guid>(),
+                CancellationToken.None), Times.Once);
         }
     }
 }

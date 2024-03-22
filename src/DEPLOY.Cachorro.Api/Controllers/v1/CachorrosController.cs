@@ -28,9 +28,10 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "List Cachorro",
             Tags = new[] { "Cachorros" },
             Description = "Operação para listar de cachorros")]
-        public async Task<IActionResult> ListAllAsync()
+        public async Task<IActionResult> ListAllAsync(
+            CancellationToken cancellationToken = default)
         {
-            var items = await _cachorroAppService.GetAllAsync();
+            var items = await _cachorroAppService.GetAllAsync(cancellationToken);
 
             return items.Any() ? Ok(items) : NoContent();
         }
@@ -44,9 +45,11 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "Obter Cachorro",
             Tags = new[] { "Cachorros" },
             Description = "Operação para obter de cachorro por id")]
-        public async Task<IActionResult> GetByIdAsync(Guid id)
+        public async Task<IActionResult> GetByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            var items = await _cachorroAppService.GetByIdAsync(id);
+            var items = await _cachorroAppService.GetByIdAsync(id, cancellationToken);
             if (items == null)
             {
                 return NotFound();
@@ -65,9 +68,10 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Tags = new[] { "Cachorros" },
             Description = "Operação para cadastrar cachorro")]
         public async Task<IActionResult> CreateAsync(
-            [FromBody] CachorroCreateDto  cachorroCreateDto)
+            [FromBody] CachorroCreateDto  cachorroCreateDto,
+            CancellationToken cancellationToken = default)
         {
-            var item = await _cachorroAppService.InsertAsync(cachorroCreateDto);
+            var item = await _cachorroAppService.InsertAsync(cachorroCreateDto, cancellationToken);
 
             if (item.Erros.Any())
                 return BadRequest(item.Erros);
@@ -84,14 +88,15 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Description = "Operação para atualizar de cachorro")]
         public async Task<IActionResult> UpdateAsync(
             Guid id,
-            CachorroDto cachorroDto)
+            CachorroDto cachorroDto,
+            CancellationToken cancellationToken = default)
         {
             if (id != cachorroDto.Id)
             {
                 return BadRequest();
             }
 
-            return await _cachorroAppService.UpdateAsync(id, cachorroDto)
+            return await _cachorroAppService.UpdateAsync(id, cachorroDto, cancellationToken)
            ? NoContent()
            : NotFound();
         }
@@ -105,9 +110,11 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Summary = "Excluir Cachorro",
             Tags = new[] { "Cachorros" },
             Description = "Operação para excluir de cachorro")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            var item = await _cachorroAppService.DeleteAsync(id);
+            var item = await _cachorroAppService.DeleteAsync(id, cancellationToken);
 
             if (!item)
             {

@@ -8,7 +8,7 @@ namespace DEPLOY.Cachorro.Application.Dtos
         DateTime Cadastro,
         DateTime? Atualizacao,
         long CPF,
-        IEnumerable<String> Erros)
+        IEnumerable<String> Erros = null)
     {
         public static implicit operator Tutor(TutorDto dto) =>
             new Domain.Aggregates.Tutor.Entities.Tutor (

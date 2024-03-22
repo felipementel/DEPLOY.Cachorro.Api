@@ -13,31 +13,41 @@ namespace DEPLOY.Cachorro.Application.AppServices
             _cachorroService = cachorroService;
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            return await _cachorroService.DeleteAsync(id);
+            return await _cachorroService.DeleteAsync(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<CachorroDto?>> GetAllAsync()
+        public async Task<IEnumerable<CachorroDto?>> GetAllAsync(
+            CancellationToken cancellationToken = default)
         {
-            var retorno = await _cachorroService.GetAllAsync();
+            var retorno = await _cachorroService.GetAllAsync(cancellationToken);
 
             return retorno.Select<Domain.Aggregates.Cachorro.Entities.Cachorro, CachorroDto>(x => x!).ToList();
         }
 
-        public async Task<CachorroDto?> GetByIdAsync(Guid id)
+        public async Task<CachorroDto?> GetByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
         {
-            return await _cachorroService.GetByIdAsync(id);
+            return await _cachorroService.GetByIdAsync(id, cancellationToken);
         }
 
-        public async Task<CachorroDto?> InsertAsync(CachorroCreateDto cachorroDto)
+        public async Task<CachorroDto?> InsertAsync(
+            CachorroCreateDto cachorroDto,
+            CancellationToken cancellationToken = default)
         {
-            return await _cachorroService.CreateAsync(cachorroDto);
+            return await _cachorroService.CreateAsync(cachorroDto, cancellationToken);
         }
 
-        public async Task<bool> UpdateAsync(Guid id, CachorroDto cachorroDto)
+        public async Task<bool> UpdateAsync(
+            Guid id,
+            CachorroDto cachorroDto,
+            CancellationToken cancellationToken = default)
         {
-            return await _cachorroService.UpdateAsync(id, cachorroDto);
+            return await _cachorroService.UpdateAsync(id, cachorroDto, cancellationToken);
         }
     }
 }

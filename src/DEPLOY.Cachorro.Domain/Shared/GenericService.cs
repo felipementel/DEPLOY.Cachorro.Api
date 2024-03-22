@@ -25,7 +25,8 @@ namespace DEPLOY.Cachorro.Domain.Shared
             _genericRepository = genericRepository;
         }
 
-        public virtual async Task<TEntity> CreateAsync(TEntity entity)
+        public virtual async Task<TEntity> CreateAsync(TEntity entity,
+            CancellationToken cancellationToken = default)
         {
             var validated = await _validator.ValidateAsync(entity,
                 options => options.IncludeRuleSets("CreateNew"));
@@ -43,7 +44,9 @@ namespace DEPLOY.Cachorro.Domain.Shared
             return entity;
         }
 
-        public virtual async Task<bool> DeleteAsync(Tid id)
+        public virtual async Task<bool> DeleteAsync(
+            Tid id,
+            CancellationToken cancellationToken = default)
         {
             var item = await _genericRepository.DeleteAsync(id);
 
@@ -53,7 +56,10 @@ namespace DEPLOY.Cachorro.Domain.Shared
             return await _uow.CommitAndSaveChangesAsync();
         }
 
-        public virtual async Task<bool> UpdateAsync(Tid id, TEntity entity)
+        public virtual async Task<bool> UpdateAsync
+            (Tid id, 
+            TEntity entity,
+            CancellationToken cancellationToken = default)
         {
             var validated = await _validator.ValidateAsync(entity,
                 options => options.IncludeRuleSets("Update"));
@@ -74,14 +80,16 @@ namespace DEPLOY.Cachorro.Domain.Shared
             return await _uow.CommitAndSaveChangesAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
+            CancellationToken cancellationToken = default)
         {
             var item = await _genericRepository.GetAllAsync();
 
             return item.Any() ? item : Enumerable.Empty<TEntity>();
         }
 
-        public virtual async Task<TEntity?> GetByIdAsync(Tid id)
+        public virtual async Task<TEntity?> GetByIdAsync(Tid id,
+            CancellationToken cancellationToken = default)
         {
             return await _genericRepository.GetByIdAsync(id);
         }

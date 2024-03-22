@@ -36,7 +36,8 @@ namespace DEPLOY.Cachorro.Domain.Tests
 
             var expectedCachorro = _cachorroDtoFixture.CreateManyCachorroWithTutor(1)[0];
 
-            _cachorroRepositoryMock.Setup(repo => repo.InsertAsync(It.IsAny<Aggregates.Cachorro.Entities.Cachorro>()))
+            _cachorroRepositoryMock.Setup(repo => repo.InsertAsync(It.IsAny<Aggregates.Cachorro.Entities.Cachorro>(),
+                CancellationToken.None))
                                    .ReturnsAsync(expectedCachorro);
 
             // Act
@@ -46,7 +47,8 @@ namespace DEPLOY.Cachorro.Domain.Tests
             Assert.NotNull(createdCachorro);
             Assert.Equal(expectedCachorro, createdCachorro);
 
-            _cachorroRepositoryMock.Verify(repo => repo.InsertAsync(It.IsAny<Aggregates.Cachorro.Entities.Cachorro>()), Times.Once);
+            _cachorroRepositoryMock.Verify(repo => repo.InsertAsync(It.IsAny<Aggregates.Cachorro.Entities.Cachorro>(),
+                CancellationToken.None), Times.Once);
 
             // Assert using FluentAssertions
             createdCachorro.Should().NotBeNull();
@@ -63,7 +65,9 @@ namespace DEPLOY.Cachorro.Domain.Tests
 
             var expectedCachorro = _cachorroDtoFixture.CreateManyCachorroWithTutor(1)[0];
 
-            _cachorroRepositoryMock.Setup(repo => repo.InsertAsync(It.IsAny<Aggregates.Cachorro.Entities.Cachorro>()))
+            _cachorroRepositoryMock.Setup(repo => repo.InsertAsync(
+                It.IsAny<Aggregates.Cachorro.Entities.Cachorro>(),
+                CancellationToken.None))
                                    .ReturnsAsync(expectedCachorro);
 
             // Act
@@ -73,7 +77,10 @@ namespace DEPLOY.Cachorro.Domain.Tests
             Assert.NotNull(createdCachorro);
             Assert.Equal(expectedCachorro, createdCachorro);
 
-            _cachorroRepositoryMock.Verify(repo => repo.InsertAsync(It.IsAny<Aggregates.Cachorro.Entities.Cachorro>()), Times.Once);
+            _cachorroRepositoryMock.Verify(repo => repo.InsertAsync(
+                    It.IsAny<Aggregates.Cachorro.Entities.Cachorro>(),
+                    CancellationToken.None),
+                Times.Once);
 
             // Assert using FluentAssertions
             createdCachorro.Should().NotBeNull();

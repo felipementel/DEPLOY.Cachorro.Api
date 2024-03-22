@@ -14,11 +14,12 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
             _cachorroDbContext = cachorroContext;
         }
 
-        public async virtual Task<IEnumerable<TEntity>> GetAllAsync()
+        public async virtual Task<IEnumerable<TEntity>> GetAllAsync(
+            CancellationToken cancellationToken = default)
         {
             return await _cachorroDbContext
                 .Set<TEntity>()
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
         public async virtual Task<TEntity?> GetByIdAsync(
@@ -30,18 +31,22 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
                 .FindAsync(new object[] { id }, cancellationToken);
         }
 
-        public async virtual Task<TEntity> InsertAsync(TEntity obj)
+        public async virtual Task<TEntity> InsertAsync(
+            TEntity obj,
+            CancellationToken cancellationToken = default)
         {
             //obj.GetType().GetProperty("Cadastro").SetValue(obj, new DateTime().ToLocalTime);
 
             await _cachorroDbContext
                 .Set<TEntity>()
-                .AddAsync(obj);
+                .AddAsync(obj, cancellationToken);
 
             return obj;
         }
 
-        public async virtual Task UpdateAsync(TEntity obj)
+        public async virtual Task UpdateAsync(
+            TEntity obj,
+            CancellationToken cancellationToken = default)
         {
             await Task.Run(() =>
             {
@@ -54,9 +59,11 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
             });
         }
 
-        public async virtual Task<bool> DeleteAsync(Tid id)
+        public async virtual Task<bool> DeleteAsync(
+            Tid id,
+            CancellationToken cancellationToken = default)
         {
-            TEntity? existing = await _cachorroDbContext.Set<TEntity>().FindAsync(id);
+            TEntity? existing = await _cachorroDbContext.Set<TEntity>().FindAsync(new object[] {id}, cancellationToken);
 
             if (existing != null)
             {
