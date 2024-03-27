@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Validations
 {
+    [ExcludeFromCodeCoverage]
     public class TutorValidator : AbstractValidator<Entities.Tutor>
     {
         public TutorValidator()

@@ -12,6 +12,10 @@ namespace DEPLOY.Cachorro.Infra.Repository
         {
         }
 
+        public CachorroDbContext()
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

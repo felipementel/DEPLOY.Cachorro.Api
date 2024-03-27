@@ -25,7 +25,8 @@ namespace DEPLOY.Cachorro.Domain.Shared
             _genericRepository = genericRepository;
         }
 
-        public virtual async Task<TEntity> CreateAsync(TEntity entity,
+        public virtual async Task<TEntity> CreateAsync(
+            TEntity entity,
             CancellationToken cancellationToken = default)
         {
             var validated = await _validator.ValidateAsync(entity,
@@ -39,7 +40,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
 
             await _genericRepository.InsertAsync(entity);
 
-            await _uow.CommitAndSaveChangesAsync();
+            await _uow.CommitAndSaveChangesAsync(cancellationToken);
 
             return entity;
         }
@@ -53,11 +54,11 @@ namespace DEPLOY.Cachorro.Domain.Shared
             if (!item)
                 return false;
 
-            return await _uow.CommitAndSaveChangesAsync();
+            return await _uow.CommitAndSaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<bool> UpdateAsync
-            (Tid id, 
+        public virtual async Task<bool> UpdateAsync(
+            Tid id, 
             TEntity entity,
             CancellationToken cancellationToken = default)
         {
@@ -77,7 +78,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
 
             await _genericRepository.UpdateAsync(entity);
 
-            return await _uow.CommitAndSaveChangesAsync();
+            return await _uow.CommitAndSaveChangesAsync(cancellationToken);
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
@@ -88,7 +89,8 @@ namespace DEPLOY.Cachorro.Domain.Shared
             return item.Any() ? item : Enumerable.Empty<TEntity>();
         }
 
-        public virtual async Task<TEntity?> GetByIdAsync(Tid id,
+        public virtual async Task<TEntity?> GetByIdAsync(
+            Tid id,
             CancellationToken cancellationToken = default)
         {
             return await _genericRepository.GetByIdAsync(id);

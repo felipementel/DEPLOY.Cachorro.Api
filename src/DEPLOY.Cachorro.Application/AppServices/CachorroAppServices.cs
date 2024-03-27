@@ -1,9 +1,11 @@
 ﻿using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Interfaces.Services;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Application.AppServices
 {
+    [ExcludeFromCodeCoverage]
     public class CachorroAppServices : ICachorroAppServices
     {
         private readonly ICachorroService _cachorroService;

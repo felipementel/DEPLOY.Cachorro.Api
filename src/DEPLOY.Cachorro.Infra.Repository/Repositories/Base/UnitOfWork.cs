@@ -11,19 +11,19 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
             _context = context;
         }
 
-        public async Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(CancellationToken cancellationToken)
         {
-            await _context.Database.BeginTransactionAsync();
+            await _context.Database.BeginTransactionAsync(cancellationToken);
         }
 
-        public async Task RollbackTransactionAsync()
+        public async Task RollbackTransactionAsync(CancellationToken cancellationToken)
         {
-            await _context.Database.RollbackTransactionAsync();
+            await _context.Database.RollbackTransactionAsync(cancellationToken);
         }
 
-        public async Task<bool> CommitAndSaveChangesAsync()
+        public async Task<bool> CommitAndSaveChangesAsync(CancellationToken cancellationToken)
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
         private bool disposed = false;

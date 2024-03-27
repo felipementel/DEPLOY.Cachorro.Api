@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Validations
 {
+    [ExcludeFromCodeCoverage]
     public class CachorroValidator : AbstractValidator<Entities.Cachorro>
     {
         public CachorroValidator()
@@ -32,9 +34,9 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Validations
                 .GreaterThan(0)
                 .WithMessage("Peso deve ser maior que 0");
 
-                RuleFor(x => x.Nascimento)
-                .GreaterThan(System.DateTime.Now)
-                .WithMessage("Data de nascimento deve ser menor que a data atual");
+                RuleFor(x => x.Nascimento.Date)
+                .LessThanOrEqualTo(DateTime.Now.Date)
+                .WithMessage("Data de nascimento deve ser menor ou igual a data atual");
             });
 
             RuleSet("Update", () =>

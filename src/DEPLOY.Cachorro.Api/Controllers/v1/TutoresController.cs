@@ -31,7 +31,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         public async Task<IActionResult> ListAllAsync(
             CancellationToken cancellationToken = default)
         {
-            var items = await _tutorAppServices.GetAllAsync();
+            var items = await _tutorAppServices.GetAllAsync(cancellationToken);
 
             return Ok(items);
         }
@@ -49,7 +49,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             long id,
             CancellationToken cancellationToken = default)
         {
-            var items = await _tutorAppServices.GetByIdAsync(id);
+            var items = await _tutorAppServices.GetByIdAsync(id, cancellationToken);
 
             if (items == null)
             {
@@ -72,13 +72,20 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             [FromBody] TutorDto tutorDto,
             CancellationToken cancellationToken = default)
         {
-            var item = await _tutorAppServices.InsertAsync(tutorDto);
+            var item = await _tutorAppServices.InsertAsync(
+                tutorDto, 
+                cancellationToken);
 
             if (item.Erros.Any())
-                return BadRequest(item.Erros);
+                return UnprocessableEntity(item.Erros);
 
             return CreatedAtAction("GetById",
-                new { id = item.Id, version = new ApiVersion(1, 0).ToString() },
+                new { 
+                    id = item.Id,
+                    version = new ApiVersion(
+                        1,
+                        0)
+                    .ToString() },
                 item);
         }
 
@@ -89,14 +96,19 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Description = "Operação para atualizar tutor")]
         public async Task<IActionResult> UpdateAsync(
             long id,
-            TutorDto tutorDto,
+            [FromBody] TutorDto tutorDto,
             CancellationToken cancellationToken = default)
         {
             if (id != tutorDto.Id)
             {
-                return BadRequest();
+                return UnprocessableEntity();
             }
-            var retorned = await _tutorAppServices.UpdateAsync(id, tutorDto);
+
+            var retorned = await _tutorAppServices.UpdateAsync(
+                id,
+                tutorDto, 
+                cancellationToken);
+
                return retorned ? NoContent() 
                 : NotFound();
         }
@@ -114,7 +126,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             long id,
             CancellationToken cancellationToken = default)
         {
-            var item = await _tutorAppServices.DeleteAsync(id);
+            var item = await _tutorAppServices.DeleteAsync(id, cancellationToken);
 
             if (!item)
             {

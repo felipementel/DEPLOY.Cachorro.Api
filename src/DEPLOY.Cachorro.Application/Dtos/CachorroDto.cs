@@ -1,5 +1,5 @@
 ﻿using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.ValueObject;
-using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Application.Dtos
@@ -15,7 +15,8 @@ namespace DEPLOY.Cachorro.Application.Dtos
         PELAGEM Pelagem,
         float Peso,
         TutorDto? Tutor,
-        IEnumerable<string> Erros)
+        [SwaggerSchema(ReadOnly = true)]
+        IEnumerable<string> Erros = null) : BaseDto(Erros)
     {
         public static implicit operator Domain.Aggregates.Cachorro.Entities.Cachorro(CachorroDto dto) =>
             new Domain.Aggregates.Cachorro.Entities.Cachorro(

@@ -26,7 +26,7 @@ namespace DEPLOY.Cachorro.Api
                     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     opt.JsonSerializerOptions.WriteIndented = true;
                     opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-
+                    opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
 
             builder.Services.AddRouting(opt =>

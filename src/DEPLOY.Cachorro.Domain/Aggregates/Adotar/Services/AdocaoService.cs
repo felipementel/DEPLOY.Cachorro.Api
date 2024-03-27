@@ -28,14 +28,18 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Adotar.Services
             CancellationToken cancellationToken = default)
         {
             var existedCachorro = await _cachorroRepository.GetByIdAsync(cachorroId, cancellationToken);
+            // capturar erro de cachorro não encontrado
 
             var existedTutor = await _tutorRepository.GetByIdAsync(tutorId, cancellationToken);
+            // capturar erro de tutor não encontrado
+
+            //retornar validacao
 
             existedCachorro.Adotar(existedTutor);
 
             await _cachorroRepository.UpdateAsync(existedCachorro);
 
-            await _uow.CommitAndSaveChangesAsync();
+            await _uow.CommitAndSaveChangesAsync(cancellationToken);
         }
 
         public Task DevolverAdocaoAsync(

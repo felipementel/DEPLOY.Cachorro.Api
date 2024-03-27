@@ -1,17 +1,21 @@
 ﻿using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Application.Dtos
 {
+    [ExcludeFromCodeCoverage]
     public record TutorDto(
         long Id,
         string Nome,
         DateTime Cadastro,
         DateTime? Atualizacao,
         long CPF,
-        IEnumerable<String> Erros = null)
+        [SwaggerSchema(ReadOnly = true)]
+        IEnumerable<string> Erros = null) : BaseDto(Erros)
     {
         public static implicit operator Tutor(TutorDto dto) =>
-            new Domain.Aggregates.Tutor.Entities.Tutor (
+            new Tutor(
                 dto.Id,
                 dto.Nome,
                 dto.Cadastro,

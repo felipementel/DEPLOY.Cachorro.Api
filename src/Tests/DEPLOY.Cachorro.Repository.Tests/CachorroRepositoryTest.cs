@@ -50,93 +50,73 @@ namespace DEPLOY.Cachorro.Repository.Tests
             dbContext.Database.EnsureDeleted();
         }
 
-        ////MockQueryable.Moq
-        //[Fact]
-        //public async Task GetAllAsync_ReturnsAllCachorrosMoqDatabase()
-        //{
-        //    // Arrange
-        //    var entities = _cachorroFixture.CreateManyCachorroWithTutor(2);
-        //    var dbSetMock = entities.AsQueryable().BuildMockDbSet();
+        //MockQueryable.Moq
+        [Fact]
+        public async Task GivenGetAllAsync_WhenRequestIsValidWithMockQueryableMoq_ThenReturnItems()
+        {
+            // Arrange
+            var entities = _cachorroFixture.CreateManyCachorroWithTutor(2);
+            var dbSetMock = entities.AsQueryable().BuildMockDbSet();
 
-        //    dbSetMock.Setup(x => x.FindAsync(1))
-        //        .ReturnsAsync(_cachorroFixture.CreateManyCachorroWithTutor(1)[0]);
+            dbSetMock.Setup(x => x.FindAsync(1))
+                .ReturnsAsync(_cachorroFixture.CreateManyCachorroWithTutor(1)[0]);
 
-        //    var dbContextMock = new Mock<CachorroDbContext>(MockBehavior.Strict);
-        //    dbContextMock
-        //        .Setup(c => c.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>())
-        //        .Returns(dbSetMock.Object);
+            var dbContextMock = new Mock<CachorroDbContext>(MockBehavior.Strict);
+            dbContextMock
+                .Setup(c => c.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>())
+                .Returns(dbSetMock.Object);
 
-        //    var repository = new CachorroRepository(dbContextMock.Object);
+            var repository = new CachorroRepository(dbContextMock.Object);
 
-        //    // Act
-        //    var result = await repository.GetAllAsync();
+            // Act
+            var result = await repository.GetAllAsync();
 
-        //    // Assert
-        //    Assert.Equal(entities.Count, result.Count());
-        //}
+            // Assert
+            Assert.Equal(entities.Count, result.Count());
+        }
 
-        //[Fact]
-        //public async Task AAAAGetAllAsync_ReturnsAllCachorrosMoqDatabase()
-        //{
-        //    // Arrange
-        //    var entities = _cachorroFixture.CreateManyCachorroWithTutor(2);
-        //    var dbSetMock = entities.AsQueryable().BuildMockDbSet();
+        //Moq.EntityFrameworkCore
+        [Fact]
+        public async Task GivenGetAllAsync_WhenRequestIsValidWithMoqEntityFrameworkCore_ThenReturnItems()
+        {
+            // Arrange
+            var items = _cachorroFixture.CreateManyCachorroWithTutor(2);
 
-        //    // Configurar o mock do DbSet para retornar um cachorro específico ao chamar FindAsync
-        //    dbSetMock.Setup(x => x.FindAsync(1))
-        //        .ReturnsAsync(_cachorroFixture.CreateManyCachorroWithTutor(1).First()); // Retorna o primeiro cachorro da lista
+            var ContextMock = new Mock<CachorroDbContext>();
+            ContextMock.Setup<DbSet<Domain.Aggregates.Cachorro.Entities.Cachorro>>(x => x.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>())
+                .ReturnsDbSet(items);
 
-        //    // Criar um mock de DbContextOptionsBuilder<CachorroDbContext>
-        //    var optionsBuilderMock = new Mock<DbContextOptionsBuilder<CachorroDbContext>>();
+            var repository = new CachorroRepository(ContextMock.Object);
 
-        //    // Criar um DbContextOptions válido
-        //    var dbContextOptions = new DbContextOptions<CachorroDbContext>();
+            // Act
+            var result = await repository.GetAllAsync();
 
-        //    // Configurar o comportamento do mock para retornar o DbContextOptions criado
-        //    optionsBuilderMock.Setup(x => x.Options).Returns(dbContextOptions);
+            // Assert
+            Assert.Equal(items.Count, result.Count());
 
-        //    // Criar o mock do DbContext usando o DbContextOptions
-        //    var dbContextMock = new Mock<CachorroDbContext>(dbContextOptions, MockBehavior.Strict);
+            foreach (var item in items)
+            {
+                Assert.Contains(result, c => c.Id == item.Id);
+            }
+        }
 
-        //    // Configurar o mock do contexto do banco de dados para retornar o mock do DbSet
-        //    dbContextMock
-        //        .Setup(c => c.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>())
-        //        .Returns(dbSetMock.Object);
+        [Fact]
+        public async Task GivenGetAllAsync_WhenRequestIsValid_ThenReturnNoItems()
+        {
+            // Arrange
+            var items = _cachorroFixture.CreateManyCachorroWithTutor(0);
 
-        //    // Criar o repositório usando o mock do contexto do banco de dados
-        //    var repository = new CachorroRepository(dbContextMock.Object);
+            var ContextMock = new Mock<CachorroDbContext>();
+            ContextMock.Setup<DbSet<Domain.Aggregates.Cachorro.Entities.Cachorro>>(x => x.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>())
+                .ReturnsDbSet(items);
 
-        //    // Act
-        //    var result = await repository.GetAllAsync();
+            var repository = new CachorroRepository(ContextMock.Object);
 
-        //    // Assert
-        //    Assert.Equal(entities.Count, result.Count());
-        //}
+            // Act
+            var result = await repository.GetAllAsync();
 
-
-        ////Moq.EntityFrameworkCore
-        //[Fact]
-        //public async Task method()
-        //{
-        //    // Arrange
-        //    var items = _cachorroFixture.CreateManyCachorroWithTutor(2);
-
-        //    var ContextMock = new Mock<CachorroDbContext>();
-        //    ContextMock.Setup<DbSet<Domain.Aggregates.Cachorro.Entities.Cachorro>>(x => x.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>())
-        //        .ReturnsDbSet(items);
-
-        //    var repository = new CachorroRepository(ContextMock.Object);
-
-        //    // Act
-        //    var result = await repository.GetAllAsync();
-
-        //    // Assert
-        //    Assert.Equal(items.Count, result.Count());
-
-        //    foreach (var item in items)
-        //    {
-        //        Assert.Contains(result, c => c.Id == item.Id);
-        //    }
-        //}
+            // Assert
+            Assert.Equal(items.Count, result.Count());
+        }
     }
 }

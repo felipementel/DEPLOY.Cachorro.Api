@@ -49,7 +49,10 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Guid id,
             CancellationToken cancellationToken = default)
         {
-            var items = await _cachorroAppService.GetByIdAsync(id, cancellationToken);
+            var items = await _cachorroAppService.GetByIdAsync(
+                id, 
+                cancellationToken);
+            
             if (items == null)
             {
                 return NotFound();
@@ -68,16 +71,22 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Tags = new[] { "Cachorros" },
             Description = "Operação para cadastrar cachorro")]
         public async Task<IActionResult> CreateAsync(
-            [FromBody] CachorroCreateDto  cachorroCreateDto,
+            [FromBody] CachorroCreateDto cachorroCreateDto,
             CancellationToken cancellationToken = default)
         {
-            var item = await _cachorroAppService.InsertAsync(cachorroCreateDto, cancellationToken);
+            var item = await _cachorroAppService.InsertAsync(
+                cachorroCreateDto,
+                cancellationToken);
 
             if (item.Erros.Any())
-                return BadRequest(item.Erros);
+                return UnprocessableEntity(item.Erros);
 
             return CreatedAtAction("GetById",
-                new { id = item.Id, version = new ApiVersion(1, 0).ToString() },
+                new { id = item.Id,
+                    version = new ApiVersion(
+                        1,
+                        0)
+                    .ToString() },
                 item);
         }
 
@@ -88,15 +97,18 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Description = "Operação para atualizar de cachorro")]
         public async Task<IActionResult> UpdateAsync(
             Guid id,
-            CachorroDto cachorroDto,
+            [FromBody] CachorroDto cachorroDto,
             CancellationToken cancellationToken = default)
         {
             if (id != cachorroDto.Id)
             {
-                return BadRequest();
+                return UnprocessableEntity();
             }
 
-            return await _cachorroAppService.UpdateAsync(id, cachorroDto, cancellationToken)
+            return await _cachorroAppService.UpdateAsync(
+                id, 
+                cachorroDto,
+                cancellationToken)
            ? NoContent()
            : NotFound();
         }
@@ -114,7 +126,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Guid id,
             CancellationToken cancellationToken = default)
         {
-            var item = await _cachorroAppService.DeleteAsync(id, cancellationToken);
+            var item = await _cachorroAppService.DeleteAsync(
+                id,
+                cancellationToken);
 
             if (!item)
             {
