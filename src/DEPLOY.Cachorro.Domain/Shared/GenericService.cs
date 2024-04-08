@@ -1,6 +1,8 @@
 ﻿using DEPLOY.Cachorro.Infra.Repository.Repositories.Base;
 using FluentValidation;
+using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace DEPLOY.Cachorro.Domain.Shared
 {
@@ -38,7 +40,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
                 return entity;
             }
 
-            await _genericRepository.InsertAsync(entity);
+            await _genericRepository.InsertAsync(entity, cancellationToken);
 
             await _uow.CommitAndSaveChangesAsync(cancellationToken);
 
@@ -49,7 +51,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
             Tid id,
             CancellationToken cancellationToken = default)
         {
-            var item = await _genericRepository.DeleteAsync(id);
+            var item = await _genericRepository.DeleteAsync(id, cancellationToken);
 
             if (!item)
                 return false;
@@ -57,7 +59,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
             return await _uow.CommitAndSaveChangesAsync(cancellationToken);
         }
 
-        public virtual async Task<bool> UpdateAsync(
+        public virtual async Task<IEnumerable<string>> UpdateAsync(
             Tid id, 
             TEntity entity,
             CancellationToken cancellationToken = default)
@@ -67,33 +69,41 @@ namespace DEPLOY.Cachorro.Domain.Shared
 
             if (!validated.IsValid)
             {
-                entity.Erros = validated.Errors.Select(x => x.ErrorMessage).ToList();
-                return false;
+                return validated.Errors.Select(x => x.ErrorMessage).ToList();
             }
 
-            var item = await _genericRepository.GetByIdAsync(id);
+            var item = await _genericRepository.GetByIdAsync(id, cancellationToken);
 
             if (item == null)
-                return false;
+                return entity.Erros.ToFrozenSet();
 
-            await _genericRepository.UpdateAsync(entity);
+            await _genericRepository.UpdateAsync(entity, cancellationToken);
 
-            return await _uow.CommitAndSaveChangesAsync(cancellationToken);
+            await _uow.CommitAndSaveChangesAsync(cancellationToken);
+
+            return entity.Erros;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(
             CancellationToken cancellationToken = default)
         {
-            var item = await _genericRepository.GetAllAsync();
+            var items = await _genericRepository.GetAllAsync(cancellationToken);
 
-            return item.Any() ? item : Enumerable.Empty<TEntity>();
+            return items?.Count() > 0 ? items : Enumerable.Empty<TEntity>();
         }
 
         public virtual async Task<TEntity?> GetByIdAsync(
             Tid id,
             CancellationToken cancellationToken = default)
         {
-            return await _genericRepository.GetByIdAsync(id);
+            return await _genericRepository.GetByIdAsync(id, cancellationToken);
+        }
+
+        public Task<List<TEntity>> GetByKeyAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            CancellationToken cancellationToken = default)
+        {
+            return _genericRepository.GetByKeyAsync(predicate, cancellationToken);
         }
     }
 }

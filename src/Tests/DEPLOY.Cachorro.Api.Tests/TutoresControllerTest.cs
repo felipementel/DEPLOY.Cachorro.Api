@@ -1,350 +1,347 @@
 ﻿using DEPLOY.Cachorro.Api.Controllers.v1;
+using DEPLOY.Cachorro.Application.Dtos;
+using DEPLOY.Cachorro.Application.Interfaces.Services;
+using DEPLOY.Cachorro.Base.Tests;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Moq;
 using System.Diagnostics.CodeAnalysis;
+using Xunit;
 
 namespace DEPLOY.Cachorro.Api.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class TutoresControllerTest
+    public class TutoresControllerTest : IClassFixture<TutorDtoFixture>
     {
-        //[Fact]
-        //[Trait("List", "API")]
-        //public async Task ListarAsync_ReturnsOk_WhenTutoresIsFound()
-        //{
-        //    // Arrange
-        //    var tutor1 = new Domain.Tutor { Nome = "Eu cuido da silva" };
-        //    var tutor2 = new Domain.Tutor { Nome = "Eu cuido dos santos" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //        .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor1);
-        //        context.Tutores.Add(tutor2);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.ListarAsync();
-
-        //        // Assert
-        //        result.Should().BeOfType<OkObjectResult>();
-        //        result.As<OkObjectResult>().Value.Should().BeOfType<List<Domain.Tutor>>();
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("List", "API")]
-        //public async Task ListarAsync_ReturnsOk_WhenTutoresNotFound()
-        //{
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //        .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.ListarAsync();
-
-        //        // Assert
-        //        result.Should().BeOfType<OkObjectResult>();
-        //        result.As<OkObjectResult>().Value.Should().BeOfType<List<Domain.Tutor>>();
-        //        result.As<List<Domain.Tutor>>().Should().BeNull();
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Read", "API")]
-        //public async Task ObterPorIdAsync_ReturnsOk_WhenTutorIsFound()
-        //{
-        //    // Arrange
-        //    var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //        .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.ObterPorIdAsync(tutor.Id);
-
-        //        // Assert
-        //        result.Should().BeOfType<OkObjectResult>();
-        //        var model = result.As<OkObjectResult>().Value.Should().BeOfType<Domain.Tutor>();
-        //        model.Subject.Id.Should().Be(tutor.Id);
-        //        model.Subject.Nome.Should().Be(tutor.Nome);
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Read", "API")]
-        //public async Task ObterPorIdAsync_ReturnsNotFound_WhenTutorNotFound()
-        //{
-        //    // Arrange
-        //    var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //        .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.ObterPorIdAsync(tutor.Id + 1);
-
-        //        // Assert
-        //        result.Should().BeOfType<NotFoundResult>();
-        //        context.Tutores.Should().NotContain(t => t.Id == tutor.Id + 1);
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Create", "API")]
-        //public async Task CadastrarTutotAsync_ReturnsCreated_WhenTutorIsValid()
-        //{
-        //    // Arrange
-        //    var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //       .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //       .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //       .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.CadastrarTutorAsync(tutor);
-
-        //        // Assert
-        //        result.Should().BeOfType<CreatedAtActionResult>();
-        //        var model = result.As<CreatedAtActionResult>().Value.Should().BeOfType<Domain.Tutor>();
-        //        model.Subject.Nome.Should().Be(tutor.Nome);
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Update", "API")]
-        //public async Task PutTutotAsync_ReturnsNoContent_WhenTutorIsValid()
-        //{
-        //    // Arrange
-        //    var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //       .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //       .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //       .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.PutTutorAsync(tutor.Id, new Domain.Tutor() { Id = tutor.Id, Nome = "Sirius v2" });
-
-        //        // Assert
-        //        result.Should().BeOfType<NoContentResult>();
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Update", "API")]
-        //public async Task PutTutorAsync_ReturnsBadRequest_WhenTutorIsInvalid()
-        //{
-        //    // Arrange
-        //    var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //       .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //       .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //       .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.PutTutorAsync(2, new Domain.Tutor() { Nome = "Nome Atualizado" });
-
-        //        // Assert
-        //        result.Should().BeOfType<BadRequestResult>();
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Delete", "API")]
-        //public async Task ExcluirTutorAsync_ReturnsNotFound_WhenTutorIdDontExists()
-        //{
-        //    // Arrange
-        //    var TutorId = 2;
-        //    var tutor = new Domain.Tutor { Id = TutorId, Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //        .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.ExcluirTutorAsync(tutor.Id + 1);
-
-        //        // Assert
-        //        result.Should().BeOfType<NotFoundResult>();
-        //        context.Tutores.Should().NotContain(t => t.Id == tutor.Id + 1);
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Delete", "API")]
-        //public async Task ExcluirTutorAsync_ReturnsNoContent_WhenTutorIdIsValid()
-        //{
-        //    // Arrange
-        //    var tutor = new Domain.Tutor { Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //        .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.ExcluirTutorAsync(tutor.Id);
-
-        //        // Assert
-        //        result.Should().BeOfType<NoContentResult>();
-        //        context.Tutores.Should().NotContain(t => t.Id == tutor.Id);
-        //    }
-        //}
-
-        //[Fact]
-        //[Trait("Delete", "API")]
-        //public async Task ExcluirTutorAsync_ReturnsNoContent_WhenTutorIsDeleted()
-        //{
-        //    // Arrange
-        //    var cachorroId = 1;
-        //    var tutor = new Domain.Tutor { Id = cachorroId, Nome = "Eu cuido da silva" };
-
-        //    var options = new DbContextOptionsBuilder<CachorroDbContext>()
-        //        .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-        //        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
-        //        .Options;
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        context.Database.EnsureDeleted();
-        //        context.Database.EnsureCreated();
-
-        //        context.Tutores.Add(tutor);
-        //        context.SaveChanges();
-        //    }
-
-        //    using (var context = new CachorroDbContext(options))
-        //    {
-        //        var controller = new TutoresController(context);
-
-        //        // Act
-        //        var result = await controller.ExcluirTutorAsync(cachorroId);
-
-        //        // Assert
-        //        result.Should().BeOfType<NoContentResult>();
-        //        context.Cachorros.Should().NotContain(c => c.Id == Guid.NewGuid());
-        //    }
-        //}
+        private readonly Mock<ITutorAppServices> _tutorAppServiceMock;
+        private readonly TutorDtoFixture _tutorDtoFixture;
+
+        private Controllers.v1.TutoresController? _tutoresController;
+
+        public TutoresControllerTest(TutorDtoFixture tutorDtoFixture)
+        {
+            _tutorDtoFixture = tutorDtoFixture;
+            _tutorAppServiceMock = new Mock<ITutorAppServices>();
+        }
+
+        [Fact]
+        public async Task GivenListAllAsync_WhenExistsTutores_ThanReturnListWithTutores()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(3);
+
+            _tutorAppServiceMock
+                .Setup(t => t.GetAllAsync(CancellationToken.None))
+                .ReturnsAsync(tutor);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.ListAllAsync(CancellationToken.None) as OkObjectResult;
+
+            //Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+
+            result.Should().BeOfType<OkObjectResult>();
+
+            var model = result.As<OkObjectResult>().Value
+                .Should()
+                .BeOfType<List<TutorDto>>();
+
+            model.Subject.Count.Should().Be(3);
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenListAllAsync_WhenNotExistsTutores_ThanReturnEmptyList()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(0);
+
+            _tutorAppServiceMock
+                .Setup(t => t.GetAllAsync(CancellationToken.None))
+                .ReturnsAsync(tutor);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.ListAllAsync(CancellationToken.None) as OkObjectResult;
+
+            //Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+
+            result.Should().BeOfType<OkObjectResult>();
+
+            var model = result.As<OkObjectResult>().Value
+                .Should()
+                .BeOfType<List<TutorDto>>();
+
+            model.Subject.Count.Should().Be(0);
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenGetByIdAsync_WhenIdIsValid_ThanSuccess()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(t => t.GetByIdAsync(tutor.Id, CancellationToken.None))
+                .ReturnsAsync(tutor);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController
+                .GetByIdAsync(
+                    tutor.Id,
+                    CancellationToken.None)
+                as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+
+            result.Should().BeOfType<OkObjectResult>();
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+        }
+
+        [Fact]
+        public async Task GivenGetByIdAsync_WhenTutorIdIsNotValid_ThanNorFoundResult()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(t => t.GetByIdAsync(It.IsAny<long>(), CancellationToken.None))
+                .ReturnsAsync(() => null);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.GetByIdAsync(tutor.Id, CancellationToken.None) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+
+            result.Should().BeOfType<NotFoundResult>();
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _tutorAppServiceMock.Verify(x => x.GetByIdAsync(It.IsAny<long>(), CancellationToken.None), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenTutorCreateAsync_WhenTutorIsValid_ThanReturnCreatedAction201()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(x => x.InsertAsync(It.IsAny<TutorDto>(),
+                CancellationToken.None))
+                .ReturnsAsync(tutor);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.CreateAsync(tutor) as CreatedAtActionResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status201Created, result.StatusCode);
+            result.Should().BeOfType<CreatedAtActionResult>();
+
+            Assert.Equal("GetById", result.ActionName);
+
+            var routeValues = result.RouteValues;
+            Assert.NotNull(routeValues);
+            Assert.True(routeValues.ContainsKey("id"));
+            Assert.True(routeValues.ContainsKey("version"));
+
+            Assert.Equal("1.0", routeValues["version"]);
+
+            Assert.Equal(tutor, result.Value);
+
+            _tutorAppServiceMock.Verify(x => x.InsertAsync(It.IsAny<TutorDto>(),
+                CancellationToken.None), Times.Once);
+
+            var model = result.As<CreatedAtActionResult>().Value
+                .Should().BeOfType<TutorDto>();
+
+            model.Subject.Nome.Should().Be(tutor.Nome);
+            model.Subject.Erros.Should().BeNullOrEmpty();
+        }
+
+        [Fact]
+        public async Task GivenTutorCreateAsync_WhenTutorIsNotValid_ThanReturnUnprocessableEntity()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDtoWithNameError(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(x => x.InsertAsync(It.IsAny<TutorDto>(),
+                CancellationToken.None))
+                .ReturnsAsync(tutor);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.CreateAsync(tutor) as UnprocessableEntityObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status422UnprocessableEntity, result.StatusCode);
+            result.Should().BeOfType<UnprocessableEntityObjectResult>();
+
+            Assert.Equal(tutor.Erros, result.Value);
+
+            _tutorAppServiceMock.Verify(x => x.InsertAsync(It.IsAny<TutorDto>(),
+                CancellationToken.None), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenTutorIsValid_ThanReturnNoContent()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(t => t.UpdateAsync(tutor.Id, tutor, CancellationToken.None))
+                .ReturnsAsync(Enumerable.Empty<string>());
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.UpdateAsync(tutor.Id, tutor, CancellationToken.None) as NoContentResult;
+
+            // Assert
+            Assert.Equal(StatusCodes.Status204NoContent, result?.StatusCode);
+
+            result.Should().BeOfType<NoContentResult>();
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _tutorAppServiceMock.Verify(x => x.UpdateAsync(tutor.Id, tutor, CancellationToken.None), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenTutorDontExistis_ThanReturnUnprocessableEntity()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(t => t.UpdateAsync(It.IsAny<long>(), tutor, CancellationToken.None))
+                .ReturnsAsync(Enumerable.Empty<string>().Append("Tutor não encontado"));
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.UpdateAsync(tutor.Id, tutor, CancellationToken.None) as UnprocessableEntityObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status422UnprocessableEntity, result.StatusCode);
+
+            result.Should().BeOfType<UnprocessableEntityObjectResult>();
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _tutorAppServiceMock.Verify(x => x.UpdateAsync(tutor.Id, tutor, CancellationToken.None), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenIdIsEqualButTutorDontExists_ThanError()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(t => t.UpdateAsync(tutor.Id, tutor, CancellationToken.None))
+                .ReturnsAsync(Enumerable.Empty<string>().Append("Tutor não existe"));
+
+            var tutor2 = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutoresController = new TutoresController(
+                               _tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.UpdateAsync(tutor.Id, tutor, CancellationToken.None) as UnprocessableEntityObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status422UnprocessableEntity, result.StatusCode);
+
+            result.Should().BeOfType<UnprocessableEntityObjectResult>();
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _tutorAppServiceMock.Verify(x => x.UpdateAsync(tutor.Id, tutor, CancellationToken.None), Times.Once);
+            _tutorAppServiceMock.Verify(x => x.UpdateAsync(tutor2.Id, tutor2, CancellationToken.None), Times.Never);
+        }
+
+        [Fact]
+        public async Task GivenDeleteAsync_WhenTutorExists_ThanSuccess()
+        {
+            //Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(x => x.DeleteAsync(It.IsAny<long>(),
+                CancellationToken.None))
+                .ReturnsAsync(() => true);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.DeleteAsync(tutor.Id) as NoContentResult;
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+            result.Should().BeOfType<NoContentResult>();
+
+            _tutorAppServiceMock.Verify(x => x.DeleteAsync(It.IsAny<long>(),
+                CancellationToken.None), Times.Once);
+        }
+
+        [Fact]
+        public async Task GivenDeleteAsync_WhenTutorDontExists_ThanReturnNotFound()
+        {
+            //Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(x => x.DeleteAsync(It.IsAny<long>(),
+                CancellationToken.None))
+                .ReturnsAsync(() => false);
+
+            _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.DeleteAsync(tutor.Id) as NotFoundResult;
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+            result.Should().BeOfType<NotFoundResult>();
+
+            _tutorAppServiceMock.Verify(x => x.DeleteAsync(It.IsAny<long>(),
+                CancellationToken.None), Times.Once);
+        }
     }
 }

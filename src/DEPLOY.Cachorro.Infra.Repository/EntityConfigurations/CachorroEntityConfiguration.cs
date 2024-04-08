@@ -1,11 +1,12 @@
-using DEPLOY.Cachorro.Domain;
 using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Infra.Repository.EntityConfigurations
 {
+    [ExcludeFromCodeCoverage]
     internal class CachorroEntityConfiguration : IEntityTypeConfiguration<Domain.Aggregates.Cachorro.Entities.Cachorro>
     {
         public void Configure(EntityTypeBuilder<Domain.Aggregates.Cachorro.Entities.Cachorro> builder)
@@ -86,8 +87,7 @@ namespace DEPLOY.Cachorro.Infra.Repository.EntityConfigurations
                 nascimento: DateTime.Now,
                 adotado: false,
                 pelagem: PELAGEM.Curto,
-                peso: 10.3F,
-                tutor: null));
+                peso: 10.3F));
         }
     }
 }

@@ -1,16 +1,15 @@
 ﻿using DEPLOY.Cachorro.Application.Dtos;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
+using System.Linq.Expressions;
 
 namespace DEPLOY.Cachorro.Application.Interfaces.Services
 {
     public interface ICachorroAppServices
     {
         public Task<CachorroDto> InsertAsync(
-            CachorroCreateDto cachorroDto, 
+            CachorroCreateDto cachorroDto,
             CancellationToken cancellationToken = default);
 
-        public Task<bool> UpdateAsync(
+        public Task<IEnumerable<string>> UpdateAsync(
             Guid id,
             CachorroDto cachorroDto,
             CancellationToken cancellationToken = default);
@@ -25,5 +24,10 @@ namespace DEPLOY.Cachorro.Application.Interfaces.Services
         public Task<CachorroDto?> GetByIdAsync(
             Guid id,
             CancellationToken cancellationToken = default);
+
+        Task<List<CachorroDto>> GetByKeyAsync(
+            Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> predicate,
+            CancellationToken cancellationToken = default);
+
     }
 }

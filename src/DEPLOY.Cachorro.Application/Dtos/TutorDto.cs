@@ -10,7 +10,7 @@ namespace DEPLOY.Cachorro.Application.Dtos
         string Nome,
         DateTime Cadastro,
         DateTime? Atualizacao,
-        long CPF,
+        string CPF,
         [SwaggerSchema(ReadOnly = true)]
         IEnumerable<string> Erros = null) : BaseDto(Erros)
     {
@@ -22,7 +22,7 @@ namespace DEPLOY.Cachorro.Application.Dtos
                 dto.Atualizacao,
                 dto.CPF);
 
-        public static implicit operator TutorDto?(Tutor entity) =>
+        public static implicit operator TutorDto?(Tutor? entity) =>
             entity == null ? null :
             new TutorDto(
                 entity.Id,

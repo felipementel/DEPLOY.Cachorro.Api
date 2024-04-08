@@ -14,24 +14,24 @@ namespace DEPLOY.Cachorro.Application.AppServices
             _adocaoService = adocaoService;
         }
 
-        //https://github.com/altmann/FluentResults
-        public async Task AdotarAsync(
+        public async Task<IEnumerable<string>> AdotarAsync(
             Guid cachorroId, 
             long tutorId, 
             CancellationToken cancellationToken = default)
         {
-            await _adocaoService.AdotarAsync(
+            return await _adocaoService.AdotarAsync(
                 cachorroId, 
                 tutorId, 
                 cancellationToken);
         }
 
-        public Task DevolverAdocaoAsync(
+        public Task<IEnumerable<string>> DevolverAdocaoAsync(
             Guid cachorroId, 
-            long TutorId,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return _adocaoService.DevolverAdocaoAsync(
+                cachorroId, 
+                cancellationToken);
         }
     }
 }

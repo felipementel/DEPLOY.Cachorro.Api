@@ -11,12 +11,18 @@ using DEPLOY.Cachorro.Infra.Repository.Repositories;
 using DEPLOY.Cachorro.Infra.Repository.Repositories.Base;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using Polly.Timeout;
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace DEPLOY.Cachorro.Infra.CrossCutting
 {
+    [ExcludeFromCodeCoverage]
     public static class IoC
     {
-        public static void RegisterServices(this IServiceCollection services)
+        public static void AddRegisterServices(this IServiceCollection services)
         {
             services.AddScoped<ICachorroAppServices, Application.AppServices.CachorroAppServices>();
             services.AddScoped<ITutorAppServices, Application.AppServices.TutorAppServices>();

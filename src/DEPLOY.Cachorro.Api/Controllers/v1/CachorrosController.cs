@@ -2,6 +2,7 @@ using Asp.Versioning;
 using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -33,8 +34,45 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         {
             var items = await _cachorroAppService.GetAllAsync(cancellationToken);
 
-            return items.Any() ? Ok(items) : NoContent();
+            return items?.Count() > 0 ? Ok(items) : NoContent();
         }
+
+        [HttpGet("adotados")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Lista de cachorro adotados",
+            Tags = new[] { "Cachorros" },
+            Description = "Operação para listar de cachorros adotados")]
+        public async Task<IActionResult> ListAllCachorrosAdotadosAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var items = await _cachorroAppService.GetByKeyAsync(
+                c => c.Tutor != null,
+                cancellationToken);
+
+            return items?.Count() > 0 ? Ok(items) : NoContent();
+        }
+
+        [HttpGet("paraadotar")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Lista de cachorro disponíveis para adoção",
+            Tags = new[] { "Cachorros" },
+            Description = "Operação para listar de cachorros disponíveis para adoção")]
+        public async Task<IActionResult> ListAllCachorrosParaAdocaoAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var items = await _cachorroAppService.GetByKeyAsync(
+                c => c.Tutor == null,
+                cancellationToken);
+
+            return items?.Count > 0 ? Ok(items) : NoContent();
+        }
+        
 
         [HttpGet("{id}")]
         [Produces("application/json")]
@@ -50,9 +88,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             CancellationToken cancellationToken = default)
         {
             var items = await _cachorroAppService.GetByIdAsync(
-                id, 
+                id,
                 cancellationToken);
-            
+
             if (items == null)
             {
                 return NotFound();
@@ -78,15 +116,18 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 cachorroCreateDto,
                 cancellationToken);
 
-            if (item.Erros.Any())
+            if (item?.Erros.Count() > 0)
                 return UnprocessableEntity(item.Erros);
 
             return CreatedAtAction("GetById",
-                new { id = item.Id,
+                new
+                {
+                    id = item?.Id,
                     version = new ApiVersion(
                         1,
                         0)
-                    .ToString() },
+                    .ToString()
+                },
                 item);
         }
 
@@ -105,12 +146,14 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 return UnprocessableEntity();
             }
 
-            return await _cachorroAppService.UpdateAsync(
-                id, 
+            var item = await _cachorroAppService.UpdateAsync(
+                id,
                 cachorroDto,
-                cancellationToken)
+                cancellationToken);
+
+            return !item.Any()
            ? NoContent()
-           : NotFound();
+           : UnprocessableEntity(item);
         }
 
         [HttpDelete("{id}")]

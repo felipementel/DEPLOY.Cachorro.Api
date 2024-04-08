@@ -2,6 +2,7 @@
 using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Interfaces.Repositories;
 using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Interfaces.Repositories;
 using DEPLOY.Cachorro.Infra.Repository.Repositories.Base;
+using System.Collections.Frozen;
 
 namespace DEPLOY.Cachorro.Domain.Aggregates.Adotar.Services
 {
@@ -10,6 +11,7 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Adotar.Services
         private readonly IUnitOfWork _uow;
         private readonly ICachorroRepository _cachorroRepository;
         private readonly ITutorRepository _tutorRepository;
+        private readonly IList<string> _validation;
 
         public AdocaoService(
             IUnitOfWork uow,
@@ -19,35 +21,74 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Adotar.Services
             _uow = uow;
             _cachorroRepository = cachorroRepository;
             _tutorRepository = tutorRepository;
+            _validation = new List<string>(3);
         }
 
-        //https://github.com/altmann/FluentResults
-        public async Task AdotarAsync(
+        public async Task<IEnumerable<string>> AdotarAsync(
             Guid cachorroId,
             long tutorId,
             CancellationToken cancellationToken = default)
         {
             var existedCachorro = await _cachorroRepository.GetByIdAsync(cachorroId, cancellationToken);
-            // capturar erro de cachorro não encontrado
+
+            if (existedCachorro is null)
+            {
+                _validation.Add("Cachorro não encontrado");
+            }
+            else if (existedCachorro.Tutor is not null)
+            {
+                _validation.Add("Cachorro já adotado");
+            }
 
             var existedTutor = await _tutorRepository.GetByIdAsync(tutorId, cancellationToken);
-            // capturar erro de tutor não encontrado
 
-            //retornar validacao
+            if (existedTutor is null)
+            {
+                _validation.Add("Tutor não encontrado");
+            }
 
-            existedCachorro.Adotar(existedTutor);
+            if (_validation.Count > 0)
+            {
+                return _validation;
+            }
+
+            existedCachorro?.Adotar(existedTutor);
 
             await _cachorroRepository.UpdateAsync(existedCachorro);
 
             await _uow.CommitAndSaveChangesAsync(cancellationToken);
+
+            return _validation;
         }
 
-        public Task DevolverAdocaoAsync(
+
+        public async Task<IEnumerable<string>> DevolverAdocaoAsync(
             Guid cachorroId,
-            long TutorId,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var existedCachorro = await _cachorroRepository.GetByIdAsync(cachorroId, cancellationToken);
+
+            if (existedCachorro is null)
+            {
+                _validation.Add("Cachorro não encontrado");
+            }
+            else if (existedCachorro.Tutor is null)
+            {
+                _validation.Add("Cachorro não consta como adotado no sistema");
+            }
+
+            if (_validation?.Count() > 0)
+            {
+                return _validation.ToFrozenSet();
+            }
+
+            existedCachorro.Devolver();
+
+            await _cachorroRepository.UpdateAsync(existedCachorro, cancellationToken);
+
+            await _uow.CommitAndSaveChangesAsync(cancellationToken);
+
+            return _validation;
         }
     }
 }

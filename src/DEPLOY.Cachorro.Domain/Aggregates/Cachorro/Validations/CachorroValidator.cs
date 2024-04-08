@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Interfaces.Repositories;
+using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Interfaces.Repositories;
+using FluentValidation;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Validations
@@ -6,13 +8,29 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Validations
     [ExcludeFromCodeCoverage]
     public class CachorroValidator : AbstractValidator<Entities.Cachorro>
     {
-        public CachorroValidator()
+        private readonly ICachorroRepository _cachorroRepository;
+
+        public CachorroValidator(ICachorroRepository cachorroRepository)
         {
+            _cachorroRepository = cachorroRepository;
+
             RuleSet("CreateNew", () =>
             {
                 RuleFor(x => x.Nome)
                 .NotEmpty()
                 .WithMessage("Nome é obrigatório");
+
+                RuleFor(x => x.Nome)
+                .MustAsync(async (id, cancellationToken) =>
+                {
+                    var item = await _cachorroRepository.GetByKeyAsync(t => t.Nome == id);
+
+                    if (item.Count == 0)
+                        return true;
+
+                    return false;
+                })
+                .WithMessage("Já existe um cachorro com o nome informado");
 
                 RuleFor(x => x.Nome)
                .MaximumLength(100)

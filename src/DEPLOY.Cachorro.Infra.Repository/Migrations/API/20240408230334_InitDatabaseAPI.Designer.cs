@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
 {
     [DbContext(typeof(CachorroDbContext))]
-    [Migration("20240317120035_InitDatabaseAPI")]
+    [Migration("20240408230334_InitDatabaseAPI")]
     partial class InitDatabaseAPI
     {
         /// <inheritdoc />
@@ -64,8 +64,8 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
                         .HasColumnType("decimal(6,2)")
                         .HasColumnName("Peso");
 
-                    b.Property<int?>("TutorId")
-                        .HasColumnType("int");
+                    b.Property<long?>("TutorId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -80,11 +80,11 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ac9b57e9-c326-45d2-bc48-853a146be964"),
+                            Id = new Guid("4b7f75cc-bad0-4c5e-87ba-70178ab9fe13"),
                             Adotado = false,
-                            Atualizacao = new DateTime(2024, 3, 17, 9, 0, 35, 399, DateTimeKind.Local).AddTicks(5238),
-                            Cadastro = new DateTime(2024, 3, 17, 9, 0, 35, 399, DateTimeKind.Local).AddTicks(5220),
-                            Nascimento = new DateTime(2024, 3, 17, 9, 0, 35, 399, DateTimeKind.Local).AddTicks(5242),
+                            Atualizacao = new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1770),
+                            Cadastro = new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1739),
+                            Nascimento = new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1776),
                             Nome = "Rex",
                             Pelagem = "Curto",
                             Peso = 10.3m
@@ -93,20 +93,21 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
 
             modelBuilder.Entity("DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities.Tutor", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime?>("Atualizacao")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime")
                         .HasColumnName("DataAlteracao");
 
-                    b.Property<long>("CPF")
-                        .HasColumnType("bigint")
+                    b.Property<string>("CPF")
+                        .IsRequired()
+                        .HasColumnType("varchar(11)")
                         .HasColumnName("CPF");
 
                     b.Property<DateTime>("Cadastro")

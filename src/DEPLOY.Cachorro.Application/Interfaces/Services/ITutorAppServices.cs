@@ -8,7 +8,7 @@ namespace DEPLOY.Cachorro.Application.Interfaces.Services
             TutorDto tutorDto,
             CancellationToken cancellationToken = default);
 
-        public Task<bool> UpdateAsync(
+        public Task<IEnumerable<string>> UpdateAsync(
             long id, 
             TutorDto tutorDto,
             CancellationToken cancellationToken = default);

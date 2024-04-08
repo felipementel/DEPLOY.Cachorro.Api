@@ -1,10 +1,11 @@
 ﻿using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Interfaces.Repositories;
 using DEPLOY.Cachorro.Infra.Repository.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DEPLOY.Cachorro.Infra.Repository.Repositories
 {
-    public class CachorroRepository 
+    public class CachorroRepository
         : GenericRepository<Domain.Aggregates.Cachorro.Entities.Cachorro, Guid>
         , ICachorroRepository
     {
@@ -22,6 +23,16 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories
             return await _cachorroContext.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
                 .Include(x => x.Tutor)
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public override async Task<List<Domain.Aggregates.Cachorro.Entities.Cachorro>> GetByKeyAsync(
+                       Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> predicate,
+                       CancellationToken cancellationToken = default)
+        {
+            return await _cachorroContext.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
+                .Include(x => x.Tutor)
+                .Where(predicate)
+                .ToListAsync(cancellationToken);
         }
     }
 }

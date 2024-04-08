@@ -2,9 +2,11 @@ using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Infra.Repository.EntityConfigurations
 {
+    [ExcludeFromCodeCoverage]
     internal class TutorEntityConfiguration : IEntityTypeConfiguration<Tutor>
     {
         public void Configure(EntityTypeBuilder<Tutor> builder)
@@ -17,15 +19,15 @@ namespace DEPLOY.Cachorro.Infra.Repository.EntityConfigurations
 
             builder
                 .Property(x => x.Id)
-                .UseIdentityColumn(seed: 1,increment: 1)
+                .UseIdentityColumn()
                 .HasColumnName("Id")
-                .HasColumnType("int")
+                .HasColumnType("bigint")
                 .IsRequired();
 
             builder
                 .Property(x => x.CPF)
                 .HasColumnName("CPF")
-                .HasColumnType("bigint")
+                .HasColumnType("varchar(11)")
                 .IsRequired();
 
             builder

@@ -15,9 +15,9 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
                 name: "Tutor",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CPF = table.Column<long>(type: "bigint", nullable: false),
+                    CPF = table.Column<string>(type: "varchar(11)", nullable: false),
                     Nome = table.Column<string>(type: "varchar(100)", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "getdate()"),
                     DataAlteracao = table.Column<DateTime>(type: "datetime", nullable: true)
@@ -36,7 +36,7 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
                     Adotado = table.Column<bool>(type: "bit", nullable: false),
                     Pelagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Peso = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    TutorId = table.Column<int>(type: "int", nullable: true),
+                    TutorId = table.Column<long>(type: "bigint", nullable: true),
                     Nome = table.Column<string>(type: "varchar(100)", nullable: false),
                     DataCadastro = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "getdate()"),
                     DataAlteracao = table.Column<DateTime>(type: "datetime", nullable: true)
@@ -54,7 +54,7 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
             migrationBuilder.InsertData(
                 table: "Cachorro",
                 columns: new[] { "Id", "Adotado", "DataCadastro", "DataNascimento", "Nome", "Pelagem", "Peso", "TutorId" },
-                values: new object[] { new Guid("ac9b57e9-c326-45d2-bc48-853a146be964"), false, new DateTime(2024, 3, 17, 9, 0, 35, 399, DateTimeKind.Local).AddTicks(5220), new DateTime(2024, 3, 17, 9, 0, 35, 399, DateTimeKind.Local).AddTicks(5242), "Rex", "Curto", 10.3m, null });
+                values: new object[] { new Guid("4b7f75cc-bad0-4c5e-87ba-70178ab9fe13"), false, new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1739), new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1776), "Rex", "Curto", 10.3m, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cachorro_Adotado",

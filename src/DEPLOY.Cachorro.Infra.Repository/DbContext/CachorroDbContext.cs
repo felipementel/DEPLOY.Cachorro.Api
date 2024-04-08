@@ -12,7 +12,7 @@ namespace DEPLOY.Cachorro.Infra.Repository
         {
         }
 
-        public CachorroDbContext()
+        protected CachorroDbContext()
         {
         }
 

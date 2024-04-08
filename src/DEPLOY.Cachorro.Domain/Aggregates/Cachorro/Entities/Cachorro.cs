@@ -26,6 +26,7 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Entities
             Adotado = adotado;
             Pelagem = pelagem;
             Peso = peso;
+            Tutor = tutor;
         }
 
         public Cachorro(
@@ -70,16 +71,18 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Entities
 
         public Tutor.Entities.Tutor? Tutor { get; set; }
 
-        public void Adotar(Tutor.Entities.Tutor tutor)
+        internal void Adotar(Tutor.Entities.Tutor tutor)
         {
             Atualizacao = DateTime.Now;
             Tutor = tutor;
             Adotado = true;
         }
 
-        internal void UpdateNascimento(DateTime nascimento)
+        internal void Devolver()
         {
-            Nascimento = nascimento;
+            Atualizacao = DateTime.Now;
+            Tutor = null;
+            Adotado = false;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DEPLOY.Cachorro.Domain.Shared
+﻿using System.Linq.Expressions;
+
+namespace DEPLOY.Cachorro.Domain.Shared
 {
     public interface IGenericService<TEntity, Tid> where TEntity : BaseEntity<Tid>
     {
@@ -17,9 +19,13 @@
             Tid id,
             CancellationToken cancellationToken = default);
 
-        Task<bool> UpdateAsync(
+        Task<IEnumerable<string>> UpdateAsync(
             Tid id, 
             TEntity entity,
+            CancellationToken cancellationToken = default);
+
+        Task<List<TEntity>> GetByKeyAsync(
+            Expression<Func<TEntity, bool>> predicate,
             CancellationToken cancellationToken = default);
     }
 }

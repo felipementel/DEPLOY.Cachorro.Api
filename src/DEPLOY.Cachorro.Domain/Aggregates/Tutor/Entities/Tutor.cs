@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using DEPLOY.Cachorro.Domain.Shared;
-
 namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities
 {
     [ExcludeFromCodeCoverage]
@@ -11,7 +10,7 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities
             string nome,
             DateTime cadastro,
             DateTime? atualizacao,
-            long cPF) : base(id, nome, cadastro, atualizacao)
+            string cPF) : base(id, nome, cadastro, atualizacao)
         {
             Id = id;
             Nome = nome;
@@ -20,6 +19,6 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities
             CPF = cPF;
         }
 
-        public long CPF { get; set; }
+        public string CPF { get; set; }
     }
 }

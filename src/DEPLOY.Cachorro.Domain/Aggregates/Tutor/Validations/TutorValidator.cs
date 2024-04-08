@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Interfaces.Repositories;
+using FluentValidation;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Validations
@@ -6,13 +7,29 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Validations
     [ExcludeFromCodeCoverage]
     public class TutorValidator : AbstractValidator<Entities.Tutor>
     {
-        public TutorValidator()
+        public readonly ITutorRepository _tutorRepository;
+
+        public TutorValidator(ITutorRepository tutorRepository)
         {
+            _tutorRepository = tutorRepository;
+
             RuleSet("CreateNew", () =>
             {
                 RuleFor(x => x.Nome)
                 .NotEmpty()
                 .WithMessage("Nome é obrigatório");
+
+                RuleFor(x => x.Nome)
+                .MustAsync(async (id, cancellation) =>
+                {
+                    var item = await _tutorRepository.GetByKeyAsync(t => t.Nome == id);
+
+                    if (item.Count == 0)
+                        return true;
+
+                    return false;
+                })
+                .WithMessage("Nome já existe na base");
 
                 RuleFor(x => x.Nome)
                .MaximumLength(100)
@@ -25,6 +42,61 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Validations
                 RuleFor(x => x.CPF.ToString().PadLeft(11,'0'))
                 .Must(IsCpf)
                 .WithMessage("CPF inválido");
+
+                RuleFor(x => x.CPF.ToString().PadLeft(11, '0'))
+                .MustAsync(async (id, cancellation) =>
+                {
+                    var item = await _tutorRepository.GetByKeyAsync(t => t.CPF == id);
+
+                    if (item.Count == 0)
+                        return true;                    
+
+                    return false;
+                })
+                .WithMessage("CPF já cadastrado");
+            });
+
+            RuleSet("Update", () =>
+            {
+                RuleFor(x => x.Nome)
+                .NotEmpty()
+                .WithMessage("Nome é obrigatório");
+
+                RuleFor(x => x.Nome)
+                .MustAsync(async (id, cancellation) =>
+                {
+                    var item = await _tutorRepository.GetByKeyAsync(t => t.Nome == id);
+
+                    if (item.Count == 0)
+                        return true;
+
+                    return false;
+                })
+                .WithMessage("Está tentando alterar para um Nome que já existe");
+
+                RuleFor(x => x.Nome)
+               .MaximumLength(100)
+               .WithMessage("Nome deve ter no máximo 100 caracteres");
+
+                RuleFor(x => x.CPF)
+                .NotEmpty()
+                .WithMessage("CPF é obrigatório");
+
+                RuleFor(x => x.CPF.ToString().PadLeft(11, '0'))
+                .Must(IsCpf)
+                .WithMessage("CPF inválido");
+
+                RuleFor(x => x.CPF.ToString().PadLeft(11, '0'))
+                .MustAsync(async (id, cancellation) =>
+                {
+                    var item = await _tutorRepository.GetByKeyAsync(t => t.CPF == id);
+
+                    if (item.Count == 0)
+                        return true;
+
+                    return false;
+                })
+                .WithMessage("Está tentando alterar para um CPF que já existe");
             });
         }
 

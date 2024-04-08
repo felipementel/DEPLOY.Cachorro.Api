@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
 {
+    [ExcludeFromCodeCoverage]
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly CachorroDbContext _context;
@@ -11,17 +12,20 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
             _context = context;
         }
 
-        public async Task BeginTransactionAsync(CancellationToken cancellationToken)
+        public async Task BeginTransactionAsync(
+            CancellationToken cancellationToken)
         {
             await _context.Database.BeginTransactionAsync(cancellationToken);
         }
 
-        public async Task RollbackTransactionAsync(CancellationToken cancellationToken)
+        public async Task RollbackTransactionAsync(
+            CancellationToken cancellationToken)
         {
             await _context.Database.RollbackTransactionAsync(cancellationToken);
         }
 
-        public async Task<bool> CommitAndSaveChangesAsync(CancellationToken cancellationToken)
+        public async Task<bool> CommitAndSaveChangesAsync(
+            CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
@@ -30,14 +34,12 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed && disposing)
             {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
+                _context.Dispose();
             }
-            this.disposed = true;
+
+            disposed = true;
         }
 
         public void Dispose()

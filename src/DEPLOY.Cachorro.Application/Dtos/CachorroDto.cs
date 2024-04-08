@@ -16,7 +16,7 @@ namespace DEPLOY.Cachorro.Application.Dtos
         float Peso,
         TutorDto? Tutor,
         [SwaggerSchema(ReadOnly = true)]
-        IEnumerable<string> Erros = null) : BaseDto(Erros)
+        IEnumerable<string> Erros) : BaseDto(Erros)
     {
         public static implicit operator Domain.Aggregates.Cachorro.Entities.Cachorro(CachorroDto dto) =>
             new Domain.Aggregates.Cachorro.Entities.Cachorro(
@@ -27,10 +27,9 @@ namespace DEPLOY.Cachorro.Application.Dtos
                 dto.Nascimento,
                 dto.Adotado,
                 dto.Pelagem,
-                dto.Peso
-            );
+                dto.Peso);
 
-        public static implicit operator CachorroDto?(Domain.Aggregates.Cachorro.Entities.Cachorro entity) =>
+        public static implicit operator CachorroDto?(Domain.Aggregates.Cachorro.Entities.Cachorro? entity) =>
             entity == null ? null :
             new CachorroDto(
                 entity.Id,

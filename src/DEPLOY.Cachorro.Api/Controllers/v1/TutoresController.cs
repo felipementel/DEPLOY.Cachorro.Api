@@ -2,6 +2,7 @@
 using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -109,8 +110,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 tutorDto, 
                 cancellationToken);
 
-               return retorned ? NoContent() 
-                : NotFound();
+               return !retorned.Any() ? NoContent() 
+                : UnprocessableEntity(retorned);
         }
 
         [HttpDelete("{id}")]

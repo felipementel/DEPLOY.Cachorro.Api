@@ -13,7 +13,6 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Services
             IValidator<Entities.Cachorro> validator,
             ICachorroRepository cachorroRepository) : base(unitOfWork, validator, cachorroRepository)
         {
-
         }
     }
 }

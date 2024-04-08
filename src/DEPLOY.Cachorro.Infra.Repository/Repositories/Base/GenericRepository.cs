@@ -1,8 +1,11 @@
 using DEPLOY.Cachorro.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
 {
+    [ExcludeFromCodeCoverage]
     public abstract class GenericRepository<TEntity, Tid>
         : IGenericRepository<TEntity, Tid> where TEntity
         : BaseEntity<Tid>
@@ -32,38 +35,41 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
         }
 
         public async virtual Task<TEntity> InsertAsync(
-            TEntity obj,
+            TEntity entity,
             CancellationToken cancellationToken = default)
         {
             //obj.GetType().GetProperty("Cadastro").SetValue(obj, new DateTime().ToLocalTime);
 
             await _cachorroDbContext
                 .Set<TEntity>()
-                .AddAsync(obj, cancellationToken);
+                .AddAsync(entity, cancellationToken);
 
-            return obj;
+            return entity;
         }
 
         public async virtual Task UpdateAsync(
-            TEntity obj,
+            TEntity entity,
             CancellationToken cancellationToken = default)
         {
             await Task.Run(() =>
             {
                 _cachorroDbContext
                     .Set<TEntity>()
-                    .Attach(obj);
+                    .Attach(entity);
 
                 _cachorroDbContext
-                    .Entry(obj).State = EntityState.Modified;
-            });
+                    .Entry(entity).State = EntityState.Modified;
+
+            }, cancellationToken);
         }
 
         public async virtual Task<bool> DeleteAsync(
             Tid id,
             CancellationToken cancellationToken = default)
         {
-            TEntity? existing = await _cachorroDbContext.Set<TEntity>().FindAsync(new object[] {id}, cancellationToken);
+            TEntity? existing = await _cachorroDbContext
+                .Set<TEntity>()
+                .FindAsync(new object[] { id }, cancellationToken);
 
             if (existing != null)
             {
@@ -75,6 +81,16 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories.Base
             }
 
             return false;
+        }
+
+        public virtual async Task<List<TEntity>> GetByKeyAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            CancellationToken cancellationToken = default)
+        {
+            return await _cachorroDbContext
+                .Set<TEntity>()
+                .Where(predicate)
+                .ToListAsync(cancellationToken);
         }
     }
 }
