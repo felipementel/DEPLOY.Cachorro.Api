@@ -1,5 +1,6 @@
-﻿using DEPLOY.Cachorro.Repository;
+﻿using DEPLOY.Cachorro.Infra.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.Api.Extensions.Database
@@ -20,8 +21,12 @@ namespace DEPLOY.Cachorro.Api.Extensions.Database
                             maxRetryCount: 5,
                             maxRetryDelay: TimeSpan.FromSeconds(5),
                             errorNumbersToAdd: null);
+
+                        p.MigrationsHistoryTable("_ControleMigracoes", "dbo");
+
                     })
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .LogTo(Console.WriteLine, LogLevel.Debug)
                 .EnableSensitiveDataLogging());
         }
     }

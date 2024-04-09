@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning;
-using DEPLOY.Cachorro.Repository;
+using DEPLOY.Cachorro.Application.Dtos;
+using DEPLOY.Cachorro.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
@@ -9,42 +11,46 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize]
     public class TutoresController : ControllerBase
     {
-        private readonly CachorroDbContext _cachorroDbContext;
+        private readonly ITutorAppServices _tutorAppServices;
 
-        public TutoresController(CachorroDbContext cachorroDbContext)
+        public TutoresController(ITutorAppServices tutorAppServices)
         {
-            _cachorroDbContext = cachorroDbContext;
+            _tutorAppServices = tutorAppServices;
         }
 
         [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<Domain.Tutor>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<TutorDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Listar Tutor",
             Tags = new[] { "Tutores" },
-            Description = "Operação para listar do tutor")]
-        public async Task<IActionResult> ListarAsync()
+            Description = "Operação para listar tutores")]
+        public async Task<IActionResult> ListAllAsync(
+            CancellationToken cancellationToken = default)
         {
-            var items = await _cachorroDbContext.Tutores.ToListAsync();
+            var items = await _tutorAppServices.GetAllAsync(cancellationToken);
 
             return Ok(items);
         }
 
         [HttpGet("{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(Domain.Tutor), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TutorDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Obter Tutor",
             Tags = new[] { "Tutores" },
-            Description = "Operação para obter  tutor por id")]
-        public async Task<IActionResult> ObterPorIdAsync(long id)
+            Description = "Operação para obter tutor por id")]
+        public async Task<IActionResult> GetByIdAsync(
+            long id,
+            CancellationToken cancellationToken = default)
         {
-            var items = await _cachorroDbContext.Tutores.FindAsync(id);
+            var items = await _tutorAppServices.GetByIdAsync(id, cancellationToken);
 
             if (items == null)
             {
@@ -57,42 +63,55 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(Domain.Tutor), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TutorDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Cadastrar Tutor",
             Tags = new[] { "Tutores" },
-            Description = "Operação para cadastrar do tutor")]
-        public async Task<IActionResult> CadastrarTutorAsync(
-            [FromBody] Domain.Tutor tutor)
+            Description = "Operação para cadastrar tutor")]
+        public async Task<IActionResult> CreateAsync(
+            [FromBody] TutorDto tutorDto,
+            CancellationToken cancellationToken = default)
         {
-            _cachorroDbContext.Tutores.Add(tutor);
-            await _cachorroDbContext.SaveChangesAsync();
+            var item = await _tutorAppServices.InsertAsync(
+                tutorDto, 
+                cancellationToken);
 
-            return CreatedAtAction("ObterPorId",
-                new { id = tutor.Id, version = new ApiVersion(1, 0).ToString() },
-                tutor);
+            if (item.Erros.Any())
+                return UnprocessableEntity(item.Erros);
+
+            return CreatedAtAction("GetById",
+                new { 
+                    id = item.Id,
+                    version = new ApiVersion(
+                        1,
+                        0)
+                    .ToString() },
+                item);
         }
 
         [HttpPut("{id}")]
         [SwaggerOperation(
             Summary = "Atualizar Tutor",
             Tags = new[] { "Tutores" },
-            Description = "Operação para atualizar do tutor")]
-        public async Task<IActionResult> PutTutorAsync(
+            Description = "Operação para atualizar tutor")]
+        public async Task<IActionResult> UpdateAsync(
             long id,
-            Domain.Tutor tutor)
+            [FromBody] TutorDto tutorDto,
+            CancellationToken cancellationToken = default)
         {
-            if (id != tutor.Id)
+            if (id != tutorDto.Id)
             {
-                return BadRequest();
+                return UnprocessableEntity();
             }
 
-            _cachorroDbContext.Entry(tutor).State = EntityState.Modified;
+            var retorned = await _tutorAppServices.UpdateAsync(
+                id,
+                tutorDto, 
+                cancellationToken);
 
-            await _cachorroDbContext.SaveChangesAsync();
-
-            return NoContent();
+               return !retorned.Any() ? NoContent() 
+                : UnprocessableEntity(retorned);
         }
 
         [HttpDelete("{id}")]
@@ -103,18 +122,17 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [SwaggerOperation(
             Summary = "Excluir Tutor",
             Tags = new[] { "Tutores" },
-            Description = "Operação para excluir do tutor por id")]
-        public async Task<IActionResult> ExcluirTutorAsync(long id)
+            Description = "Operação para excluir tutor por id")]
+        public async Task<IActionResult> DeleteAsync(
+            long id,
+            CancellationToken cancellationToken = default)
         {
-            var item = await _cachorroDbContext.Tutores.FindAsync(id);
+            var item = await _tutorAppServices.DeleteAsync(id, cancellationToken);
 
-            if (item == null)
+            if (!item)
             {
                 return NotFound();
             }
-
-            _cachorroDbContext.Tutores.Remove(item);
-            await _cachorroDbContext.SaveChangesAsync();
 
             return NoContent();
         }

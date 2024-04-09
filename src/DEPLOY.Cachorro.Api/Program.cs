@@ -6,7 +6,7 @@ using DEPLOY.Cachorro.Api.Extensions.Telemetria;
 using DEPLOY.Cachorro.Api.Extensions.Auth;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-
+using DEPLOY.Cachorro.Infra.CrossCutting;
 namespace DEPLOY.Cachorro.Api
 {
     [ExcludeFromCodeCoverage]
@@ -17,7 +17,7 @@ namespace DEPLOY.Cachorro.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddAuthExtension(builder.Configuration);
+            builder.Services.AddRegisterServices();
 
             builder.Services.AddControllers()
                 .AddJsonOptions(opt =>
@@ -25,7 +25,7 @@ namespace DEPLOY.Cachorro.Api
                     opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     opt.JsonSerializerOptions.WriteIndented = true;
                     opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-
+                    opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
 
             builder.Services.AddRouting(opt =>
@@ -36,9 +36,10 @@ namespace DEPLOY.Cachorro.Api
 
             builder.Services.AddEndpointsApiExplorer();
 
-            //Extensions
-            builder.Services.AddKeyVaultExtension(builder.Configuration);
+            //Configure Extensions
             builder.Logging.AddLogExtension(builder.Configuration);
+            builder.Services.AddAuthExtension(builder.Configuration);
+            builder.Services.AddKeyVaultExtension(builder.Configuration);
             builder.Services.AddDatabaseExtension(builder.Configuration);
             builder.Services.AddTelemetriaExtension(builder.Configuration);
             builder.Services.AddSwaggerExtension();
@@ -46,7 +47,7 @@ namespace DEPLOY.Cachorro.Api
 
             var app = builder.Build();
 
-            //Extensions
+            //Use Extensions
             app.UseSwaggerExtension();
 
             app.UseHttpsRedirection();

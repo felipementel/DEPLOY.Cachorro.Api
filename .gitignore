@@ -7,6 +7,8 @@
 src/DEPLOY.Cachorro.Api.Tests/coveragereport/
 src/DEPLOY.Cachorro.Api.Tests/coveragereport/*
 src/coverage.xml
+coverage.xml
+.sonarqube
 
 # User-specific files
 *.rsuser

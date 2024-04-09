@@ -124,6 +124,22 @@ reportgenerator -reports:..\TestResults\DotnetCoverageCollect\**\coverage.cobert
 
 1.2 A partir da pasta src execute o comando:
 
+# Ambiente Local
+
+## SonarQube
+
+1. Comandos para submeter o código ao sonarqube do Container
+
+dotnet sonarscanner begin /k:"CachorroAPI" /d:sonar.host.url="http://localhost:9044" /d:sonar.token="xxxxx" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.exclusions="**/Migrations/**"
+
+dotnet restore .\src\DEPLOY.Cachorro.Api\DEPLOY.Cachorro.Api.csproj
+
+dotnet build .\src\DEPLOY.Cachorro.Api\DEPLOY.Cachorro.Api.csproj --no-incremental
+
+dotnet-coverage collect 'dotnet test ./src/' -f xml -o 'coverage.xml'
+
+dotnet-sonarscanner end /d:sonar.token="xxxxx"
+
 ---
 
 # EntityFramework Commands
@@ -136,13 +152,13 @@ dotnet tool install --global dotnet-ef
 
 ```
 
-dotnet ef migrations add InitDatabaseAPI -s DEPLOY.Cachorro.Api -p DEPLOY.Cachorro.Repository -c DEPLOY.Cachorro.Repository.CachorroDbContext --output-dir Migrations/API -v
+dotnet ef migrations add InitDatabaseAPI -s DEPLOY.Cachorro.Api -p DEPLOY.Cachorro.Infra.Repository -c DEPLOY.Cachorro.Infra.Repository.CachorroDbContext --output-dir Migrations/API -v
 
 ```
 
 ```
 
-dotnet ef database update InitDatabaseAPI --startup-project DEPLOY.Cachorro.Api --project DEPLOY.Cachorro.Repository --context DEPLOY.Cachorro.Repository.CachorroDbContext --verbose
+dotnet ef database update InitDatabaseAPI --startup-project DEPLOY.Cachorro.Api --project DEPLOY.Cachorro.Infra.Repository --context DEPLOY.Cachorro.Infra.Repository.CachorroDbContext --verbose
 
 ```
 

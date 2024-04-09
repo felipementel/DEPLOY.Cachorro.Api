@@ -2,7 +2,7 @@
 # docker-compose -f ../docker/docker-compose.yml up -d --build
 # docker-compose -f ../docker/docker-compose.yml down --remove-orphans
 
-version: "3.8"
+version: '3.8'
 services:
   # cachorro.api:
   #   hostname: cachorro-api
@@ -44,7 +44,7 @@ services:
       - 1433:1433
 
   sonarqube:
-    image: sonarqube:10.3.0-community
+    image: sonarqube:10.4.1-community
     hostname: sonar-canal-deploy
     container_name: sonar-canal-deploy
     restart: always

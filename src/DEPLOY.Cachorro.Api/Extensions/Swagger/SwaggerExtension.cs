@@ -49,6 +49,7 @@ namespace DEPLOY.Cachorro.Api.Extensions.Swagger
             app.UseSwaggerUI(
                 options =>
                 {
+                    options.DisplayRequestDuration();
                     var descriptions = app.DescribeApiVersions();
                     options.RoutePrefix = string.Empty;
 
