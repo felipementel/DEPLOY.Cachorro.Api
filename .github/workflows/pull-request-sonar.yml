@@ -1,4 +1,4 @@
-name: SonarCloud
+name: Validation Code | SonarCloud
 on:
   pull_request:
     types: [opened, synchronize, reopened]
