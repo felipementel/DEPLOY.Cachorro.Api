@@ -10,7 +10,7 @@ on:
 
 env:
   imageName: cachorro.api
-  dotnetVersion: 7.x
+  dotnetVersion: 8.x
   csprojFolder: ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj
 
 jobs:
@@ -125,7 +125,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get-Version from csproj
         id: get-version
