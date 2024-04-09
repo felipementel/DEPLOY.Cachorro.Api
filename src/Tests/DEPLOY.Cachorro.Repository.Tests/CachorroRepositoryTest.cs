@@ -342,10 +342,10 @@ namespace DEPLOY.Cachorro.Repository.Tests
 
             var repository = new CachorroRepository(ContextMock.Object);
 
-            int indiceAleatorio = new Random().Next(0, cachorros.Count);
+            int indiceAleatorio = new Random().Next(0, cachorros.Count -1);
 
             // Acessar o item correspondente ao índice aleatório na lista
-            var itemAleatorio = cachorros[indiceAleatorio - 1];
+            var itemAleatorio = cachorros[indiceAleatorio];
 
             // Act
             var result = await repository.GetByKeyAsync(x => x.Id == itemAleatorio.Id, CancellationToken.None);
