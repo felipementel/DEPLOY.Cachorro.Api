@@ -332,7 +332,7 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorrosAdotados = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(40);
 
             _cachorroAppServiceMock.Setup(repo => repo.GetByKeyAsync(
-                It.IsAny<Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>>>(),
+                It.IsAny<Expression<Func<CachorroDto, bool>>>(),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(cachorrosAdotados);
 
@@ -357,7 +357,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         {
             // Arrange
             _cachorroAppServiceMock.Setup(repo => repo.GetByKeyAsync(
-                It.IsAny<Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>>>(),
+                It.IsAny<Expression<Func<CachorroDto, bool>>>(),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<CachorroDto>());
 
@@ -382,7 +382,7 @@ namespace DEPLOY.Cachorro.Api.Tests
             var cachorrosParaAdocao = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(40);
 
             _cachorroAppServiceMock.Setup(repo => repo.GetByKeyAsync(
-                It.IsAny<Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>>>(),
+                It.IsAny<Expression<Func<CachorroDto, bool>>>(),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(cachorrosParaAdocao);
 
@@ -404,7 +404,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         {
             // Arrange
             _cachorroAppServiceMock.Setup(repo => repo.GetByKeyAsync(
-                It.IsAny<Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>>>(),
+                It.IsAny<Expression<Func<CachorroDto, bool>>>(),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<CachorroDto>());
 

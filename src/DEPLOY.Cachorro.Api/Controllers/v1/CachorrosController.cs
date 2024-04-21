@@ -11,7 +11,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize]
+    // [Authorize]
     public class CachorrosController : ControllerBase
     {
         public readonly ICachorroAppServices _cachorroAppService;
@@ -49,7 +49,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             CancellationToken cancellationToken = default)
         {
             var items = await _cachorroAppService.GetByKeyAsync(
-                c => c.Tutor != null,
+                c => c.Adotado,
                 cancellationToken);
 
             return items?.Count() > 0 ? Ok(items) : NoContent();
@@ -67,7 +67,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             CancellationToken cancellationToken = default)
         {
             var items = await _cachorroAppService.GetByKeyAsync(
-                c => c.Tutor == null,
+                c => !c.Adotado,
                 cancellationToken);
 
             return items?.Count > 0 ? Ok(items) : NoContent();
