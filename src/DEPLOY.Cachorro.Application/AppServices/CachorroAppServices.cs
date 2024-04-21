@@ -48,19 +48,14 @@ namespace DEPLOY.Cachorro.Application.AppServices
             Expression<Func<CachorroDto, bool>> predicate,
             CancellationToken cancellationToken = default)
         {
-            ParameterExpression parameter = Expression.Parameter(typeof(Domain.Aggregates.Cachorro.Entities.Cachorro), "cachorro");
-
-            ExpressionConverter body = new(parameter);
-
-            Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> domainPredicate = Expression.Lambda<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>>(
-                body.Visit(predicate.Body),
-                parameter
-            );
+            Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> domainPredicate = ConvertExpression(predicate);
 
             var item = await _cachorroService.GetByKeyAsync(domainPredicate, cancellationToken);
 
             return item.Select(x => (CachorroDto)x!).ToList();
         }
+
+        
 
         public async Task<CachorroDto> InsertAsync(
             CachorroCreateDto cachorroDto,
@@ -80,6 +75,19 @@ namespace DEPLOY.Cachorro.Application.AppServices
                 id,
                 cachorroDto, 
                 cancellationToken);
+        }
+
+        private static Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> ConvertExpression(Expression<Func<CachorroDto, bool>> predicate)
+        {
+            ParameterExpression parameter = Expression.Parameter(typeof(Domain.Aggregates.Cachorro.Entities.Cachorro), "cachorro");
+
+            ExpressionConverter body = new(parameter);
+
+            Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> domainPredicate = Expression.Lambda<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>>(
+                body.Visit(predicate.Body),
+                parameter
+            );
+            return domainPredicate;
         }
     }
 }
