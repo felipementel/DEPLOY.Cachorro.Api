@@ -49,7 +49,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             CancellationToken cancellationToken = default)
         {
             var items = await _cachorroAppService.GetByKeyAsync(
-                c => c.Tutor != null,
+                c => c.Adotado,
                 cancellationToken);
 
             return items?.Count() > 0 ? Ok(items) : NoContent();
@@ -67,7 +67,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             CancellationToken cancellationToken = default)
         {
             var items = await _cachorroAppService.GetByKeyAsync(
-                c => c.Tutor == null,
+                c => !c.Adotado,
                 cancellationToken);
 
             return items?.Count > 0 ? Ok(items) : NoContent();

@@ -14,6 +14,9 @@
       "args": [],
       "cwd": "${workspaceFolder}/src/DEPLOY.Cachorro.Api",
       "stopAtEntry": false,
+      "launchBrowser": {
+        "enabled": true
+      },
       // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
       "serverReadyAction": {
         "action": "openExternally",
