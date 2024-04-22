@@ -11,7 +11,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    // [Authorize]
+    [Authorize]
     public class TutoresController : ControllerBase
     {
         private readonly ITutorAppServices _tutorAppServices;

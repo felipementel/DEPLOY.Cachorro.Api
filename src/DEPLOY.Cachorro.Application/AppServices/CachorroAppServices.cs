@@ -55,8 +55,6 @@ namespace DEPLOY.Cachorro.Application.AppServices
             return item.Select(x => (CachorroDto)x!).ToList();
         }
 
-        
-
         public async Task<CachorroDto> InsertAsync(
             CachorroCreateDto cachorroDto,
             CancellationToken cancellationToken = default)
