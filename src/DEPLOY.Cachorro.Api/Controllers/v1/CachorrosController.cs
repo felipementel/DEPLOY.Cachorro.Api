@@ -38,6 +38,43 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             return items?.Count() > 0 ? Ok(items) : NoContent();
         }
 
+        [HttpGet("adotados")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Lista de cachorro adotados",
+            Tags = new[] { "Cachorros" },
+            Description = "Operação para listar de cachorros adotados")]
+        public async Task<IActionResult> ListAllCachorrosAdotadosAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var items = await _cachorroAppService.GetByKeyAsync(
+                c => c.Adotado,
+                cancellationToken);
+
+            return items?.Count() > 0 ? Ok(items) : NoContent();
+        }
+
+        [HttpGet("paraadotar")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Lista de cachorro disponíveis para adoção",
+            Tags = new[] { "Cachorros" },
+            Description = "Operação para listar de cachorros disponíveis para adoção")]
+        public async Task<IActionResult> ListAllCachorrosParaAdocaoAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var items = await _cachorroAppService.GetByKeyAsync(
+                c => !c.Adotado,
+                cancellationToken);
+
+            return items?.Count > 0 ? Ok(items) : NoContent();
+        }
+        
+
         [HttpGet("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(CachorroDto), StatusCodes.Status200OK)]

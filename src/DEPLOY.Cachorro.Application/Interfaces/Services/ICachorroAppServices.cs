@@ -26,7 +26,7 @@ namespace DEPLOY.Cachorro.Application.Interfaces.Services
             CancellationToken cancellationToken = default);
 
         Task<List<CachorroDto>> GetByKeyAsync(
-            Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> predicate,
+            Expression<Func<CachorroDto, bool>> predicate,
             CancellationToken cancellationToken = default);
 
     }
