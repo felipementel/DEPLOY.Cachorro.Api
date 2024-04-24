@@ -2,7 +2,6 @@ using Asp.Versioning;
 using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -23,7 +22,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
 
         [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "List Cachorro",
@@ -37,47 +38,11 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             return items?.Count() > 0 ? Ok(items) : NoContent();
         }
 
-        [HttpGet("adotados")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [SwaggerOperation(
-            Summary = "Lista de cachorro adotados",
-            Tags = new[] { "Cachorros" },
-            Description = "Operação para listar de cachorros adotados")]
-        public async Task<IActionResult> ListAllCachorrosAdotadosAsync(
-            CancellationToken cancellationToken = default)
-        {
-            var items = await _cachorroAppService.GetByKeyAsync(
-                c => c.Tutor != null,
-                cancellationToken);
-
-            return items?.Count() > 0 ? Ok(items) : NoContent();
-        }
-
-        [HttpGet("paraadotar")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [SwaggerOperation(
-            Summary = "Lista de cachorro disponíveis para adoção",
-            Tags = new[] { "Cachorros" },
-            Description = "Operação para listar de cachorros disponíveis para adoção")]
-        public async Task<IActionResult> ListAllCachorrosParaAdocaoAsync(
-            CancellationToken cancellationToken = default)
-        {
-            var items = await _cachorroAppService.GetByKeyAsync(
-                c => c.Tutor == null,
-                cancellationToken);
-
-            return items?.Count > 0 ? Ok(items) : NoContent();
-        }
-        
-
         [HttpGet("{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(CachorroDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(CachorroDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Obter Cachorro",
@@ -103,6 +68,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(CachorroDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Cadastar Cachorro",
@@ -132,6 +99,12 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         }
 
         [HttpPut("{id}")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Atualizar Cachorro",
             Tags = new[] { "Cachorros" },
@@ -179,6 +152,47 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             }
 
             return NoContent();
+        }
+
+
+        [HttpGet("adotados")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Lista de cachorro adotados",
+            Tags = new[] { "Cachorros" },
+            Description = "Operação para listar de cachorros adotados")]
+        public async Task<IActionResult> ListAllCachorrosAdotadosAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var items = await _cachorroAppService.GetByKeyAsync(
+                c => c.Tutor != null,
+                cancellationToken);
+
+            return items?.Count() > 0 ? Ok(items) : NoContent();
+        }
+
+        [HttpGet("paraadotar")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [SwaggerOperation(
+            Summary = "Lista de cachorro disponíveis para adoção",
+            Tags = new[] { "Cachorros" },
+            Description = "Operação para listar de cachorros disponíveis para adoção")]
+        public async Task<IActionResult> ListAllCachorrosParaAdocaoAsync(
+            CancellationToken cancellationToken = default)
+        {
+            var items = await _cachorroAppService.GetByKeyAsync(
+                c => c.Tutor == null,
+                cancellationToken);
+
+            return items?.Count > 0 ? Ok(items) : NoContent();
         }
     }
 }

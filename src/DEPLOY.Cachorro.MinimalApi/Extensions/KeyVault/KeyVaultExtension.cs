@@ -1,0 +1,23 @@
+﻿using Azure.Identity;
+using Microsoft.Extensions.Azure;
+using System.Diagnostics.CodeAnalysis;
+
+namespace DEPLOY.Cachorro.MinimalApi.Extensions.KeyVault
+{
+    [ExcludeFromCodeCoverage]
+    public static class KeyVaultExtension
+    {
+        public static void AddKeyVaultExtension(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddAzureClients(clientBuilder =>
+            {
+                clientBuilder.AddSecretClient(
+                                       configuration.GetSection("KeyVault"));
+
+                clientBuilder.UseCredential(new DefaultAzureCredential());
+            });
+        }
+    }
+}

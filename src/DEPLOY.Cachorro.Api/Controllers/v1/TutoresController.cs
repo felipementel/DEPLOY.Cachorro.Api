@@ -23,7 +23,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
 
         [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<TutorDto>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<TutorDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Listar Tutor",
@@ -39,8 +41,9 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
 
         [HttpGet("{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(TutorDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TutorDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Obter Tutor",
@@ -64,6 +67,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(TutorDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Cadastrar Tutor",
@@ -91,6 +96,10 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Atualizar Tutor",
             Tags = new[] { "Tutores" },
