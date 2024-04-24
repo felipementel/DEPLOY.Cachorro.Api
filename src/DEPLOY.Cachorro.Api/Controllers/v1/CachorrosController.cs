@@ -172,7 +172,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             return items?.Count() > 0 ? Ok(items) : NoContent();
         }
 
-        [HttpGet("paraadotar")]
+        [HttpGet("para-adotar")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(IEnumerable<CachorroDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

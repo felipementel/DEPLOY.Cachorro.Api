@@ -2,9 +2,11 @@
 using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
 
-namespace DEPLOY.Cachorro.MinimalApi.Endpoints
+namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 {
+    [ExcludeFromCodeCoverage]
     public static class TutorEndpoints
     {
         public static void MapTutorEndpoints(this IEndpointRouteBuilder app)
@@ -17,6 +19,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
 
             var tutores = app
                 .MapGroup("/api/v{apiVersion:apiVersion}/tutores")
+                .RequireAuthorization()
                 .WithApiVersionSet(apiVersionSetTutor);
 
             tutores.MapGet("/{id}", async (
@@ -34,7 +37,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
 
                 return await ListAllAsync(tutorAppService);
             })
-                //.RequireAuthorization()
                 .WithOpenApi(operation => new(operation)
                 {
                     OperationId = "ListByIdTutores",
@@ -58,7 +60,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
 
                 return await ListAllAsync(tutorAppService);
             })
-                //.RequireAuthorization()
                 .WithOpenApi(operation => new(operation)
                 {
                     OperationId = "ListByIdTutores2",
@@ -70,27 +71,30 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
             tutores
                 .MapPost("/", async (
                     HttpRequest request,
-                    //ApiVersion version,
                     TutorDto tutorDto,
                     ITutorAppServices tutorAppService,
                     CancellationToken cancellationToken) =>
                 {
-                    var item = await tutorAppService.InsertAsync(tutorDto, cancellationToken);
+                    async Task<IResult> CreateTutorAsync()
+                    {
+                        var item = await tutorAppService.InsertAsync(tutorDto, cancellationToken);
 
-                    //if (item.Erros.Any())
-                    //    return TypedResults.UnprocessableEntity(item.Erros);
+                        if (item.Erros.Any())
+                            return TypedResults.UnprocessableEntity(item.Erros);
 
-                    //var scheme = request.Scheme;
-                    //var host = request.Host;
-                    //var location = new Uri($"{scheme}{Uri.SchemeDelimiter}{host}/v{version}/api/tutores/{item.Id}");
+                        var apiVersion = request.RouteValues["apiVersion"];
 
-                    //return Results.Created(location, item);
+                        var scheme = request.Scheme;
+                        var host = request.Host;
+                        var location = new Uri($"{scheme}{Uri.SchemeDelimiter}{host}/{apiVersion}/api/tutores/{item.Id}");
 
-                    //return TypedResults.Created(location, item);
+                        return Results.Created(location, item);
+                    }
+
+                    return await CreateTutorAsync();
                 })
                 .Accepts<TutorDto>("application/json")
                 .Produces<TutorDto>(201, "application/json")
-                //.RequireAuthorization()
                 .WithOpenApi(operation => new(operation)
                 {
                     OperationId = "CreateTutor",
@@ -99,40 +103,56 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
                     Tags = new List<OpenApiTag> { new() { Name = "Tutores" } }
                 });
 
-            //app.MapPost("/tutores", async (
-            //    HttpRequest request,
-            //    ApiVersion version,
-            //    TutorDto tutorDto,
-            //    ITutorAppServices tutorAppService,
-            //    CancellationToken cancellationToken) =>
-            //{
-            //    async Task<IResult> CreateTutorAsync()
-            //    {
-            //        var item = await tutorAppService.InsertAsync(tutorDto, cancellationToken);
+            tutores.MapDelete("/{id}", async (
+                int id,
+                ITutorAppServices tutorAppService,
+                CancellationToken cancellationToken) =>
+            {
+                async Task<IResult> DeleteTutorAsync()
+                {
+                    var item = await tutorAppService.DeleteAsync(id, cancellationToken);
 
-            //        if (item.Erros.Any())
-            //            return TypedResults.UnprocessableEntity(item.Erros);
+                    return item ? TypedResults.NoContent() : TypedResults.NotFound();
+                }
 
-            //        var scheme = request.Scheme;
-            //        var host = request.Host;
-            //        var location = new Uri($"{scheme}{Uri.SchemeDelimiter}{host}/v{version}/api/cachorros/{item.Id}");
+                return await DeleteTutorAsync();
+            })
+                .WithOpenApi(operation => new(operation)
+                {
+                    OperationId = "DeleteTutor",
+                    Summary = "Delete Tutor",
+                    Description = "Operação para deletar tutor",
+                    Tags = new List<OpenApiTag> { new() { Name = "Tutores" } }
+                });
 
-            //        return Results.Created(location, item);
-            //    }
+            tutores.MapPut("/{id}", async (
+                int id,
+                TutorDto tutorDto,
+                ITutorAppServices tutorAppService,
+                CancellationToken cancellationToken) =>
+            {
+                async Task<IResult> UpdateTutorAsync()
+                {
+                    var item = await tutorAppService.UpdateAsync(id, tutorDto, cancellationToken);
 
-            //    //return await CreateTutorAsync(tutorDto, tutorAppService);
-            //})
-            //    .Accepts<TutorDto>("application/json")
-            //    .Produces<TutorDto>(201, "application/json")
-            //    //.RequireAuthorization()
-            //    .WithOpenApi(operation => new(operation)
-            //    {
-            //        OperationId = "CreateTutor3",
-            //        Summary = "Create Tutor",
-            //        Description = "Operação para criar tutor",
-            //        Tags = new List<OpenApiTag> { new() { Name = "Tutores" } }
-            //    })
-            //    .WithApiVersionSet(apiVersionSetTutor);
+                    if (item.Any())
+                        return TypedResults.UnprocessableEntity(item);
+
+                    return TypedResults.Ok(item);
+                }
+
+                return await UpdateTutorAsync();
+            })
+                .Accepts<TutorDto>("application/json")
+                .Produces<TutorDto>(200, "application/json")
+                .WithOpenApi(operation => new(operation)
+                {
+                    OperationId = "UpdateTutor",
+                    Summary = "Update Tutor",
+                    Description = "Operação para atualizar tutor",
+                    Tags = new List<OpenApiTag> { new() { Name = "Tutores" } }
+                });
+
         }
     }
 }

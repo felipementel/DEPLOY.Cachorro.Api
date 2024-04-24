@@ -33,7 +33,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Extensions.Swagger
                 options =>
                 {
                     options.EnableAnnotations();
-                    //options.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}-{e.ActionDescriptor.RouteValues["controller"]}-{e.HttpMethod}".ToLower());
+                    
                     options.OperationFilter<SwaggerDefaultValues>();
 
                     var fileName = typeof(Program).Assembly.GetName().Name + ".xml";
