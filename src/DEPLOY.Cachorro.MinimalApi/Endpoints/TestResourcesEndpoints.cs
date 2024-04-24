@@ -16,11 +16,11 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
             var apiVersionSetTestResources = app
                 .NewApiVersionSet("testresources")
                 .HasApiVersion(new ApiVersion(1, 0))
-                .ReportApiVersions()
                 .Build();
 
             var testResources = app
                 .MapGroup("/api/testresources")
+                .ExcludeFromDescription()
                 .WithApiVersionSet(apiVersionSetTestResources);
 
             testResources
