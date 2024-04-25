@@ -106,7 +106,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
                 });
 
-
             //async Task<IResult> ListAllAsync(
             async Task<Results<Ok<IEnumerable<CachorroDto?>>, NoContent>> ListAllAsync(
                 ICachorroAppServices cachorroAppService,

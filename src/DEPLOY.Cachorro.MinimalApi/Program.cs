@@ -1,9 +1,7 @@
-using Azure.Core;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
 using DEPLOY.Cachorro.Infra.CrossCutting;
 using DEPLOY.Cachorro.MinimalApi.Endpoints;
 using DEPLOY.Cachorro.MinimalApi.Endpoints.v1;
+using DEPLOY.Cachorro.MinimalApi.Endpoints.v2;
 using DEPLOY.Cachorro.MinimalApi.Extensions.AppConfiguration;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Auth;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Database;
@@ -45,7 +43,7 @@ builder.Configuration.AddAppConfigurationExtension(builder.Services);
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
-//=======================================================
+// no version
 
 var versionSetPing = app.NewApiVersionSet("ping")
                     .Build();
@@ -58,7 +56,9 @@ app
     .WithApiVersionSet(versionSetPing)
     .Produces<string>(200);
 
-//=======================================================
+app.MapTestResourcesEndpoints();
+
+//v1
 
 app.MapCachorroEndpoints();
 
@@ -66,8 +66,9 @@ app.MapTutorEndpoints();
 
 app.MapAdocoesEndpoints();
 
-app.MapTestResourcesEndpoints();
+//v2 
+app.MapCachorroEndpointsV2();
 
 app.UseSwaggerExtension();
 
-app.Run();
+await app.RunAsync();

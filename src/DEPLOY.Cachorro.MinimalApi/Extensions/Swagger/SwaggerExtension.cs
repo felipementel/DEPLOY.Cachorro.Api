@@ -51,6 +51,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Extensions.Swagger
                 {
                     options.DisplayRequestDuration();
                     var descriptions = app.DescribeApiVersions();
+                    options.RoutePrefix = string.Empty;
 
                     foreach (var groupName in descriptions.Select(description => description.GroupName))
                     {

@@ -1,11 +1,11 @@
 ﻿using Asp.Versioning;
-using DEPLOY.Cachorro.Application.AppServices;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
-using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Entities;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 {
+    [ExcludeFromCodeCoverage]
     public static class AdocoesEndpoints
     {
         public static void MapAdocoesEndpoints(this IEndpointRouteBuilder app)
@@ -46,8 +46,8 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 });
 
             async Task<IResult> DevolverAsync(
-                Guid cachorroid, 
-                long tutorid, 
+                Guid cachorroid,
+                long tutorid,
                 HttpContext context,
                 IAdocaoAppService adocaoAppService,
                 CancellationToken cancellationToken = default)
@@ -63,9 +63,9 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             }
 
             async Task<IResult> AdotarAsync(
-                Guid cachorroid, 
+                Guid cachorroid,
                 HttpContext context,
-                IAdocaoAppService adocaoAppService, 
+                IAdocaoAppService adocaoAppService,
                 CancellationToken cancellationToken = default)
             {
                 var item = await adocaoAppService.DevolverAdocaoAsync(
@@ -79,6 +79,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
                 return TypedResults.Ok();
             }
-        }        
+        }
     }
 }

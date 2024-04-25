@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-	  <TargetFramework>net8.0</TargetFramework>
-	  <Nullable>enable</Nullable>
-	  <NoWarn>$(NoWarn);1591</NoWarn>
-	  <NoWarn>$(NoWarn);8604</NoWarn>
-	  <NoWarn>$(NoWarn);8603</NoWarn>
-	  <NoWarn>$(NoWarn);8602</NoWarn>
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <UserSecretsId>CachorroAPI2</UserSecretsId>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	  <ApplicationInsightsResourceId>/subscriptions/f4574f09-7fab-45bd-8eb5-508b8c6aa04a/resourceGroups/rg-canaldeploy-dev/providers/microsoft.insights/components/appi-cachorroapi-dev</ApplicationInsightsResourceId>
-	  <Version>2.1.4-MinimalApi</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+		<NoWarn>$(NoWarn);8604</NoWarn>
+		<NoWarn>$(NoWarn);8603</NoWarn>
+		<NoWarn>$(NoWarn);8602</NoWarn>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>CachorroAPI2</UserSecretsId>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<ApplicationInsightsResourceId>/subscriptions/f4574f09-7fab-45bd-8eb5-508b8c6aa04a/resourceGroups/rg-canaldeploy-dev/providers/microsoft.insights/components/appi-cachorroapi-dev</ApplicationInsightsResourceId>
+		<Version>2.1.4-MinimalApi</Version>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
@@ -39,9 +39,9 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DEPLOY.Cachorro.Application\DEPLOY.Cachorro.Application.csproj" />
-    <ProjectReference Include="..\DEPLOY.Cachorro.Infra.CrossCutting\DEPLOY.Cachorro.Infra.CrossCutting.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DEPLOY.Cachorro.Application\DEPLOY.Cachorro.Application.csproj" />
+		<ProjectReference Include="..\DEPLOY.Cachorro.Infra.CrossCutting\DEPLOY.Cachorro.Infra.CrossCutting.csproj" />
+	</ItemGroup>
 
 </Project>
