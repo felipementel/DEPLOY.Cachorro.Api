@@ -1,4 +1,5 @@
-﻿using DEPLOY.Cachorro.Application.Dtos;
+﻿using DEPLOY.Cachorro.Api.Controllers.v1;
+using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using DEPLOY.Cachorro.Base.Tests;
 using FluentAssertions;
@@ -14,7 +15,7 @@ namespace DEPLOY.Cachorro.Api.Tests
     [ExcludeFromCodeCoverage]
     public class CachorrosControllerTests : IClassFixture<CachorroDtoFixture>
     {
-        private Mock<ICachorroAppServices> _cachorroAppServiceMock;
+        private readonly Mock<ICachorroAppServices> _cachorroAppServiceMock;
         private readonly CachorroDtoFixture _cachorroDtoFixture;
 
         private Controllers.v1.CachorrosController? _cachorroController;
@@ -31,9 +32,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         {
             // Arrange
             var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(1)[0];
-
             
-            // Configurar o Setup para o método InsertAsync
             _cachorroAppServiceMock
                 .Setup(x => x.InsertAsync(It.IsAny<CachorroCreateDto>(),
                 CancellationToken.None))
@@ -172,10 +171,9 @@ namespace DEPLOY.Cachorro.Api.Tests
                 _cachorroAppServiceMock.Object);
 
             // Act
-            var result = await cachorroController.ListAllAsync() as NoContentResult;
+            var result = await cachorroController.ListAllAsync();
 
             //Assert
-            Assert.Equal(StatusCodes.Status204NoContent, result?.StatusCode);
             result.Should().BeOfType<NoContentResult>();
 
             CachorroAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Once);
@@ -271,6 +269,96 @@ namespace DEPLOY.Cachorro.Api.Tests
 
             _cachorroAppServiceMock.Verify(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<CachorroDto>(),
                 CancellationToken.None), Times.Once);
+        }
+
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenIdIsEqualButTutorDontExists_ThanError()
+        {
+            // Arrange
+            var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
+
+            _cachorroAppServiceMock
+                .Setup(t => t.UpdateAsync(cachorro.Id, cachorro, CancellationToken.None))
+                .ReturnsAsync(Enumerable.Empty<string>().Append("Cachorro não existe"));
+
+            var cachorro2 = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
+
+            _cachorroController = new Controllers.v1.CachorrosController(
+                _cachorroAppServiceMock.Object);
+
+            // Act
+            var result = await _cachorroController.UpdateAsync(cachorro.Id, cachorro, CancellationToken.None) as UnprocessableEntityObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status422UnprocessableEntity, result.StatusCode);
+
+            result.Should().BeOfType<UnprocessableEntityObjectResult>();
+
+            _cachorroAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(cachorro.Id, cachorro, CancellationToken.None), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(cachorro2.Id, cachorro2, CancellationToken.None), Times.Never);
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenIdIsDifferents_ThanError()
+        {
+            // Arrange
+            var tutor = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
+
+            _cachorroAppServiceMock
+                .Setup(t => t.UpdateAsync(It.IsAny<Guid>(), tutor, CancellationToken.None))
+                .ReturnsAsync(Enumerable.Empty<string>().Append("Cachorro não existe"));
+
+            var tutor2 = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
+
+            _cachorroController = new Controllers.v1.CachorrosController(
+                               _cachorroAppServiceMock.Object);
+
+            // Act
+            var result = await _cachorroController.UpdateAsync(tutor.Id, tutor, CancellationToken.None) as UnprocessableEntityObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status422UnprocessableEntity, result.StatusCode);
+
+            result.Should().BeOfType<UnprocessableEntityObjectResult>();
+
+            _cachorroAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(tutor.Id, tutor, CancellationToken.None), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(tutor2.Id, tutor2, CancellationToken.None), Times.Never);
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenCachorroIsValid_ThanDeveRetornarUnprocessableEntity()
+        {
+            //Arrange
+            var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithTutorDto(1)[0];
+
+            _cachorroAppServiceMock
+                .Setup(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<CachorroDto>(),
+                CancellationToken.None))
+                .ReturnsAsync(() => Enumerable.Empty<string>());
+
+            _cachorroController = new Controllers.v1.CachorrosController(
+                _cachorroAppServiceMock.Object);
+
+            // Act
+            var result = await _cachorroController.UpdateAsync(Guid.NewGuid(), cachorro);
+
+            //Assert
+            Assert.NotNull(result);
+            result.Should().BeOfType<UnprocessableEntityResult>();
+
+            result.As<UnprocessableEntityResult>().StatusCode
+                .Should()
+                .Be(StatusCodes.Status422UnprocessableEntity);  
+
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<CachorroDto>(),
+                CancellationToken.None), Times.Never);
         }
 
         [Fact]
@@ -370,9 +458,7 @@ namespace DEPLOY.Cachorro.Api.Tests
             // Assert
             Assert.NotNull(controller);
 
-            var result = controller as NoContentResult;
-
-
+            controller.Should().BeOfType<NoContentResult>();
         }
 
         [Fact]
@@ -395,8 +481,7 @@ namespace DEPLOY.Cachorro.Api.Tests
             // Assert
             Assert.NotNull(controller);
 
-            var result = controller as OkObjectResult;
-
+            controller.Should().BeOfType<OkObjectResult>();
         }
 
         [Fact]
@@ -416,8 +501,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
             // Assert
             Assert.NotNull(controller);
-
-            var result = controller as NoContentResult;
+            controller.Should().BeOfType<NoContentResult>();
         }
     }
 }

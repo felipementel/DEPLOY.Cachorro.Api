@@ -4,7 +4,6 @@ using DEPLOY.Cachorro.Application.Interfaces.Services;
 using DEPLOY.Cachorro.Base.Tests;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Diagnostics.CodeAnalysis;
@@ -61,7 +60,7 @@ namespace DEPLOY.Cachorro.Api.Tests
         public async Task GivenListAllAsync_WhenNotExistsTutores_ThanReturnEmptyList()
         {
             // Arrange
-            var tutor = _tutorDtoFixture.CreateManyTutorDto(0);
+            var tutor = Enumerable.Empty<TutorDto>();
 
             _tutorAppServiceMock
                 .Setup(t => t.GetAllAsync(CancellationToken.None))
@@ -70,20 +69,10 @@ namespace DEPLOY.Cachorro.Api.Tests
             _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
 
             // Act
-            var result = await _tutoresController.ListAllAsync(CancellationToken.None) as OkObjectResult;
+            var result = await _tutoresController.ListAllAsync(CancellationToken.None);
 
             //Assert
-            Assert.NotNull(result);
-
-            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
-
-            result.Should().BeOfType<OkObjectResult>();
-
-            var model = result.As<OkObjectResult>().Value
-                .Should()
-                .BeOfType<List<TutorDto>>();
-
-            model.Subject.Count.Should().Be(0);
+            result.Should().BeOfType<NoContentResult>();
 
             _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Once);
         }
@@ -239,6 +228,29 @@ namespace DEPLOY.Cachorro.Api.Tests
         }
 
         [Fact]
+        public async Task GivenUpdateAsync_WhenIdIsNotEqual_ThanError()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            //_tutorAppServiceMock
+            //    .Setup(t => t.UpdateAsync(tutor.Id, tutor, CancellationToken.None))
+            //    .ReturnsAsync(Enumerable.Empty<string>().Append("Tutor não existe"));
+
+            _tutoresController = new TutoresController(
+                               _tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.UpdateAsync(It.IsAny<long>(), tutor, CancellationToken.None);
+
+            // Assert
+            result.Should().BeOfType<UnprocessableEntityResult>();          
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _tutorAppServiceMock.Verify(x => x.UpdateAsync(tutor.Id, tutor, CancellationToken.None), Times.Never);
+        }
+
+        [Fact]
         public async Task GivenUpdateAsync_WhenTutorDontExistis_ThanReturnUnprocessableEntity()
         {
             // Arrange
@@ -246,7 +258,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
             _tutorAppServiceMock
                 .Setup(t => t.UpdateAsync(It.IsAny<long>(), tutor, CancellationToken.None))
-                .ReturnsAsync(Enumerable.Empty<string>().Append("Tutor não encontado"));
+                .ReturnsAsync(Enumerable.Empty<string>().Append("Tutor não encontrado"));
 
             _tutoresController = new Controllers.v1.TutoresController(_tutorAppServiceMock.Object);
 
@@ -272,6 +284,36 @@ namespace DEPLOY.Cachorro.Api.Tests
 
             _tutorAppServiceMock
                 .Setup(t => t.UpdateAsync(tutor.Id, tutor, CancellationToken.None))
+                .ReturnsAsync(Enumerable.Empty<string>().Append("Tutor não existe"));
+
+            var tutor2 = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutoresController = new TutoresController(
+                               _tutorAppServiceMock.Object);
+
+            // Act
+            var result = await _tutoresController.UpdateAsync(tutor.Id, tutor, CancellationToken.None) as UnprocessableEntityObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(StatusCodes.Status422UnprocessableEntity, result.StatusCode);
+
+            result.Should().BeOfType<UnprocessableEntityObjectResult>();
+
+            _tutorAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
+            _tutorAppServiceMock.Verify(x => x.UpdateAsync(tutor.Id, tutor, CancellationToken.None), Times.Once);
+            _tutorAppServiceMock.Verify(x => x.UpdateAsync(tutor2.Id, tutor2, CancellationToken.None), Times.Never);
+        }
+
+        [Fact]
+        public async Task GivenUpdateAsync_WhenIdIsDifferents_ThanError()
+        {
+            // Arrange
+            var tutor = _tutorDtoFixture.CreateManyTutorDto(1)[0];
+
+            _tutorAppServiceMock
+                .Setup(t => t.UpdateAsync(It.IsAny<long>(), tutor, CancellationToken.None))
                 .ReturnsAsync(Enumerable.Empty<string>().Append("Tutor não existe"));
 
             var tutor2 = _tutorDtoFixture.CreateManyTutorDto(1)[0];

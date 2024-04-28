@@ -17,10 +17,10 @@ namespace DEPLOY.Cachorro.Application.Interfaces.Services
             long id,
             CancellationToken cancellationToken = default);
 
-        public Task<IEnumerable<TutorDto?>> GetAllAsync(
+        public Task<IEnumerable<TutorDto>> GetAllAsync(
             CancellationToken cancellationToken = default);
 
-        public Task<TutorDto?> GetByIdAsync(
+        public Task<TutorDto> GetByIdAsync(
             long id,
             CancellationToken cancellationToken = default);
     }

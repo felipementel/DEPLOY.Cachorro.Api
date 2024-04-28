@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using DEPLOY.Cachorro.Application.Dtos;
 
 namespace DEPLOY.Cachorro.Application.Shared
 {
+    [ExcludeFromCodeCoverage]
     public class ExpressionConverter : ExpressionVisitor
     {
         private readonly ParameterExpression _parameter;

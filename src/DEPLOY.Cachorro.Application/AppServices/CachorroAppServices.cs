@@ -24,7 +24,7 @@ namespace DEPLOY.Cachorro.Application.AppServices
             return await _cachorroService.DeleteAsync(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<CachorroDto?>> GetAllAsync(
+        public async Task<IEnumerable<CachorroDto>> GetAllAsync(
             CancellationToken cancellationToken = default)
         {
             var retorno = await _cachorroService.GetAllAsync(
@@ -34,7 +34,7 @@ namespace DEPLOY.Cachorro.Application.AppServices
                 .Select<Domain.Aggregates.Cachorro.Entities.Cachorro, CachorroDto>(x => x!).ToList();
         }
 
-        public async Task<CachorroDto?> GetByIdAsync(
+        public async Task<CachorroDto> GetByIdAsync(
             Guid id,
             CancellationToken cancellationToken = default)
         {

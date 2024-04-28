@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using DEPLOY.Cachorro.Application.AppServices;
 using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -35,8 +36,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         {
             var items = await _cachorroAppService.GetAllAsync(cancellationToken);
 
-            return items?.Count() > 0 ? Ok(items) : NoContent();
-        }        
+            return items.Any() ? Ok(items) : NoContent();
+        }
 
         [HttpGet("{id}")]
         [Produces("application/json")]
@@ -83,13 +84,13 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 cachorroCreateDto,
                 cancellationToken);
 
-            if (item?.Erros.Count() > 0)
+            if (item.Erros.Any())
                 return UnprocessableEntity(item.Erros);
 
             return CreatedAtAction("GetById",
                 new
                 {
-                    id = item?.Id,
+                    id = item.Id,
                     version = new ApiVersion(
                         1,
                         0)
@@ -119,14 +120,13 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 return UnprocessableEntity();
             }
 
-            var item = await _cachorroAppService.UpdateAsync(
+            var retorned = await _cachorroAppService.UpdateAsync(
                 id,
                 cachorroDto,
                 cancellationToken);
 
-            return !item.Any()
-           ? NoContent()
-           : UnprocessableEntity(item);
+            return !retorned.Any() ? NoContent()
+             : UnprocessableEntity(retorned);
         }
 
         [HttpDelete("{id}")]
@@ -169,7 +169,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 c => c.Adotado,
                 cancellationToken);
 
-            return items?.Count() > 0 ? Ok(items) : NoContent();
+            return items.Any() ? Ok(items) : NoContent();
         }
 
         [HttpGet("para-adotar")]
@@ -187,7 +187,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 c => !c.Adotado,
                 cancellationToken);
 
-            return items?.Count > 0 ? Ok(items) : NoContent();
+            return items.Count > 0 ? Ok(items) : NoContent();
         }
     }
 }

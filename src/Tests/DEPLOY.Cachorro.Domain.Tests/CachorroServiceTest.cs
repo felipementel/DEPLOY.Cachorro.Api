@@ -131,7 +131,7 @@ namespace DEPLOY.Cachorro.Domain.Tests
 
             /*var cachorroValidator = */
             _cachorroValidator
-.TestValidate(expectedCachorro);
+                .TestValidate(expectedCachorro);
 
             //cachorroValidator
             //    .ShouldHaveValidationErrorFor(c => c.Nome)

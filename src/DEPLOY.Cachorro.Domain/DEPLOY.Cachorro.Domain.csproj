@@ -7,6 +7,8 @@
 		<SonarQubeExclude>True</SonarQubeExclude>
 		<NoWarn>$(NoWarn);8618</NoWarn>
 		<NoWarn>$(NoWarn);8604</NoWarn>
+		<NoWarn>$(NoWarn);8602</NoWarn>
+		<NoWarn>$(NoWarn);S2259</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

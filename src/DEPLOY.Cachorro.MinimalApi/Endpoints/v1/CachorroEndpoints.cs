@@ -107,7 +107,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 });
 
             //async Task<IResult> ListAllAsync(
-            async Task<Results<Ok<IEnumerable<CachorroDto?>>, NoContent>> ListAllAsync(
+            async Task<Results<Ok<IEnumerable<CachorroDto>>, NoContent>> ListAllAsync(
                 ICachorroAppServices cachorroAppService,
                 CancellationToken cancellationToken = default)
             {

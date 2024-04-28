@@ -36,7 +36,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         {
             var items = await _tutorAppServices.GetAllAsync(cancellationToken);
 
-            return Ok(items);
+            return items.Any() ? Ok(items) : NoContent();
         }
 
         [HttpGet("{id}")]

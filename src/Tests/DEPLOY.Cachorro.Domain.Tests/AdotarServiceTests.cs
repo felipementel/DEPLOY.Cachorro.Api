@@ -1,6 +1,7 @@
 ﻿using DEPLOY.Cachorro.Base.Tests;
 using DEPLOY.Cachorro.Domain.Aggregates.Adotar.Services;
 using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Interfaces.Repositories;
+using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities;
 using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Interfaces.Repositories;
 using DEPLOY.Cachorro.Infra.Repository.Repositories.Base;
 using FluentAssertions;
@@ -32,7 +33,7 @@ namespace DEPLOY.Cachorro.Domain.Tests
         }
 
         [Fact]
-        public async Task GivenAdotarAsync_WhenCachorroExiste_ThanDeveRetornarErro()
+        public async Task GivenAdotarAsync_WhenCachorroAndTutorExiste_ThanDeveRetornarSucesso()
         {
             // Arrange
             var adocaoService = new AdocaoService(
@@ -52,10 +53,11 @@ namespace DEPLOY.Cachorro.Domain.Tests
                 .ReturnsAsync(tutor);
 
             // Act
-            var result = await adocaoService.AdotarAsync(Guid.NewGuid(), 1);
+            var result = await adocaoService.AdotarAsync(It.IsAny<Guid>(), It.IsAny<int>());
 
             // Assert
             result.Should().BeOfType<List<string>>();
+            result.Should().BeEmpty();
         }
 
         [Fact]
@@ -78,6 +80,62 @@ namespace DEPLOY.Cachorro.Domain.Tests
             result.Should().BeOfType<List<string>>();
 
             Assert.Contains("Cachorro não encontrado", result);
+        }
+
+        [Fact]
+        public async Task GivenAdotarAsync_WhenCachorroJaAdotado_ThanDeveRetornarErro()
+        {
+            // Arrange
+            var cachorroAdotado = _cachorroFixture.CreateManyCachorroWithTutor(1)[0];
+
+            var adocaoService = new AdocaoService(
+                _uowMock.Object,
+                _cachorroRepositoryMock.Object,
+                _tutorRepositoryMock.Object);
+
+            _tutorRepositoryMock
+                .Setup(x => x.GetByIdAsync(It.IsAny<long>(), CancellationToken.None))
+                .ReturnsAsync(cachorroAdotado.Tutor);
+
+            _cachorroRepositoryMock
+                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(cachorroAdotado);
+
+            // Act
+            var result = await adocaoService.AdotarAsync(Guid.NewGuid(), 1);
+
+            // Assert
+            result.Should().BeOfType<List<string>>();
+
+            Assert.Contains("Cachorro já adotado", result);
+        }
+
+        [Fact]
+        public async Task GivenAdotarAsync_WhenTutorNaoEncontrado_ThanDeveRetornarErro()
+        {
+            // Arrange
+            var adocaoService = new AdocaoService(
+                _uowMock.Object,
+                _cachorroRepositoryMock.Object,
+                _tutorRepositoryMock.Object);
+
+            var cachorro = _cachorroFixture.CreateManyCachorroWithTutor(1)[0];
+
+            _cachorroRepositoryMock
+                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>(), CancellationToken.None))
+                .ReturnsAsync(cachorro);
+
+            _tutorRepositoryMock
+                .Setup(x => x.GetByIdAsync(It.IsAny<long>(), CancellationToken.None))
+                .ReturnsAsync(null as DEPLOY.Cachorro.Domain.Aggregates.Tutor.Entities.Tutor);
+
+            // Act
+            var result = await adocaoService.AdotarAsync(Guid.NewGuid(), 1);
+
+            // Assert
+            result.Should().BeOfType<List<string>>();
+
+            Assert.Contains("Tutor não encontrado", result);
         }
 
         [Fact]
@@ -141,7 +199,8 @@ namespace DEPLOY.Cachorro.Domain.Tests
                 _cachorroRepositoryMock.Object,
                 _tutorRepositoryMock.Object);
 
-            var cachorro = _cachorroFixture.CreateManyCachorroWithTutor(1)[0];
+            var cachorro = _cachorroFixture.CreateManyCachorroWithoutTutor(1)[0];
+            cachorro.Erros = new List<string>() { "Cachorro não consta como adotado no sistema" };
 
             _cachorroRepositoryMock
                 .Setup(x => x.GetByIdAsync(cachorro.Id, CancellationToken.None))
@@ -151,10 +210,10 @@ namespace DEPLOY.Cachorro.Domain.Tests
             var result = await adocaoService.DevolverAdocaoAsync(cachorro.Id);
 
             // Assert
-            Assert.False(result.Any());
+            result.Should().Contain("Cachorro não consta como adotado no sistema");
 
-            _cachorroRepositoryMock.Verify(x => x.UpdateAsync(cachorro, CancellationToken.None), Times.Once);
-            _uowMock.Verify(x => x.CommitAndSaveChangesAsync(CancellationToken.None), Times.Once);
+            _cachorroRepositoryMock.Verify(x => x.UpdateAsync(cachorro, CancellationToken.None), Times.Never);
+            _uowMock.Verify(x => x.CommitAndSaveChangesAsync(CancellationToken.None), Times.Never);
         }
     }
 }

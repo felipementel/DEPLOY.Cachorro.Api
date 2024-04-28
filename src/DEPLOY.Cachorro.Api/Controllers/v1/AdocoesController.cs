@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
-using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Interfaces.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -39,7 +38,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 tutorid,
                 cancellationToken);
 
-            if (item?.Count() > 0)
+            if (item.Any())
             {
                 return UnprocessableEntity(item);
             }
@@ -63,7 +62,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 cachorroid,
                 cancellationToken);
 
-            if (item?.Count() > 0)
+            if (item.Any())
             {
                 return UnprocessableEntity(item);
             }
