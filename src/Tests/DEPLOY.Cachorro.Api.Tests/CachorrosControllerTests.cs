@@ -273,7 +273,7 @@ namespace DEPLOY.Cachorro.Api.Tests
 
 
         [Fact]
-        public async Task GivenUpdateAsync_WhenIdIsEqualButTutorDontExists_ThanError()
+        public async Task GivenUpdateAsync_WhenIdIsEqualButCachorroDontExists_ThanError()
         {
             // Arrange
             var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
@@ -306,19 +306,19 @@ namespace DEPLOY.Cachorro.Api.Tests
         public async Task GivenUpdateAsync_WhenIdIsDifferents_ThanError()
         {
             // Arrange
-            var tutor = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
+            var cachorro = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
 
             _cachorroAppServiceMock
-                .Setup(t => t.UpdateAsync(It.IsAny<Guid>(), tutor, CancellationToken.None))
+                .Setup(t => t.UpdateAsync(It.IsAny<Guid>(), cachorro, CancellationToken.None))
                 .ReturnsAsync(Enumerable.Empty<string>().Append("Cachorro não existe"));
 
-            var tutor2 = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
+            var cachorro2 = _cachorroDtoFixture.CreateManyCachorroDtoWithoutTutorDto(1)[0];
 
             _cachorroController = new Controllers.v1.CachorrosController(
                                _cachorroAppServiceMock.Object);
 
             // Act
-            var result = await _cachorroController.UpdateAsync(tutor.Id, tutor, CancellationToken.None) as UnprocessableEntityObjectResult;
+            var result = await _cachorroController.UpdateAsync(cachorro.Id, cachorro, CancellationToken.None) as UnprocessableEntityObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -328,8 +328,8 @@ namespace DEPLOY.Cachorro.Api.Tests
             result.Should().BeOfType<UnprocessableEntityObjectResult>();
 
             _cachorroAppServiceMock.Verify(x => x.GetAllAsync(CancellationToken.None), Times.Never);
-            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(tutor.Id, tutor, CancellationToken.None), Times.Once);
-            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(tutor2.Id, tutor2, CancellationToken.None), Times.Never);
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(cachorro.Id, cachorro, CancellationToken.None), Times.Once);
+            _cachorroAppServiceMock.Verify(x => x.UpdateAsync(cachorro2.Id, cachorro2, CancellationToken.None), Times.Never);
         }
 
         [Fact]
