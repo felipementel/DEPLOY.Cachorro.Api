@@ -5,18 +5,14 @@ using System.Linq.Expressions;
 
 namespace DEPLOY.Cachorro.Infra.Repository.Repositories
 {
-    public class CachorroRepository
-        : GenericRepository<Domain.Aggregates.Cachorro.Entities.Cachorro, Guid>
+    public class CachorroRepository(CachorroDbContext cachorroContext)
+                : GenericRepository<Domain.Aggregates.Cachorro.Entities.Cachorro, Guid>(cachorroContext)
         , ICachorroRepository
     {
-        private readonly CachorroDbContext _cachorroContext;
+        private readonly CachorroDbContext _cachorroContext = cachorroContext;
 
-        public CachorroRepository(CachorroDbContext cachorroContext) : base(cachorroContext)
-        {
-            _cachorroContext = cachorroContext;
-        }
-
-        public override async Task<IEnumerable<Domain.Aggregates.Cachorro.Entities.Cachorro>> GetAllAsync(CancellationToken cancellationToken = default)
+        public override async Task<IEnumerable<Domain.Aggregates.Cachorro.Entities.Cachorro>> GetAllAsync(
+            CancellationToken cancellationToken = default)
         {
             return await _cachorroContext
                 .Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
