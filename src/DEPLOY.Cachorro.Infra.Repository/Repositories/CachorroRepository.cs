@@ -16,11 +16,20 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories
             _cachorroContext = cachorroContext;
         }
 
+        public override async Task<IEnumerable<Domain.Aggregates.Cachorro.Entities.Cachorro>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return await _cachorroContext
+                .Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
+                .Include(x => x.Tutor)
+                .ToListAsync();
+        }
+
         public override async Task<Domain.Aggregates.Cachorro.Entities.Cachorro?> GetByIdAsync(
             Guid id,
             CancellationToken cancellationToken = default)
         {
-            return await _cachorroContext.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
+            return await _cachorroContext
+                .Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
                 .Include(x => x.Tutor)
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
@@ -29,7 +38,8 @@ namespace DEPLOY.Cachorro.Infra.Repository.Repositories
                        Expression<Func<Domain.Aggregates.Cachorro.Entities.Cachorro, bool>> predicate,
                        CancellationToken cancellationToken = default)
         {
-            return await _cachorroContext.Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
+            return await _cachorroContext
+                .Set<Domain.Aggregates.Cachorro.Entities.Cachorro>()
                 .Include(x => x.Tutor)
                 .Where(predicate)
                 .ToListAsync(cancellationToken);

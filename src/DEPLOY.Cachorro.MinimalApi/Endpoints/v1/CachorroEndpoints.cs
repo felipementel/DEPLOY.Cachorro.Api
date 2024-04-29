@@ -87,6 +87,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             cachorros
                 .MapGet("/adotados", ListAllCachorrosAdotadosAsync)
                 .Produces<IEnumerable<CachorroDto>>(200, "application/json")
+                .Produces(204)
                 .WithOpenApi(operation => new(operation)
                 {
                     OperationId = "ListAllCachorrosAdotadosAsync",
@@ -98,6 +99,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             cachorros
                 .MapGet("/para-adotar", ListAllCachorrosParaAdotarAsync)
                 .Produces<IEnumerable<CachorroDto>>(200, "application/json")
+                .Produces(204)
                 .WithOpenApi(operation => new(operation)
                 {
                     OperationId = "ListAllCachorrosParaAdotarAsync",

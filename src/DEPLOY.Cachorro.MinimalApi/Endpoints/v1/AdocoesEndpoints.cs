@@ -47,12 +47,10 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
             async Task<IResult> DevolverAsync(
                 Guid cachorroid,
-                long tutorid,
-                HttpContext context,
                 IAdocaoAppService adocaoAppService,
                 CancellationToken cancellationToken = default)
             {
-                var item = await adocaoAppService.AdotarAsync(cachorroid, tutorid, cancellationToken);
+                var item = await adocaoAppService.DevolverAdocaoAsync(cachorroid, cancellationToken);
 
                 if (item?.Count() > 0)
                 {
@@ -64,12 +62,13 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
             async Task<IResult> AdotarAsync(
                 Guid cachorroid,
-                HttpContext context,
+                long tutorid,
                 IAdocaoAppService adocaoAppService,
                 CancellationToken cancellationToken = default)
             {
-                var item = await adocaoAppService.DevolverAdocaoAsync(
+                var item = await adocaoAppService.AdotarAsync(
                 cachorroid,
+                tutorid,
                 cancellationToken);
 
                 if (item?.Count() > 0)
