@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace DEPLOY.Cachorro.Infra.Repository.Repositories
 {
-    public class CachorroRepository(CachorroDbContext cachorroContext)
+    public class CachorroRepository(CachorroDbContext cachorroContext) 
                 : GenericRepository<Domain.Aggregates.Cachorro.Entities.Cachorro, Guid>(cachorroContext)
         , ICachorroRepository
     {

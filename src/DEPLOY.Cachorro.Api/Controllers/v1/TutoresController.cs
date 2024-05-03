@@ -28,18 +28,19 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
-            Summary = "Listar Tutor",
+            Summary = "Listar Tutores",
             Tags = new[] { "Tutores" },
             Description = "Operação para listar tutores")]
         public async Task<IActionResult> ListAllAsync(
             CancellationToken cancellationToken = default)
         {
-            var items = await _tutorAppServices.GetAllAsync(cancellationToken);
+            var items = await _tutorAppServices.GetAllAsync(
+                cancellationToken);
 
             return items.Any() ? Ok(items) : NoContent();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:long}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(TutorDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -50,10 +51,12 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             Tags = new[] { "Tutores" },
             Description = "Operação para obter tutor por id")]
         public async Task<IActionResult> GetByIdAsync(
-            long id,
+            [FromRoute] long id,
             CancellationToken cancellationToken = default)
         {
-            var items = await _tutorAppServices.GetByIdAsync(id, cancellationToken);
+            var items = await _tutorAppServices.GetByIdAsync(
+                id,
+                cancellationToken);
 
             if (items == null)
             {
@@ -95,7 +98,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 item);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:long}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -123,20 +126,23 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 : UnprocessableEntity(retorned);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:long}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
-            Summary = "Excluir Tutor",
+            Summary = "Delete Tutor",
             Tags = new[] { "Tutores" },
-            Description = "Operação para excluir tutor por id")]
+            Description = "Operação para deletar tutor por id")]
         public async Task<IActionResult> DeleteAsync(
             long id,
             CancellationToken cancellationToken = default)
         {
-            var item = await _tutorAppServices.DeleteAsync(id, cancellationToken);
+            var item = await _tutorAppServices.DeleteAsync(
+                id,
+                cancellationToken);
 
             if (!item)
             {

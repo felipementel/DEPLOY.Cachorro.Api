@@ -8,20 +8,21 @@ using DEPLOY.Cachorro.MinimalApi.Extensions.Database;
 using DEPLOY.Cachorro.MinimalApi.Extensions.KeyVault;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Swagger;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Telemetria;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddRegisterServices();
 
-builder.Services.AddControllers()
-    .AddJsonOptions(opt =>
-    {
-        opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        opt.JsonSerializerOptions.WriteIndented = true;
-        opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-        opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
+builder.Services.ConfigureHttpJsonOptions(opt =>
+{
+    opt.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    opt.SerializerOptions.WriteIndented = true;
+    opt.SerializerOptions.PropertyNameCaseInsensitive = true;
+    opt.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
 
 builder.Services.AddRouting(opt =>
 {
@@ -43,18 +44,21 @@ builder.Configuration.AddAppConfigurationExtension(builder.Services);
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
-// no version
+// without version
 
-var versionSetPing = app.NewApiVersionSet("ping")
+var versionSetPing = app.NewApiVersionSet("Ping")
                     .Build();
 
 app
-    .MapGet("/ping", async () =>
+    .MapGet("/ping", () =>
 {
     return TypedResults.Ok(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+}).WithOpenApi(operation => new(operation)
+{
+    OperationId = "get-ping-get"
 })
-    .WithApiVersionSet(versionSetPing)
-    .Produces<string>(200);
+.WithApiVersionSet(versionSetPing)
+.Produces<string>(200);
 
 app.MapTestResourcesEndpoints();
 
@@ -69,6 +73,14 @@ app.MapAdocoesEndpoints();
 //v2 
 app.MapCachorroEndpointsV2();
 
+//Use Extensions
 app.UseSwaggerExtension();
+
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseAzureAppConfiguration();
 
 await app.RunAsync();

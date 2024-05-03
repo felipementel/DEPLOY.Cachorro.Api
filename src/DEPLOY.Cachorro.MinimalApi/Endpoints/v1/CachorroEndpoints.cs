@@ -20,16 +20,19 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
             var cachorros = app
                 .MapGroup("/api/v{apiVersion:apiVersion}/cachorros")
-                //.RequireAuthorization()
+                .RequireAuthorization()
                 .WithApiVersionSet(apiVersionSetCachorro);
 
             cachorros
                 .MapGet("/", ListAllAsync)
                 .Produces<IEnumerable<CachorroDto>>(200, "application/json")
+                .Produces(404)
+                .Produces(401)
+                .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "ListAllCachorrosAsync",
-                    Summary = "List Cachorro",
+                    OperationId = "listall-cachorros-get",
+                    Summary = "Listar Cachorros",
                     Description = "Operação para listar de cachorros",
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
                 });
@@ -37,22 +40,28 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             cachorros
                 .MapGet("/{id:guid}", GetByIdAsync)
                 .Produces<CachorroDto>(200, "application/json")
+                .Produces(404)
+                .Produces(401)
+                .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "GetByIdCachorrosAsync",
-                    Summary = "List Cachorro",
-                    Description = "Operação para listar de cachorros",
+                    OperationId = "getbyid-cachorros-get",
+                    Summary = "Obter Cachorro",
+                    Description = "Operação para obter cachorro por id",
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
                 });
 
             cachorros
                 .MapPost("/", CreateCachorroAsync)
-                .Accepts<CachorroCreateDto>("application/json")
+                .Accepts<CachorroCreateDto>("application/json") //não tem na controller
                 .Produces<CachorroDto>(201, "application/json")
+                .Produces(422)
+                .Produces(401)
+                .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "CreateCachorroAsync",
-                    Summary = "Cadastar Cachorro",
+                    OperationId = "create-cachorros-post",
+                    Summary = "Cadastrar Cachorro",
                     Description = "Operação para cadastrar cachorro",
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
                 });
@@ -63,9 +72,10 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 .Produces(204)
                 .Produces(422)
                 .Produces(401)
+                .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "UpdateCachorroAsync",
+                    OperationId = "update-cachorros-put",
                     Summary = "Atualizar Cachorro",
                     Description = "Operação para atualizar de cachorro",
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
@@ -74,11 +84,12 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             cachorros
                 .MapDelete("/{id:guid}", DeleteCachorroAsync)
                 .Produces(204)
-                .Produces(422)
+                .Produces(404)
                 .Produces(401)
+                .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "DeleteCachorroAsync",
+                    OperationId = "delete-cachorros-delete",
                     Summary = "Excluir Cachorro",
                     Description = "Operação para excluir cachorro",
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
@@ -88,11 +99,13 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 .MapGet("/adotados", ListAllCachorrosAdotadosAsync)
                 .Produces<IEnumerable<CachorroDto>>(200, "application/json")
                 .Produces(204)
+                .Produces(401)
+                .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "ListAllCachorrosAdotadosAsync",
-                    Summary = "List Cachorro adotados",
-                    Description = "Operação para listar de cachorros",
+                    OperationId = "listallcachorrosadotados-cachorros-get",
+                    Summary = "Lista de cachorro adotados",
+                    Description = "Operação para listar de cachorros adotados",
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
                 });
 
@@ -100,11 +113,13 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 .MapGet("/para-adotar", ListAllCachorrosParaAdotarAsync)
                 .Produces<IEnumerable<CachorroDto>>(200, "application/json")
                 .Produces(204)
+                .Produces(401)
+                .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "ListAllCachorrosParaAdotarAsync",
-                    Summary = "List Cachorro para adotar",
-                    Description = "Operação para listar de cachorros",
+                    OperationId = "listallcachorrosparaadocao-cachorros-get",
+                    Summary = "Lista de cachorro disponíveis para adoção",
+                    Description = "Operação para listar de cachorros disponíveis para adoção",
                     Tags = new List<OpenApiTag> { new() { Name = "Cachorros" } }
                 });
 

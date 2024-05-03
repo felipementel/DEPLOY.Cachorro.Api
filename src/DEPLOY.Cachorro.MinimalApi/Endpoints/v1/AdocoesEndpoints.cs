@@ -18,16 +18,18 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
             var adocoes = app
                 .MapGroup("/api/v{apiVersion:apiVersion}/adocoes")
-                //.RequireAuthorization()
+                .RequireAuthorization()
                 .WithApiVersionSet(apiVersionSetAdocoes);
 
             adocoes
                 .MapPost("/cachorro/{cachorroid}/tutor/{tutorid}", AdotarAsync)
                 .Produces(201)
+                .Produces(401)
+                .Produces(422)
                 .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "AdotarAsync",
+                    OperationId = "adotar-adocoes-post",
                     Summary = "Adotar um Cachorro",
                     Description = "Operação para um tutor adotar um cachorro",
                     Tags = new List<OpenApiTag> { new() { Name = "Adocoes" } }
@@ -36,10 +38,12 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             adocoes
                 .MapPost("/cachorro/{cachorroid}", DevolverAsync)
                 .Produces(201)
+                .Produces(422)
+                .Produces(401)
                 .Produces(500)
                 .WithOpenApi(operation => new(operation)
                 {
-                    OperationId = "DevolverAsync",
+                    OperationId = "devolver-adocoes-post",
                     Summary = "Devolver um cachorro que estava adotado",
                     Description = "Operação para um tutor devolver um cachorro",
                     Tags = new List<OpenApiTag> { new() { Name = "Adocoes" } }
@@ -50,7 +54,9 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 IAdocaoAppService adocaoAppService,
                 CancellationToken cancellationToken = default)
             {
-                var item = await adocaoAppService.DevolverAdocaoAsync(cachorroid, cancellationToken);
+                var item = await adocaoAppService.DevolverAdocaoAsync(
+                    cachorroid,
+                    cancellationToken);
 
                 if (item?.Count() > 0)
                 {
@@ -67,9 +73,9 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 CancellationToken cancellationToken = default)
             {
                 var item = await adocaoAppService.AdotarAsync(
-                cachorroid,
-                tutorid,
-                cancellationToken);
+                    cachorroid,
+                    tutorid,
+                    cancellationToken);
 
                 if (item?.Count() > 0)
                 {

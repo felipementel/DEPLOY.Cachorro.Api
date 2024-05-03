@@ -55,7 +55,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Extensions.Swagger
 
         private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
         {
-            var text = new StringBuilder("API de Cachorro do Canal DEPLOY com OpenAPI, Swashbuckle, e API versioning.");
+            var text = new StringBuilder("MinimalAPI de Cachorro do Canal DEPLOY com OpenAPI, Swashbuckle, e API versioning.");
 
             var info = new OpenApiInfo()
             {
@@ -67,7 +67,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Extensions.Swagger
                     Email = "admin@felipementel.dev.br",
                     Name = "Felipe Augusto"
                 },
-
             };
 
             IsDeprecated(description, text);
