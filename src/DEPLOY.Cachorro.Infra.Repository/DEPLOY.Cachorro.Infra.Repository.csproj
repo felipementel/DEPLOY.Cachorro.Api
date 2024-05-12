@@ -27,6 +27,7 @@
 	<ItemGroup>
 		<Folder Include="DbContext\" />
 		<Folder Include="Migrations\" />
+		<Folder Include="Migrations\API\" />
 	</ItemGroup>
 
 </Project>

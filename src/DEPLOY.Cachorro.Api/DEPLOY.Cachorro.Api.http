@@ -13,7 +13,7 @@ Authorization: Bearer {{Token}}
 ###
 GET {{HostAddress}}/api/v1/cachorros
 Accept: application/json
-Authorization: Bearer {{Token}}
+Authorization: Bearer {{TOKEN}}
 
 ###
 

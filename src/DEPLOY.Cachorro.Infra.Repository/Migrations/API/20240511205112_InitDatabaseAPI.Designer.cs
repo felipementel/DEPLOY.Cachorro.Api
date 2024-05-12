@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
 {
     [DbContext(typeof(CachorroDbContext))]
-    [Migration("20240408230334_InitDatabaseAPI")]
+    [Migration("20240511205112_InitDatabaseAPI")]
     partial class InitDatabaseAPI
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -80,11 +80,11 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4b7f75cc-bad0-4c5e-87ba-70178ab9fe13"),
+                            Id = new Guid("03d4a3a9-31bc-4dd9-89ac-a5ffa22cde8f"),
                             Adotado = false,
-                            Atualizacao = new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1770),
-                            Cadastro = new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1739),
-                            Nascimento = new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1776),
+                            Atualizacao = new DateTime(2024, 5, 11, 17, 51, 11, 415, DateTimeKind.Local).AddTicks(5848),
+                            Cadastro = new DateTime(2024, 5, 11, 17, 51, 11, 415, DateTimeKind.Local).AddTicks(5820),
+                            Nascimento = new DateTime(2024, 5, 11, 17, 51, 11, 415, DateTimeKind.Local).AddTicks(5852),
                             Nome = "Rex",
                             Pelagem = "Curto",
                             Peso = 10.3m

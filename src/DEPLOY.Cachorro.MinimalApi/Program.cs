@@ -1,16 +1,15 @@
 using DEPLOY.Cachorro.Infra.CrossCutting;
-using DEPLOY.Cachorro.MinimalApi.Endpoints;
 using DEPLOY.Cachorro.MinimalApi.Endpoints.v1;
 using DEPLOY.Cachorro.MinimalApi.Endpoints.v2;
-using DEPLOY.Cachorro.MinimalApi.Extensions.AppConfiguration;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Auth;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Database;
-using DEPLOY.Cachorro.MinimalApi.Extensions.KeyVault;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Swagger;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Telemetria;
-using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using DEPLOY.Cachorro.MinimalApi.Endpoints;
+using DEPLOY.Cachorro.MinimalApi.Extensions.KeyVault;
+using DEPLOY.Cachorro.MinimalApi.Extensions.AppConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,17 +34,16 @@ builder.Services.AddEndpointsApiExplorer();
 //Configure Extensions
 builder.Logging.AddLogExtension(builder.Configuration);
 builder.Services.AddAuthExtension(builder.Configuration);
-builder.Services.AddKeyVaultExtension(builder.Configuration);
-builder.Services.AddDatabaseExtension(builder.Configuration);
-builder.Services.AddTelemetriaExtension(builder.Configuration);
 builder.Services.AddSwaggerExtension();
+builder.Services.AddDatabaseExtension(builder.Configuration);
+builder.Services.AddKeyVaultExtension(builder.Configuration);
+builder.Services.AddTelemetriaExtension(builder.Configuration);
 builder.Configuration.AddAppConfigurationExtension(builder.Services);
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
 
 // without version
-
 var versionSetPing = app.NewApiVersionSet("Ping")
                     .Build();
 
@@ -63,7 +61,6 @@ app
 app.MapTestResourcesEndpoints();
 
 //v1
-
 app.MapCachorroEndpoints();
 
 app.MapTutorEndpoints();

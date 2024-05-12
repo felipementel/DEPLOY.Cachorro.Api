@@ -39,10 +39,10 @@ namespace DEPLOY.Cachorro.Api
             //Configure Extensions
             builder.Logging.AddLogExtension(builder.Configuration);
             builder.Services.AddAuthExtension(builder.Configuration);
-            builder.Services.AddKeyVaultExtension(builder.Configuration);
-            builder.Services.AddDatabaseExtension(builder.Configuration);
-            builder.Services.AddTelemetriaExtension(builder.Configuration);
             builder.Services.AddSwaggerExtension();
+            builder.Services.AddDatabaseExtension(builder.Configuration);
+            builder.Services.AddKeyVaultExtension(builder.Configuration);
+            builder.Services.AddTelemetriaExtension(builder.Configuration);
             builder.Configuration.AddAppConfigurationExtension(builder.Services);
 
             var app = builder.Build();

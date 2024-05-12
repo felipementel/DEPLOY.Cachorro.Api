@@ -54,7 +54,7 @@ namespace DEPLOY.Cachorro.Infra.Repository.Migrations.API
             migrationBuilder.InsertData(
                 table: "Cachorro",
                 columns: new[] { "Id", "Adotado", "DataCadastro", "DataNascimento", "Nome", "Pelagem", "Peso", "TutorId" },
-                values: new object[] { new Guid("4b7f75cc-bad0-4c5e-87ba-70178ab9fe13"), false, new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1739), new DateTime(2024, 4, 8, 20, 3, 33, 613, DateTimeKind.Local).AddTicks(1776), "Rex", "Curto", 10.3m, null });
+                values: new object[] { new Guid("03d4a3a9-31bc-4dd9-89ac-a5ffa22cde8f"), false, new DateTime(2024, 5, 11, 17, 51, 11, 415, DateTimeKind.Local).AddTicks(5820), new DateTime(2024, 5, 11, 17, 51, 11, 415, DateTimeKind.Local).AddTicks(5852), "Rex", "Curto", 10.3m, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cachorro_Adotado",
