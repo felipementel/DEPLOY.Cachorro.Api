@@ -24,7 +24,7 @@ namespace DEPLOY.Cachorro.Application.AppServices
                 cancellationToken);
         }
 
-        public async Task<IEnumerable<TutorDto?>> GetAllAsync(
+        public async Task<IEnumerable<TutorDto>> GetAllAsync(
             CancellationToken cancellationToken = default)
         {
             var retorno = await _tutorService.GetAllAsync(
@@ -34,7 +34,7 @@ namespace DEPLOY.Cachorro.Application.AppServices
                 .Select<Domain.Aggregates.Tutor.Entities.Tutor, TutorDto>(x => x!).ToList();
         }
 
-        public async Task<TutorDto?> GetByIdAsync(
+        public async Task<TutorDto> GetByIdAsync(
             long id,
             CancellationToken cancellationToken = default)
         {

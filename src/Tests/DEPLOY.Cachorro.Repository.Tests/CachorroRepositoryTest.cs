@@ -194,7 +194,7 @@ namespace DEPLOY.Cachorro.Repository.Tests
                 .Options;
 
             var dbContext = new CachorroDbContext(dbContextOptions);
-            await dbContext.Database.EnsureCreatedAsync();
+            //await dbContext.Database.EnsureCreatedAsync();
 
             var repository = new Mock<CachorroRepository>(dbContext) { CallBase = true };
 

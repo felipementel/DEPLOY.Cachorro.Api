@@ -3,7 +3,6 @@ using DEPLOY.Cachorro.Domain.Aggregates.Tutor.Interfaces.Services;
 using DEPLOY.Cachorro.Domain.Shared;
 using DEPLOY.Cachorro.Infra.Repository.Repositories.Base;
 using FluentValidation;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DEPLOY.Cachorro.Domain.Aggregates.Tutor.Services
 {

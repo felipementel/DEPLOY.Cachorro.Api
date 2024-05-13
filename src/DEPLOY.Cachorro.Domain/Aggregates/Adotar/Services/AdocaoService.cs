@@ -52,7 +52,7 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Adotar.Services
                 return _validation;
             }
 
-            existedCachorro?.Adotar(existedTutor);
+            existedCachorro.Adotar(existedTutor);
 
             await _cachorroRepository.UpdateAsync(existedCachorro);
 
@@ -77,7 +77,7 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Adotar.Services
                 _validation.Add("Cachorro não consta como adotado no sistema");
             }
 
-            if (_validation?.Count() > 0)
+            if (_validation.Any())
             {
                 return _validation.ToFrozenSet();
             }

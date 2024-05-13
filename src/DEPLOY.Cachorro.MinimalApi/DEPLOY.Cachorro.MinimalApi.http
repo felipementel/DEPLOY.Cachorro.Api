@@ -1,0 +1,24 @@
+@Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IkwxS2ZLRklfam5YYndXYzIyeFp4dzFzVUhIMCJ9.eyJhdWQiOiIwOGU0MDU0Ny1lZWQ5LTQ2OGUtOTYwZS04NzFjYzllMWFiNmEiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vNWVjMGI0NTctMzM0Yy00ZDI3LTkxYjAtZDJhMzhiMzMwOTQ4L3YyLjAiLCJpYXQiOjE3MTU1MTA5MTAsIm5iZiI6MTcxNTUxMDkxMCwiZXhwIjoxNzE1NTE0ODEwLCJhaW8iOiJFMk5nWUtneVcrdFlmZnpidW1mSFpRUnlPZTJaZjI2OXQxazcwbmZuVHgwVlorRVhpdDBBIiwiYXpwIjoiMDhlNDA1NDctZWVkOS00NjhlLTk2MGUtODcxY2M5ZTFhYjZhIiwiYXpwYWNyIjoiMSIsIm9pZCI6ImQ0NDJjZmVkLTUyOWItNGNjNi05OTIzLWIzMDBjNjQ4MGVlYSIsInJoIjoiMC5BUThBVjdUQVhrd3pKMDJSc05Laml6TUpTRWNGNUFqWjdvNUdsZzZISE1uaHEyb1BBQUEuIiwicm9sZXMiOlsiRG9nLlJlY29kcyJdLCJzdWIiOiJkNDQyY2ZlZC01MjliLTRjYzYtOTkyMy1iMzAwYzY0ODBlZWEiLCJ0aWQiOiI1ZWMwYjQ1Ny0zMzRjLTRkMjctOTFiMC1kMmEzOGIzMzA5NDgiLCJ1dGkiOiJNU0ZjTW1KODJVUzk4WUEzT3RjQkFBIiwidmVyIjoiMi4wIn0.R3EBmiUGfgoT7A5_l4BlwMUabfxgZjsyHQKnMFZ5ekHsV7EjnfndUNF681umYUlZl4C8XgzvuKJviGQNv-GaiGYfz7GGM-nuZxUjpSCD7ME4hS7ZRurhhgUSbStG6PcOzbqdeoAP93E6AJS7Cvse-8SDQ9dRnVkC_ssi4-a-GoYlWtF2I2iueTXaS53K3J8EZYWbqbYaFLKtKU9dskuZMttwFAC4yN9y32HLiv_u-dhjjKi6vhOuGXKC13DHYUVOmivjsVIrcyWh6_6D2EOx5haF_U88p936RFwa_dvnyH82gQFSF7K3gSTdKR_N8wc19Kfd81qtHMjOjwMYD31isA"
+
+POST  {{HostAddress}}/api/v1/cachorros
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+  
+{
+    "nome": "Dog 1",
+    "nascimento": "2024-03-04",
+    "pelagem": 2,
+    "peso": 2.3
+}
+###
+GET {{HostAddress}}/api/v1/cachorros
+Accept: application/json
+Authorization: Bearer {{Token}}
+
+###
+
+GET {{HostAddress}}/api/v1/cachorros/2
+Accept: application/json
+
+
+###

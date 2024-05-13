@@ -91,6 +91,7 @@ jobs:
           path: coveragereport
 
   docker:
+    if: ${{ github.event_name != 'pull_request' }}
     name: Push image to Registry
     needs: build-and-sonar
     runs-on: ubuntu-latest

@@ -1,7 +1,7 @@
 ﻿using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using DEPLOY.Cachorro.Api.Configs;
+using DEPLOY.Cachorro.Api.Extensions.AppConfiguration.Configs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;

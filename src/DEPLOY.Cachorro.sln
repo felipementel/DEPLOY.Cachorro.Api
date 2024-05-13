@@ -26,7 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEPLOY.Cachorro.Domain.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEPLOY.Cachorro.Repository.Tests", "Tests\DEPLOY.Cachorro.Repository.Tests\DEPLOY.Cachorro.Repository.Tests.csproj", "{99169F8E-1506-467D-A37C-CB1FC6EA12ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEPLOY.Cachorro.Base.Tests", "Tests\DEPLOY.Cachorro.Base.Tests\DEPLOY.Cachorro.Base.Tests.csproj", "{6229329F-D084-4AFD-A078-E38390D559F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEPLOY.Cachorro.Base.Tests", "Tests\DEPLOY.Cachorro.Base.Tests\DEPLOY.Cachorro.Base.Tests.csproj", "{6229329F-D084-4AFD-A078-E38390D559F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEPLOY.Cachorro.MinimalApi", "DEPLOY.Cachorro.MinimalApi\DEPLOY.Cachorro.MinimalApi.csproj", "{9636A8AE-2606-4E15-A43E-E48E4BDC26DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{6229329F-D084-4AFD-A078-E38390D559F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6229329F-D084-4AFD-A078-E38390D559F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6229329F-D084-4AFD-A078-E38390D559F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9636A8AE-2606-4E15-A43E-E48E4BDC26DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9636A8AE-2606-4E15-A43E-E48E4BDC26DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9636A8AE-2606-4E15-A43E-E48E4BDC26DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9636A8AE-2606-4E15-A43E-E48E4BDC26DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

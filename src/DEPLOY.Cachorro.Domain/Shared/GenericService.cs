@@ -89,10 +89,10 @@ namespace DEPLOY.Cachorro.Domain.Shared
         {
             var items = await _genericRepository.GetAllAsync(cancellationToken);
 
-            return items?.Count() > 0 ? items : Enumerable.Empty<TEntity>();
+            return items.Any() ? items : Enumerable.Empty<TEntity>();
         }
 
-        public virtual async Task<TEntity?> GetByIdAsync(
+        public virtual async Task<TEntity> GetByIdAsync(
             Tid id,
             CancellationToken cancellationToken = default)
         {

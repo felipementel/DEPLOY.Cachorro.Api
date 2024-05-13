@@ -1,4 +1,4 @@
-﻿using DEPLOY.Cachorro.Api.Configs;
+﻿using DEPLOY.Cachorro.Api.Extensions.AppConfiguration.Configs;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.FeatureManagement;
 using System.Diagnostics.CodeAnalysis;

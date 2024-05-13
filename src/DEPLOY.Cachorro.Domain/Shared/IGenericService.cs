@@ -15,7 +15,7 @@ namespace DEPLOY.Cachorro.Domain.Shared
         Task<IEnumerable<TEntity>> GetAllAsync(
             CancellationToken cancellationToken = default);
 
-        Task<TEntity?> GetByIdAsync(
+        Task<TEntity> GetByIdAsync(
             Tid id,
             CancellationToken cancellationToken = default);
 

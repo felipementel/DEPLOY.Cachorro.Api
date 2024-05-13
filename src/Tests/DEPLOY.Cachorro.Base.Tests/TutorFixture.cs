@@ -27,7 +27,7 @@ namespace DEPLOY.Cachorro.Base.Tests
                         t.Person.FirstName,
                         t.Date.Past(),
                         t.Date.Past(),
-                        t.Random.Long(736273840532, 996273840532).ToString())
+                        "12312312356")
                     { Erros = new List<string>(1) { "CPF inválido" } })
                 .Generate(quantity);
         }

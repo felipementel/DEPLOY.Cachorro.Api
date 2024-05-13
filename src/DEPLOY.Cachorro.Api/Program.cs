@@ -13,7 +13,7 @@ namespace DEPLOY.Cachorro.Api
     public class Program
     {
         protected Program() { }
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -39,10 +39,10 @@ namespace DEPLOY.Cachorro.Api
             //Configure Extensions
             builder.Logging.AddLogExtension(builder.Configuration);
             builder.Services.AddAuthExtension(builder.Configuration);
-            builder.Services.AddKeyVaultExtension(builder.Configuration);
-            builder.Services.AddDatabaseExtension(builder.Configuration);
-            builder.Services.AddTelemetriaExtension(builder.Configuration);
             builder.Services.AddSwaggerExtension();
+            builder.Services.AddDatabaseExtension(builder.Configuration);
+            builder.Services.AddKeyVaultExtension(builder.Configuration);
+            builder.Services.AddTelemetriaExtension(builder.Configuration);
             builder.Configuration.AddAppConfigurationExtension(builder.Services);
 
             var app = builder.Build();
@@ -59,7 +59,7 @@ namespace DEPLOY.Cachorro.Api
 
             app.UseAzureAppConfiguration();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }

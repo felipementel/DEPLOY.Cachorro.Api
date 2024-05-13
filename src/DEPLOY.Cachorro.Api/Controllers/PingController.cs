@@ -6,7 +6,7 @@ namespace DEPLOY.Cachorro.Api.Controllers
 {
     [ExcludeFromCodeCoverage]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class PingController : ControllerBase
     {
         [HttpGet]

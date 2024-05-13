@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
-using DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Interfaces.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -24,6 +23,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [HttpPost("cachorro/{cachorroid}/tutor/{tutorid}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Adotar um Cachorro",
@@ -39,7 +40,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 tutorid,
                 cancellationToken);
 
-            if (item?.Count() > 0)
+            if (item.Any())
             {
                 return UnprocessableEntity(item);
             }
@@ -50,6 +51,8 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
         [HttpPost("cachorro/{cachorroid}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
             Summary = "Devolver um cachorro que estava adotado",
@@ -63,7 +66,7 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
                 cachorroid,
                 cancellationToken);
 
-            if (item?.Count() > 0)
+            if (item.Any())
             {
                 return UnprocessableEntity(item);
             }

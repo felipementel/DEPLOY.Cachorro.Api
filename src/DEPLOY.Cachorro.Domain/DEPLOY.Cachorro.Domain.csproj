@@ -7,6 +7,8 @@
 		<SonarQubeExclude>True</SonarQubeExclude>
 		<NoWarn>$(NoWarn);8618</NoWarn>
 		<NoWarn>$(NoWarn);8604</NoWarn>
+		<NoWarn>$(NoWarn);8602</NoWarn>
+		<NoWarn>$(NoWarn);S2259</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,8 +16,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="11.9.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
+		<PackageReference Include="FluentValidation" Version="11.9.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 	</ItemGroup>
 

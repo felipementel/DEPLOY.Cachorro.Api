@@ -16,7 +16,7 @@ namespace DEPLOY.Cachorro.Domain.Aggregates.Cachorro.Entities
             bool adotado,
             PELAGEM pelagem,
             float peso,
-            Tutor.Entities.Tutor tutor) : base(id, nome, cadastro, atualizacao)
+            Tutor.Entities.Tutor? tutor) : base(id, nome, cadastro, atualizacao)
         {
             Id = id;
             Nome = nome;
