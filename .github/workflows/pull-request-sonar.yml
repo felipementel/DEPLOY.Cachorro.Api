@@ -2,6 +2,12 @@ name: Validation Code | SonarCloud
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'src'
+    paths-ignore: 
+      - 'docs'
+      - 'docker'
+      - './github/*'
   workflow_dispatch:
 
 # defaults:
