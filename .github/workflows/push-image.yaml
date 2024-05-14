@@ -3,7 +3,11 @@ name: Publish Image
 on:
   push:
     paths:
-      - 'src/**'
+      - 'src/*'
+    paths-ignore: 
+      - 'docs/*'
+      - 'docker/*'
+      - './github/*'
     branches:
       - main
   workflow_dispatch:
