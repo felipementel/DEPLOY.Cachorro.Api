@@ -3,9 +3,12 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using DEPLOY.Cachorro.Api.Extensions.AppConfiguration.Configs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace DEPLOY.Cachorro.Api.Controllers
 {
@@ -34,7 +37,7 @@ namespace DEPLOY.Cachorro.Api.Controllers
         }
 
         [HttpGet("keyvault/withoptions/{key}")]
-        public async Task<IActionResult> GetAsync(string key)
+        public async Task<IActionResult> GetKeyAsync(string key)
         {
             SecretClientOptions options = new SecretClientOptions()
             {

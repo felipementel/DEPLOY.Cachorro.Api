@@ -7,12 +7,10 @@
 		<NoWarn>$(NoWarn);8604</NoWarn>
 		<NoWarn>$(NoWarn);8603</NoWarn>
 		<NoWarn>$(NoWarn);8602</NoWarn>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<UserSecretsId>CachorroAPI_Local</UserSecretsId>
+		<UserSecretsId>CachorroAPI_MVP</UserSecretsId>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<ApplicationInsightsResourceId>/subscriptions/f4574f09-7fab-45bd-8eb5-508b8c6aa04a/resourceGroups/rg-canaldeploy-dev/providers/microsoft.insights/components/appi-cachorroapi-dev</ApplicationInsightsResourceId>
-		<Version>1.1.0-MinimalApi</Version>
+		<Version>1.3.0-MinimalApi</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

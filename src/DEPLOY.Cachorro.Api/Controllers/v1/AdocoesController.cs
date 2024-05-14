@@ -1,8 +1,13 @@
 ﻿using Asp.Versioning;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
 {
