@@ -1,0 +1,14 @@
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  label_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          ISSUE_URL: {% raw %}${{ github.event.issue.html_url }}{% endraw %}
+        run: |
+          gh issue edit $ISSUE_URL --add-label "triage"
