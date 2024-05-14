@@ -3,10 +3,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - 'src'
+      - 'src/*'
     paths-ignore: 
-      - 'docs'
-      - 'docker'
+      - 'docs/*'
+      - 'docker/*'
       - './github/*'
   workflow_dispatch:
 
