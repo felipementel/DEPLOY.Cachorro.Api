@@ -4,10 +4,6 @@ on:
   push:
     paths:
       - 'src/*'
-    paths-ignore: 
-      - 'docs/*'
-      - 'docker/*'
-      - './github/*'
     branches:
       - main
   workflow_dispatch:
