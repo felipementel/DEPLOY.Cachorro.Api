@@ -2,6 +2,8 @@ name: Validation Code | SonarCloud
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - "src/*"
   workflow_dispatch:
 
 # defaults:

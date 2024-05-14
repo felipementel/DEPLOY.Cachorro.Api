@@ -50,6 +50,9 @@ docker container run --rm -p 8088:80 \
 -e ConnectionStrings__AppConfiguration="ddd" \
 -e ApplicationInsights__ApiKey="eee" \
 -e KeyVault__VaultUri="fff" \
+-e AzureAd__Instance="https://login.microsoftonline.com" \
+-e AzureAd__ClientId="ggg" \
+-e AzureAd__TenantId="hhh" \
 felipementel/cachorro.api:latest
 ```
 
@@ -60,6 +63,8 @@ ccc = Connection String (Azure SQL Database ou https://hub.docker.com/_/microsof
 ddd = Connection string do App Configuration
 eee = ApiKey gerada dentro do Application Insights
 fff = URI do Azure KeyVault
+ggg = Identificador do cliente criado no Entra ID
+hhh = Identificador do Tenant
 ```
 
 Comando para subir o banco de dados local:
