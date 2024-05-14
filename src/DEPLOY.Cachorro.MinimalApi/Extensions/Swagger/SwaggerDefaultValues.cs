@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 
 namespace DEPLOY.Cachorro.MinimalApi.Extensions.Swagger

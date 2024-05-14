@@ -2,10 +2,21 @@
 using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.MinimalApi.Configs;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.FeatureManagement;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DEPLOY.Cachorro.MinimalApi.Endpoints
 {
@@ -30,7 +41,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
                     IConfiguration configuration,
                     CancellationToken cancellationToken) =>
                 {
-                    async Task<IResult> GetAsync(
+                    async Task<IResult> GetKeyAsync(
                         string key)
                     {
                         SecretClientOptions options = new SecretClientOptions()
@@ -56,7 +67,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
                         return TypedResults.Ok(secretValue);
                     }
 
-                    return await GetAsync(key);
+                    return await GetKeyAsync(key);
                 })
                 .WithOpenApi(operation => new(operation)
                 {
@@ -99,7 +110,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints
                     IOptions<Settings> settings,
                     CancellationToken cancellationToken) =>
                 {
-                    async Task<IResult> GetAsync()
+                    async Task<Ok<string>> GetAsync()
                     {
                         return TypedResults.Ok(settings.Value.ValorDaMensagem);
                     }

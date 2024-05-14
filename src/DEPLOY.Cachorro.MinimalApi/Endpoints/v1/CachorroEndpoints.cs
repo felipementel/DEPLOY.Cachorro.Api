@@ -1,9 +1,17 @@
 ﻿using Asp.Versioning;
 using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 {

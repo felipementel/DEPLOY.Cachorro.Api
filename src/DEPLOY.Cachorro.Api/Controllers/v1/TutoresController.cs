@@ -2,9 +2,13 @@
 using DEPLOY.Cachorro.Application.Dtos;
 using DEPLOY.Cachorro.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DEPLOY.Cachorro.Api.Controllers.v1
 {
@@ -82,19 +86,21 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
             CancellationToken cancellationToken = default)
         {
             var item = await _tutorAppServices.InsertAsync(
-                tutorDto, 
+                tutorDto,
                 cancellationToken);
 
             if (item.Erros.Any())
                 return UnprocessableEntity(item.Erros);
 
             return CreatedAtAction("GetById",
-                new { 
+                new
+                {
                     id = item.Id,
                     version = new ApiVersion(
                         1,
                         0)
-                    .ToString() },
+                    .ToString()
+                },
                 item);
         }
 
@@ -119,11 +125,11 @@ namespace DEPLOY.Cachorro.Api.Controllers.v1
 
             var retorned = await _tutorAppServices.UpdateAsync(
                 id,
-                tutorDto, 
+                tutorDto,
                 cancellationToken);
 
-               return !retorned.Any() ? NoContent() 
-                : UnprocessableEntity(retorned);
+            return !retorned.Any() ? NoContent()
+             : UnprocessableEntity(retorned);
         }
 
         [HttpDelete("{id:long}")]

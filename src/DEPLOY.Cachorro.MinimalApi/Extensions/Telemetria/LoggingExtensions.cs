@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.MinimalApi.Extensions.Telemetria
 {

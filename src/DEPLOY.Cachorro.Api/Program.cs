@@ -7,6 +7,9 @@ using DEPLOY.Cachorro.Api.Extensions.Auth;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using DEPLOY.Cachorro.Infra.CrossCutting;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 namespace DEPLOY.Cachorro.Api
 {
     [ExcludeFromCodeCoverage]

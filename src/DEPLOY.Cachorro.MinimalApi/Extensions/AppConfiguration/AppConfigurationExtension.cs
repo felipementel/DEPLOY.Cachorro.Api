@@ -1,6 +1,9 @@
 ﻿using DEPLOY.Cachorro.MinimalApi.Configs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.MinimalApi.Extensions.AppConfiguration

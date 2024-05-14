@@ -1,5 +1,9 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v2

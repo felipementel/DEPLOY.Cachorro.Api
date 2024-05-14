@@ -10,6 +10,9 @@ using System.Text.Json.Serialization;
 using DEPLOY.Cachorro.MinimalApi.Endpoints;
 using DEPLOY.Cachorro.MinimalApi.Extensions.KeyVault;
 using DEPLOY.Cachorro.MinimalApi.Extensions.AppConfiguration;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
