@@ -53,7 +53,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 {
                     OperationId = "listall-tutores-get",
                     Summary = "Listar Tutores",
-                    Description = "Operação para listar de tutores",
+                    Description = "Operação para listar tutores",
                     Tags = new List<OpenApiTag> { new() { Name = "Tutores" } }
                 });
 
