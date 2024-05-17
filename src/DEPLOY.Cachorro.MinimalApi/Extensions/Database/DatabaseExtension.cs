@@ -17,18 +17,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Extensions.Database
             ConfigurationManager configuration)
         {
             service.AddDbContext<CachorroDbContext>(options =>
-                options.UseSqlServer(
-                   configuration.GetSection("ConnectionStrings:DefaultConnection").Value,
-                    p =>
-                    {
-                        p.EnableRetryOnFailure(
-                            maxRetryCount: 5,
-                            maxRetryDelay: TimeSpan.FromSeconds(5),
-                            errorNumbersToAdd: null);
-
-                        p.MigrationsHistoryTable("_ControleMigracoes", "dbo");
-
-                    })
+                options.UseInMemoryDatabase(databaseName: "Cachorro")
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .LogTo(Console.WriteLine, LogLevel.Debug)
                 .EnableSensitiveDataLogging());

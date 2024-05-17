@@ -1,15 +1,11 @@
 using DEPLOY.Cachorro.Infra.CrossCutting;
 using DEPLOY.Cachorro.MinimalApi.Endpoints.v1;
 using DEPLOY.Cachorro.MinimalApi.Endpoints.v2;
-using DEPLOY.Cachorro.MinimalApi.Extensions.Auth;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Database;
 using DEPLOY.Cachorro.MinimalApi.Extensions.Swagger;
-using DEPLOY.Cachorro.MinimalApi.Extensions.Telemetria;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using DEPLOY.Cachorro.MinimalApi.Endpoints;
-using DEPLOY.Cachorro.MinimalApi.Extensions.KeyVault;
-using DEPLOY.Cachorro.MinimalApi.Extensions.AppConfiguration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,13 +31,8 @@ builder.Services.AddRouting(opt =>
 builder.Services.AddEndpointsApiExplorer();
 
 //Configure Extensions
-builder.Logging.AddLogExtension(builder.Configuration);
-builder.Services.AddAuthExtension(builder.Configuration);
 builder.Services.AddSwaggerExtension();
 builder.Services.AddDatabaseExtension(builder.Configuration);
-builder.Services.AddKeyVaultExtension(builder.Configuration);
-builder.Services.AddTelemetriaExtension(builder.Configuration);
-builder.Configuration.AddAppConfigurationExtension(builder.Services);
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
@@ -61,8 +52,6 @@ app
 .WithApiVersionSet(versionSetPing)
 .Produces<string>(200);
 
-app.MapTestResourcesEndpoints();
-
 //v1
 app.MapCachorroEndpoints();
 
@@ -77,10 +66,5 @@ app.MapCachorroEndpointsV2();
 app.UseSwaggerExtension();
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseAzureAppConfiguration();
 
 await app.RunAsync();

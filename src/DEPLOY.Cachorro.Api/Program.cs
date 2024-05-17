@@ -1,15 +1,11 @@
-using DEPLOY.Cachorro.Api.Extensions.AppConfiguration;
 using DEPLOY.Cachorro.Api.Extensions.Database;
-using DEPLOY.Cachorro.Api.Extensions.KeyVault;
 using DEPLOY.Cachorro.Api.Extensions.Swagger;
-using DEPLOY.Cachorro.Api.Extensions.Telemetria;
-using DEPLOY.Cachorro.Api.Extensions.Auth;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
 using DEPLOY.Cachorro.Infra.CrossCutting;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 namespace DEPLOY.Cachorro.Api
 {
     [ExcludeFromCodeCoverage]
@@ -40,13 +36,8 @@ namespace DEPLOY.Cachorro.Api
             builder.Services.AddEndpointsApiExplorer();
 
             //Configure Extensions
-            builder.Logging.AddLogExtension(builder.Configuration);
-            builder.Services.AddAuthExtension(builder.Configuration);
             builder.Services.AddSwaggerExtension();
             builder.Services.AddDatabaseExtension(builder.Configuration);
-            builder.Services.AddKeyVaultExtension(builder.Configuration);
-            builder.Services.AddTelemetriaExtension(builder.Configuration);
-            builder.Configuration.AddAppConfigurationExtension(builder.Services);
 
             var app = builder.Build();
 
@@ -55,12 +46,7 @@ namespace DEPLOY.Cachorro.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             app.MapControllers();
-
-            app.UseAzureAppConfiguration();
 
             await app.RunAsync();
         }

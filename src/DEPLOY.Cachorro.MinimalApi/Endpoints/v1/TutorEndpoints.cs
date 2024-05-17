@@ -28,7 +28,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
             var tutores = app
                 .MapGroup("/api/v{apiVersion:apiVersion}/tutores")
-                .RequireAuthorization()
                 .WithApiVersionSet(apiVersionSetTutor);
 
             tutores.MapGet("/", async (

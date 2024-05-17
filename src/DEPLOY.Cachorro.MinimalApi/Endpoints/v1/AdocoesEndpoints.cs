@@ -26,7 +26,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
             var adocoes = app
                 .MapGroup("/api/v{apiVersion:apiVersion}/adocoes")
-                .RequireAuthorization()
                 .WithApiVersionSet(apiVersionSetAdocoes);
 
             adocoes

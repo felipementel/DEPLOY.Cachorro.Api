@@ -28,7 +28,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
             var cachorros = app
                 .MapGroup("/api/v{apiVersion:apiVersion}/cachorros")
-                .RequireAuthorization()
                 .WithApiVersionSet(apiVersionSetCachorro);
 
             cachorros
