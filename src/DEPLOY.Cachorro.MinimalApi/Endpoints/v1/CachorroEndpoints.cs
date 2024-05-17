@@ -34,7 +34,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             cachorros
                 .MapGet("/", ListAllAsync)
                 .Produces<IEnumerable<CachorroDto>>(200, "application/json")
-                .Produces(404)
                 .Produces(401)
                 .Produces(500)
                 .WithOpenApi(operation => new(operation)
