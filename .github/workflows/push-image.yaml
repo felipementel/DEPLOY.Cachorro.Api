@@ -140,8 +140,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            felipementel/$imageName
-            ghcr.io/felipementel/deploy.$imageName
+            felipementel/${{ env.imageName }}
+            ghcr.io/felipementel/deploy.${{ env.imageName }}
 
       - name: Build and push docker
         uses: docker/build-push-action@v5
