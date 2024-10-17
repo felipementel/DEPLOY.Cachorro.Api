@@ -4,6 +4,7 @@
 
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=felipementel_DEPLOY.Cachorro.Api)](https://sonarcloud.io/summary/new_code?id=felipementel_DEPLOY.Cachorro.Api)
 ![actions.](https://github.com/felipementel/DEPLOY.Cachorro.Api/actions/workflows/push-image.yaml/badge.svg?branch=main)
+<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 # Configuração local do Git
 
 ```
