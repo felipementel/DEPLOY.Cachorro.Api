@@ -35,7 +35,7 @@ jobs:
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}}
           GITLEAKS_ENABLE_SUMMARY: true
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: true
-          GITLEAKS_NOTIFY_USER_LIST: @felipementel
+          GITLEAKS_NOTIFY_USER_LIST: '@felipementel'
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
