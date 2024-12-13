@@ -21,8 +21,7 @@ on:
         type: choice
         options:
           - 'true'
-          - 'false'
-          
+          - 'false'          
       sonar-qube:
         description: "Deseja executar SonarQube"
         required: true
