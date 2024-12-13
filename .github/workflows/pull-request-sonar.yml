@@ -5,6 +5,32 @@ on:
     paths:
       - "src/**"
   workflow_dispatch:
+     inputs:
+      gitleaks:
+        description: "Deseja executar SonarQube"
+        required: true
+        default: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      zaproxy:
+        description: "Deseja executar SonarQube"
+        required: true
+        default: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+          
+      sonar-qube:
+        description: "Deseja executar SonarQube"
+        required: true
+        default: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 # defaults:
 #   run:
@@ -17,6 +43,7 @@ env:
 
 jobs:
   quality-gitleaks:
+    if: ${{ inputs.gitleaks }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,6 +61,7 @@ jobs:
           GITLEAKS_NOTIFY_USER_LIST: '@felipementel'
           
   quality-zaproxy:
+    if: ${{ inputs.zaproxy }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,6 +79,7 @@ jobs:
 #          cmd_options: "-z -config view.locale=pt_BR -version -daemon"
 
   quality-sonarqube:
+    if: ${{ inputs.sonar-qube }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
