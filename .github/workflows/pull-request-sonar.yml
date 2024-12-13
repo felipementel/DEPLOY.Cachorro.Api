@@ -9,19 +9,11 @@ on:
       gitleaks:
         description: "Deseja executar GitLeaks"
         required: true
-        default: "true"
-        type: choice
-        options:
-          - "true"
-          - "false"
+        type: boolean
       zaproxy:
         description: "Deseja executar ZaProxy"
         required: true
-        default: "true"
-        type: choice
-        options:
-          - "true"
-          - "false"
+        type: boolean
       sonar-qube:
         description: "Deseja executar SonarQube"
         required: true
