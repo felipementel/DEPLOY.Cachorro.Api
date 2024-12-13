@@ -30,7 +30,7 @@ env:
 
 jobs:
   quality-gitleaks:
-    if: ${{ github.event.inputs.gitleaks}}
+    if: ${{ github.event.inputs.gitleaks == 'true' }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-gitleaks
       cancel-in-progress: true
@@ -51,7 +51,7 @@ jobs:
           GITLEAKS_NOTIFY_USER_LIST: '@felipementel'
           
   quality-zaproxy:
-    if: ${{ github.event.inputs.zaproxy }}
+    if: ${{ github.event.inputs.zaproxy == 'true' }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-zaproxy
       cancel-in-progress: true
@@ -72,7 +72,7 @@ jobs:
 #          cmd_options: "-z -config view.locale=pt_BR -version -daemon"
 
   quality-sonarqube:
-    if: ${{ github.event.inputs.sonar-qube }}
+    if: ${{ github.event.inputs.sonar-qube == 'true' }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-sonarqube
       cancel-in-progress: true
