@@ -44,7 +44,7 @@ jobs:
   quality-gitleaks:
     if: ${{ inputs.gitleaks }}
     concurrency:
-      group: ${{ matrix.os }}-${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +65,7 @@ jobs:
   quality-zaproxy:
     if: ${{ inputs.zaproxy }}
     concurrency:
-      group: ${{ matrix.os }}-${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
@@ -86,7 +86,7 @@ jobs:
   quality-sonarqube:
     if: ${{ inputs.sonar-qube }}
     concurrency:
-      group: ${{ matrix.os }}-${{ github.workflow }}-${{ github.ref }}
+      group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
