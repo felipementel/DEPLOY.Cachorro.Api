@@ -19,10 +19,11 @@ jobs:
   quality-gitleaks:
     runs-on: ubuntu-latest
     steps:
-
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref_name }}
 
       - uses: gitleaks/gitleaks-action@v2
         env:
@@ -38,6 +39,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           ref: ${{ github.ref_name }}
           
       - name: ZAP Scan
