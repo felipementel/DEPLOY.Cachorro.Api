@@ -37,6 +37,11 @@ jobs:
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: true
           GITLEAKS_NOTIFY_USER_LIST: '@felipementel'
 
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.12.0
+        with:
+          target: 'https://www.zaproxy.org/'
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
