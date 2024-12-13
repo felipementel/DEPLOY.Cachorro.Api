@@ -17,11 +17,7 @@ on:
       sonar-qube:
         description: "Deseja executar SonarQube"
         required: true
-        default: "true"
-        type: choice
-        options:
-          - "true"
-          - "false"
+        type: boolean
 
 # defaults:
 #   run:
@@ -34,7 +30,7 @@ env:
 
 jobs:
   quality-gitleaks:
-    if: ${{ inputs.gitleaks == "true" }}
+    if: ${{ github.event.inputs.gitleaks}}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-gitleaks
       cancel-in-progress: true
@@ -55,7 +51,7 @@ jobs:
           GITLEAKS_NOTIFY_USER_LIST: '@felipementel'
           
   quality-zaproxy:
-    if: ${{ inputs.zaproxy == "true" }}
+    if: ${{ github.event.inputs.zaproxy }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-zaproxy
       cancel-in-progress: true
@@ -76,7 +72,7 @@ jobs:
 #          cmd_options: "-z -config view.locale=pt_BR -version -daemon"
 
   quality-sonarqube:
-    if: ${{ inputs.sonar-qube == "true" }}
+    if: ${{ github.event.inputs.sonar-qube }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-sonarqube
       cancel-in-progress: true
