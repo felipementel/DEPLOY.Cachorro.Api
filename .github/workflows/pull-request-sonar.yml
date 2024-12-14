@@ -30,11 +30,11 @@ env:
 
 jobs:
   quality-gitleaks:
+    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.gitleaks == 'true' }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-gitleaks
-      cancel-in-progress: true
-    runs-on: ubuntu-latest
+      cancel-in-progress: true    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,11 +51,11 @@ jobs:
           GITLEAKS_NOTIFY_USER_LIST: '@felipementel'
           
   quality-zaproxy:
+    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.zaproxy == 'true' }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-zaproxy
-      cancel-in-progress: true
-    runs-on: ubuntu-latest
+      cancel-in-progress: true    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,11 +72,11 @@ jobs:
 #          cmd_options: "-z -config view.locale=pt_BR -version -daemon"
 
   quality-sonarqube:
+    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.sonar-qube == 'true' }}
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-sonarqube
-      cancel-in-progress: true
-    runs-on: ubuntu-latest
+      cancel-in-progress: true    
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
