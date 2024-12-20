@@ -1,6 +1,6 @@
 # run from src folder
-# docker-compose -f ../docker/docker-compose.yml up -d --build
-# docker-compose -f ../docker/docker-compose.yml down --remove-orphans
+# docker compose -f ../docker/docker-compose.yml up -d --build
+# docker compose -f ../docker/docker-compose.yml down --remove-orphans
 
 services:
   # cachorro.api:
