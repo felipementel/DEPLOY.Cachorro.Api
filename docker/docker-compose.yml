@@ -1,6 +1,6 @@
 # run from src folder
-# docker-compose -f ../docker/docker-compose.yml up -d --build
-# docker-compose -f ../docker/docker-compose.yml down --remove-orphans
+# docker compose -f ../docker/docker-compose.yml up -d --build
+# docker compose -f ../docker/docker-compose.yml down --remove-orphans
 
 services:
   # cachorro.api:
@@ -42,15 +42,15 @@ services:
     ports:
       - 1433:1433
 
-  # sonarqube:
-  #   image: sonarqube:10.4.1-community
-  #   hostname: sonar-canal-deploy
-  #   container_name: sonar-canal-deploy
-  #   restart: always
-  #   networks:
-  #     - cachorro-net
-  #   ports:
-  #     - 9044:9000
+  sonarqube:
+    image: sonarqube:10.4.1-community
+    hostname: sonar-canal-deploy
+    container_name: sonar-canal-deploy
+    restart: always
+    networks:
+      - cachorro-net
+    ports:
+      - 9044:9000
 
 networks:
   cachorro-net:
