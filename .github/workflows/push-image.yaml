@@ -132,7 +132,7 @@ jobs:
         id: get-version
         shell: bash
         run: |
-          version=$(sed -n 's/.*<Version>\(.*\)<\/Version>.*/\1/p' ./src/DEPLOY.Cachorro.Api/DEPLOY.Cachorro.Api.csproj)
+          version=$(sed -n 's/.*<Version>\(.*\)<\/Version>.*/\1/p' $csprojFolder)
           echo "tag=$version" >> "$GITHUB_OUTPUT"
 
       - name: Extract metadata (tags, labels) for Docker
