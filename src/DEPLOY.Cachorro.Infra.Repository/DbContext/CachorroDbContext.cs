@@ -18,6 +18,9 @@ namespace DEPLOY.Cachorro.Infra.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasServiceTier("Basic");
+            modelBuilder.HasPerformanceLevel("Basic");
+            
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
