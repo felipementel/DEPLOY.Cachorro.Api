@@ -3,10 +3,10 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<NoWarn>$(NoWarn);1591</NoWarn>
+		<!--<NoWarn>$(NoWarn);1591</NoWarn>
 		<NoWarn>$(NoWarn);8604</NoWarn>
 		<NoWarn>$(NoWarn);8603</NoWarn>
-		<NoWarn>$(NoWarn);8602</NoWarn>
+		<NoWarn>$(NoWarn);8602</NoWarn>-->
 		<UserSecretsId>CachorroAPI_MVP</UserSecretsId>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>

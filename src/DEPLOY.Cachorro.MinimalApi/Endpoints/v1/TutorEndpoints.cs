@@ -67,7 +67,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 {
                     var items = await tutorAppService.GetByIdAsync(id, cancellationToken);
 
-                    return items == null ? TypedResults.NoContent() : TypedResults.Ok(items);
+                    return items == null ? Results.NoContent() : TypedResults.Ok(items);
                 }
 
                 return await ListAllAsync(tutorAppService);
@@ -96,7 +96,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                         var item = await tutorAppService.InsertAsync(tutorDto, cancellationToken);
 
                         if (item.Erros.Any())
-                            return TypedResults.UnprocessableEntity(item.Erros);
+                            return Results.UnprocessableEntity(item.Erros);
 
                         var apiVersion = request.RouteValues["apiVersion"];
 
@@ -133,7 +133,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                     var item = await tutorAppService.UpdateAsync(id, tutorDto, cancellationToken);
 
                     if (item.Any())
-                        return TypedResults.UnprocessableEntity(item);
+                        return Results.UnprocessableEntity(item);
 
                     return TypedResults.Ok(item);
                 }
@@ -162,7 +162,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                 {
                     var item = await tutorAppService.DeleteAsync(id, cancellationToken);
 
-                    return item ? TypedResults.NoContent() : TypedResults.NotFound();
+                    return item ? Results.NoContent() : TypedResults.NotFound();
                 }
 
                 return await DeleteTutorAsync();
@@ -178,7 +178,6 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                     Description = "Operação para deletar tutor por id",
                     Tags = new List<OpenApiTag> { new() { Name = "Tutores" } }
                 });
-
         }
     }
 }
