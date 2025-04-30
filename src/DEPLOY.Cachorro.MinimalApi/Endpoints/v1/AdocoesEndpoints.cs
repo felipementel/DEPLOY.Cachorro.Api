@@ -68,7 +68,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
                 if (item?.Count() > 0)
                 {
-                    return TypedResults.UnprocessableEntity(item);
+                    return Results.UnprocessableEntity(item);
                 }
 
                 return TypedResults.Ok();
@@ -87,7 +87,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
                 if (item?.Count() > 0)
                 {
-                    return TypedResults.UnprocessableEntity(item);
+                    return Results.UnprocessableEntity(item);
                 }
 
                 return TypedResults.Ok();

@@ -149,7 +149,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
 
                 if (items == null)
                 {
-                    return TypedResults.NotFound();
+                    return Results.NotFound();
                 }
 
                 return TypedResults.Ok(items);
@@ -166,14 +166,14 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                                 cancellationToken);
 
                 if (item?.Erros.Count() > 0)
-                    return TypedResults.UnprocessableEntity(item.Erros);
+                    return Results.UnprocessableEntity(item.Erros);
 
                 var apiVersion = request.RouteValues["apiVersion"];
                 var scheme = request.Scheme;
                 var host = request.Host;
                 var location = new Uri($"{scheme}{Uri.SchemeDelimiter}{host}/api/v{apiVersion}/cachorros/{item?.Id}");
 
-                return Results.Created(location, item);
+                return TypedResults.Created(location, item);
             }
 
             async Task<IResult> DeleteCachorroAsync(
@@ -186,7 +186,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                                 cancellationToken);
 
                 if (item)
-                    return TypedResults.NoContent();
+                    return Results.NoContent();
 
                 return TypedResults.NotFound();
             }
@@ -199,7 +199,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
             {
                 if (id != cachorroDto.Id)
                 {
-                    return TypedResults.UnprocessableEntity();
+                    return Results.UnprocessableEntity();
                 }
 
                 var item = await cachorroAppServices.UpdateAsync(
@@ -207,7 +207,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                     cachorroDto,
                     cancellationToken);
 
-                return !item.Any() ? TypedResults.NoContent()
+                return !item.Any() ? Results.NoContent()
                           : TypedResults.UnprocessableEntity(item);
             }
 
@@ -219,7 +219,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                     c => c.Adotado,
                     cancellationToken);
 
-                return items?.Count() > 0 ? TypedResults.Ok(items) : TypedResults.NoContent();
+                return items?.Count() > 0 ? Results.Ok(items) : TypedResults.NoContent();
             }
 
             async Task<IResult> ListAllCachorrosParaAdotarAsync(
@@ -230,7 +230,7 @@ namespace DEPLOY.Cachorro.MinimalApi.Endpoints.v1
                     c => !c.Adotado,
                     cancellationToken);
 
-                return items?.Count() > 0 ? TypedResults.Ok(items) : TypedResults.NoContent();
+                return items?.Count() > 0 ? Results.Ok(items) : TypedResults.NoContent();
             }
         }
     }
